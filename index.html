@@ -31,7 +31,7 @@
   .search-input:focus { border-color: #00A86B; }
   .loader { border: 3px solid #f3f3f3; border-top: 3px solid #00A86B; border-radius: 50%; width: 20px; height: 20px; animation: spin 1s linear infinite; }
   @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-  .autocomplete-list { max-height: 200px; overflow-y: auto; z-index: 2000; }
+  .autocomplete-list { max-height: 250px; overflow-y: auto; z-index: 2000; }
   .drag-hint { font-size: 10px; color: #64748b; margin-left: 26px; margin-top: 4px; display: none; }
 </style>
 </head>
@@ -162,10 +162,9 @@
     // ==========================================
     const map = L.map('map', { zoomControl: false }).setView([-6.3591, 106.2494], 14);
     
-    // KUNCI PETA: Hanya bisa digeser di area kota Rangkasbitung
     const batasRangkasbitung = [
-      [-6.44, 106.18], // Batas Bawah Kiri (Southwest)
-      [-6.28, 106.32]  // Batas Atas Kanan (Northeast)
+      [-6.44, 106.18], // Southwest
+      [-6.28, 106.32]  // Northeast
     ];
     map.setMaxBounds(batasRangkasbitung);
     map.setMinZoom(13);
@@ -236,7 +235,7 @@
     }
 
     // ==========================================
-    // 4. PENCARIAN LOKASI (HANYA AREA RANGKASBITUNG)
+    // 4. PENCARIAN LOKASI (NOMINATIM & OVERPASS)
     // ==========================================
     let timeoutSearch = null;
     function cariLokasi(query, tipe) {
@@ -248,59 +247,87 @@
         return;
       }
 
-      timeoutSearch = setTimeout(() => {
+      timeoutSearch = setTimeout(async () => {
+        listDiv.innerHTML = '<div class="p-3 text-xs text-slate-500">Mencari...</div>';
+        listDiv.classList.remove('hidden');
+
         const queryLower = query.toLowerCase().trim();
+        // Deteksi jika mencari fasilitas kesehatan
+        const isMedis = /^(rs|rumah sakit|puskesmas|klinik|dokter|apotek)$/i.test(queryLower);
         
-        // DETEKSI KATA KUNCI FASILITAS UMUM
-        // Jika pelanggan mengetik "RS", "Rumah Sakit", "Klinik", dll.
-        // Maka kita gunakan pencarian terstruktur (Structured Query) dengan parameter amenity
-        let url = '';
-        const isHospital = /^(rs|rumah sakit|hospital)$/i.test(queryLower);
-        const isClinic = /^(klinik|puskesmas|clinic)$/i.test(queryLower);
+        let results = [];
 
-        if (isHospital || isClinic) {
-          // Pencarian khusus fasilitas kesehatan (terstruktur & terbatas di Rangkasbitung)
-          const amenityType = isHospital ? 'hospital' : 'clinic';
-          url = `https://nominatim.openstreetmap.org/search?format=json&amenity=${amenityType}&viewbox=106.18,-6.28,106.32,-6.44&bounded=1&limit=10&accept-language=id`;
-        } else {
-          // Pencarian tempat biasa (tetap dibatasi ketat viewbox)
-          const queryPencarian = `${query}, Rangkasbitung`;
-          url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(queryPencarian)}&viewbox=106.18,-6.28,106.32,-6.44&bounded=1&limit=10&countrycodes=id&accept-language=id`;
-        }
-
-        fetch(url)
-          .then(res => res.json())
-          .then(data => {
-            listDiv.innerHTML = '';
+        try {
+          if (isMedis) {
+            // --- OVERPASS API: Mencari SEMUA Fasilitas Kesehatan di radius 15km ---
+            const overpassUrl = 'https://overpass-api.de/api/interpreter';
+            // Mencari node/way dengan tag amenity hospital, clinic, doctors, atau pharmacy
+            const overpassQuery = `
+              [out:json][timeout:15];
+              (
+                nwr["amenity"~"hospital|clinic|doctors|pharmacy"](around:15000,-6.3591,106.2494);
+              );
+              out center;
+            `;
             
-            // Filter Koordinat Ganda (Memastikan hasil tidak keluar dari Rangkasbitung)
+            const res = await fetch(overpassUrl, { method: 'POST', body: overpassQuery });
+            const data = await res.json();
+            
+            data.elements.forEach(el => {
+                const lat = el.lat || (el.center && el.center.lat);
+                const lon = el.lon || (el.center && el.center.lon);
+                const name = (el.tags && el.tags.name) ? el.tags.name : "Fasilitas Kesehatan";
+                const type = (el.tags && el.tags.amenity) ? el.tags.amenity.toUpperCase() : "";
+                const address = (el.tags && el.tags["addr:street"]) ? el.tags["addr:street"] : "Rangkasbitung";
+                
+                if (lat && lon) {
+                    results.push({
+                        lat: lat,
+                        lon: lon,
+                        name: name,
+                        display_name: `[${type}] ${address}`
+                    });
+                }
+            });
+          } else {
+            // --- NOMINATIM API: Pencarian Tempat Umum (Mall, Jalan, dll) ---
+            const queryPencarian = `${query} Rangkasbitung`;
+            const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(queryPencarian)}&viewbox=106.15,-6.25,106.35,-6.45&bounded=1&limit=15&countrycodes=id&accept-language=id`;
+
+            const res = await fetch(url);
+            const data = await res.json();
+            
+            // Filter koordinat
             const dataValid = data.filter(item => {
                 const lat = parseFloat(item.lat);
                 const lon = parseFloat(item.lon);
                 return (lat <= -6.28 && lat >= -6.44 && lon >= 106.18 && lon <= 106.32);
             });
 
-            if (dataValid.length === 0) {
-              listDiv.innerHTML = '<div class="p-3 text-xs text-slate-500">Lokasi tidak ditemukan di area Rangkasbitung.</div>';
-            } else {
-              dataValid.forEach(item => {
-                const div = document.createElement('div');
-                div.className = 'p-3 text-xs border-b border-slate-100 cursor-pointer hover:bg-slate-50';
-                
-                const namaTempat = item.name || item.display_name.split(',')[0];
-                const alamatLengkap = item.display_name;
-                
-                div.innerHTML = `<p class="font-bold text-ink">${namaTempat}</p><p class="text-slate-400">${alamatLengkap}</p>`;
-                div.onclick = () => pilihLokasi(item.lat, item.lon, namaTempat, tipe);
-                listDiv.appendChild(div);
-              });
-            }
-            listDiv.classList.remove('hidden');
-          })
-          .catch(err => {
-              listDiv.innerHTML = '<div class="p-3 text-xs text-red-500">Gagal mencari lokasi. Periksa koneksi internet.</div>';
-              listDiv.classList.remove('hidden');
-          });
+            results = dataValid.map(item => ({
+                lat: parseFloat(item.lat),
+                lon: parseFloat(item.lon),
+                name: item.name || item.display_name.split(',')[0],
+                display_name: item.display_name
+            }));
+          }
+
+          // Tampilkan hasil ke Dropdown
+          listDiv.innerHTML = '';
+          if (results.length === 0) {
+            listDiv.innerHTML = '<div class="p-3 text-xs text-slate-500">Lokasi tidak ditemukan di area Rangkasbitung.</div>';
+          } else {
+            results.forEach(item => {
+              const div = document.createElement('div');
+              div.className = 'p-3 text-xs border-b border-slate-100 cursor-pointer hover:bg-slate-50';
+              div.innerHTML = `<p class="font-bold text-ink">${item.name}</p><p class="text-slate-400">${item.display_name}</p>`;
+              div.onclick = () => pilihLokasi(item.lat, item.lon, item.name, tipe);
+              listDiv.appendChild(div);
+            });
+          }
+        } catch (error) {
+            listDiv.innerHTML = '<div class="p-3 text-xs text-red-500">Koneksi bermasalah. Coba lagi.</div>';
+        }
       }, 800);
     }
 
