@@ -158,17 +158,18 @@
   <!-- SCRIPT LOGIKA APLIKASI -->
   <script>
     // ==========================================
-    // 1. INISIALISASI PETA & BATAS WILAYAH
+    // 1. INISIALISASI PETA & BATAS WILAYAH KETAT
     // ==========================================
     const map = L.map('map', { zoomControl: false }).setView([-6.3591, 106.2494], 14);
     
-    // KUNCI PETA: Hanya bisa digeser di area Rangkasbitung
+    // KUNCI PETA: Hanya bisa digeser di area kota Rangkasbitung
+    // Koordinat: lat: -6.28 sampai -6.44, lon: 106.18 sampai 106.32
     const batasRangkasbitung = [
-      [-6.50, 106.10], // Batas Bawah Kiri (Southwest)
-      [-6.20, 106.40]  // Batas Atas Kanan (Northeast)
+      [-6.44, 106.18], // Batas Bawah Kiri (Southwest)
+      [-6.28, 106.32]  // Batas Atas Kanan (Northeast)
     ];
     map.setMaxBounds(batasRangkasbitung);
-    map.setMinZoom(12); // Minimal zoom agar tidak terlalu jauh
+    map.setMinZoom(13); // Paksa zoom agar fokus ke area kota
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19, attribution: '© OpenStreetMap'
@@ -236,7 +237,7 @@
     }
 
     // ==========================================
-    // 4. PENCARIAN LOKASI (Hanya Area Rangkasbitung)
+    // 4. PENCARIAN LOKASI (HANYA AREA RANGKASBITUNG)
     // ==========================================
     let timeoutSearch = null;
     function cariLokasi(query, tipe) {
@@ -249,24 +250,48 @@
       }
 
       timeoutSearch = setTimeout(() => {
-        // viewbox=106.15,-6.25,106.35,-6.45 : Membatasi kotak pencarian hanya di Rangkasbitung
-        // bounded=1 : Memaksa hasil HARUS di dalam kotak tersebut
-        fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${query}&viewbox=106.15,-6.25,106.35,-6.45&bounded=1&limit=5&countrycodes=id`)
+        // TRIK 1: Paksa pencarian dengan menambahkan ", Rangkasbitung" di belakang kata kunci
+        // Jadi jika user ketik "RS", sistem mencari "RS, Rangkasbitung"
+        const queryPencarian = `${query}, Rangkasbitung`;
+        
+        // TRIK 2: Batasi viewbox secara ketat
+        // viewbox format: lon_kiri,lat_atas,lon_kanan,lat_bawah
+        const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(queryPencarian)}&viewbox=106.18,-6.28,106.32,-6.44&bounded=1&limit=10&countrycodes=id&accept-language=id`;
+
+        fetch(url)
           .then(res => res.json())
           .then(data => {
             listDiv.innerHTML = '';
-            if (data.length === 0) {
+            
+            // TRIK 3: Filter ganda (Validasi Koordinat)
+            // Membuang hasil jika koordinatnya di luar batas ketat Rangkasbitung
+            const dataValid = data.filter(item => {
+                const lat = parseFloat(item.lat);
+                const lon = parseFloat(item.lon);
+                return (lat <= -6.28 && lat >= -6.44 && lon >= 106.18 && lon <= 106.32);
+            });
+
+            if (dataValid.length === 0) {
               listDiv.innerHTML = '<div class="p-3 text-xs text-slate-500">Lokasi tidak ditemukan di area Rangkasbitung.</div>';
             } else {
-              data.forEach(item => {
+              dataValid.forEach(item => {
                 const div = document.createElement('div');
                 div.className = 'p-3 text-xs border-b border-slate-100 cursor-pointer hover:bg-slate-50';
-                div.innerHTML = `<p class="font-bold text-ink">${item.name}</p><p class="text-slate-400">${item.display_name}</p>`;
-                div.onclick = () => pilihLokasi(item.lat, item.lon, item.name || item.display_name.split(',')[0], tipe);
+                
+                // Ambil nama tempat yang lebih rapi
+                const namaTempat = item.name || item.display_name.split(',')[0];
+                const alamatLengkap = item.display_name;
+                
+                div.innerHTML = `<p class="font-bold text-ink">${namaTempat}</p><p class="text-slate-400">${alamatLengkap}</p>`;
+                div.onclick = () => pilihLokasi(item.lat, item.lon, namaTempat, tipe);
                 listDiv.appendChild(div);
               });
             }
             listDiv.classList.remove('hidden');
+          })
+          .catch(err => {
+              listDiv.innerHTML = '<div class="p-3 text-xs text-red-500">Gagal mencari lokasi. Periksa koneksi internet.</div>';
+              listDiv.classList.remove('hidden');
           });
       }, 800);
     }
@@ -309,7 +334,7 @@
     }
 
     function updateAlamatDariKoordinat(lat, lon, tipe) {
-      fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`)
+      fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&accept-language=id`)
         .then(res => res.json())
         .then(data => {
           if (data && data.display_name) {
