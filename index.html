@@ -1,237 +1,943 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>OZgo — Pesan Layanan</title>
-<script src="https://cdn.tailwindcss.com"></script>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<script>
-  tailwind.config = {
-    theme: {
-      extend: {
-        colors: {
-          brand: { DEFAULT: '#00A86B', dark: '#007A4D', light: '#E6F7EF' },
-          ink: '#0B1220',
-          inputbg: '#1A2235'
-        },
-        fontFamily: { sans: ['"Plus Jakarta Sans"', 'sans-serif'] }
-      }
-    }
-  }
-</script>
-<style>
-  body { font-family: 'Plus Jakarta Sans', sans-serif; -webkit-tap-highlight-color: transparent; background-color: #0B1220; color: #ffffff; }
-  .app-page { display: none; animation: fadeIn 0.2s ease; }
-  .app-page.active { display: block; }
-  @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
-  .input-dark { background-color: #1A2235; border: 1px solid #2A364F; color: #ffffff; outline: none; }
-  .input-dark:focus { border-color: #00A86B; box-shadow: 0 0 0 2px rgba(0,168,107,0.2); }
-  .input-dark::placeholder { color: #64748B; }
-</style>
-</head>
-<body class="min-h-screen">
-
-  <!-- ========================================== -->
-  <!-- HALAMAN 1: BERANDA (MENU)                  -->
-  <!-- ========================================== -->
-  <div id="page-home" class="app-page active p-5 max-w-lg mx-auto pt-10">
-    <h1 class="text-2xl font-extrabold mb-1">Mau pesan apa hari ini?</h1>
-    <p class="text-sm text-slate-400 mb-6">Pilih layanan OZgo favoritmu.</p>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>OZgo App</title>
     
-    <div class="grid grid-cols-2 gap-4">
-      <!-- OZride -->
-      <div onclick="bukaForm('OZride')" class="bg-[#1A2235] border border-[#2A364F] rounded-2xl p-4 shadow-sm active:scale-95 transition cursor-pointer flex flex-col items-center">
-        <div class="w-12 h-12 rounded-xl bg-emerald-500/20 flex items-center justify-center mb-3 text-2xl">🏍️</div>
-        <p class="font-bold text-white text-sm">OZride</p>
-        <p class="text-[11px] text-slate-400">Ojek Motor</p>
-      </div>
-      <!-- OZfood -->
-      <div onclick="bukaForm('OZfood')" class="bg-[#1A2235] border border-[#2A364F] rounded-2xl p-4 shadow-sm active:scale-95 transition cursor-pointer flex flex-col items-center">
-        <div class="w-12 h-12 rounded-xl bg-red-500/20 flex items-center justify-center mb-3 text-2xl">🍱</div>
-        <p class="font-bold text-white text-sm">OZfood</p>
-        <p class="text-[11px] text-slate-400">Pesan Makanan</p>
-      </div>
-      <!-- OZsend -->
-      <div onclick="bukaForm('OZsend')" class="bg-[#1A2235] border border-[#2A364F] rounded-2xl p-4 shadow-sm active:scale-95 transition cursor-pointer flex flex-col items-center">
-        <div class="w-12 h-12 rounded-xl bg-orange-500/20 flex items-center justify-center mb-3 text-2xl">📦</div>
-        <p class="font-bold text-white text-sm">OZsend</p>
-        <p class="text-[11px] text-slate-400">Kirim Barang</p>
-      </div>
-      <!-- OZmart -->
-      <div onclick="bukaForm('OZmart')" class="bg-[#1A2235] border border-[#2A364F] rounded-2xl p-4 shadow-sm active:scale-95 transition cursor-pointer flex flex-col items-center">
-        <div class="w-12 h-12 rounded-xl bg-purple-500/20 flex items-center justify-center mb-3 text-2xl">🛒</div>
-        <p class="font-bold text-white text-sm">OZmart</p>
-        <p class="text-[11px] text-slate-400">Belanja Harian</p>
-      </div>
-    </div>
-  </div>
-
-  <!-- ========================================== -->
-  <!-- HALAMAN 2: FORM PESANAN (PERSIS SS)        -->
-  <!-- ========================================== -->
-  <div id="page-form" class="app-page pb-10 max-w-lg mx-auto">
+    <!-- Web App & PWA Meta Tags (Untuk Install di HP) -->
+    <meta name="theme-color" content="#111827">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="OZgo">
     
-    <!-- Header Form -->
-    <div class="bg-[#0F172A] p-5 flex items-center gap-4 border-b border-[#1E293B] sticky top-0 z-50">
-      <button onclick="kembaliKeHome()" class="w-10 h-10 rounded-full bg-[#1E293B] flex items-center justify-center active:scale-90 transition">
-        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
-      </button>
-      <div>
-        <h2 id="header-title" class="text-lg font-bold text-white leading-tight">Pesan OZRide</h2>
-        <p class="text-[11px] text-slate-400">Area Rangkasbitung & Sekitarnya</p>
-      </div>
-    </div>
+    <!-- Ikon Aplikasi saat diinstall di Layar Utama HP -->
+    <link rel="apple-touch-icon" href="https://www.dropbox.com/scl/fi/jx15bbr1xikjals0mmttq/file_00000000557082119a5da29401166479.png?rlkey=rt8cmh71k9ii49xbhf25ad8fj&st=m1t7vd2y&raw=1">
+    <link rel="icon" type="image/png" href="https://www.dropbox.com/scl/fi/jx15bbr1xikjals0mmttq/file_00000000557082119a5da29401166479.png?rlkey=rt8cmh71k9ii49xbhf25ad8fj&st=m1t7vd2y&raw=1">
 
-    <div class="p-5 space-y-4">
-      <!-- Nama Pemesan -->
-      <div>
-        <label class="block text-xs font-bold text-slate-400 mb-2 uppercase tracking-wide">Nama Pemesan</label>
-        <input type="text" id="input-nama" placeholder="Masukkan nama Anda" class="w-full input-dark rounded-xl p-3.5 text-sm font-semibold transition">
-      </div>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* Reset & Fullscreen Rules */
+        html, body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            background-color: #000000;
+            font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        }
 
-      <!-- Titik Jemput -->
-      <div>
-        <label class="block text-xs font-bold text-slate-400 mb-2 uppercase tracking-wide">Titik Jemput (Alamat/Patokan)</label>
-        <div class="flex gap-2">
-          <input type="text" id="input-jemput" placeholder="Contoh: Mabu Park" class="w-full input-dark rounded-xl p-3.5 text-sm font-semibold transition">
-          <!-- Tombol GPS -->
-          <button onclick="deteksiLokasi()" class="w-14 bg-[#1A2235] border border-[#2A364F] rounded-xl flex items-center justify-center active:scale-95 transition flex-shrink-0">
-            <svg class="w-6 h-6 text-brand" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8a4 4 0 100 8 4 4 0 000-8z"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 2v2m0 16v2M2 12h2m16 0h2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M4.93 19.07l1.41-1.41m11.32-11.32l1.41-1.41"/></svg>
-          </button>
-        </div>
-      </div>
+        /* Menyembunyikan scrollbar agar UI rapi */
+        ::-webkit-scrollbar { width: 0px; background: transparent; }
 
-      <!-- Titik Pengantaran -->
-      <div>
-        <label class="block text-xs font-bold text-slate-400 mb-2 uppercase tracking-wide">Titik Pengantaran (Tujuan)</label>
-        <input type="text" id="input-tujuan" placeholder="Contoh: Labbaik" class="w-full input-dark rounded-xl p-3.5 text-sm font-semibold transition">
-      </div>
+        /* Mobile Container Constraint */
+        .app-container {
+            width: 100%;
+            max-width: 480px;
+            margin: 0 auto;
+            background-color: #111827; /* Mode Gelap */
+            height: 100vh; /* Tinggi penuh layar */
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            box-shadow: 0 0 20px rgba(255,255,255,0.02);
+            overflow: hidden; /* Mencegah scroll meluber ke luar container */
+        }
 
-      <!-- Keterangan Tambahan -->
-      <div>
-        <label class="block text-xs font-bold text-slate-400 mb-2 uppercase tracking-wide">Keterangan Tambahan (Opsional)</label>
-        <textarea id="input-keterangan" rows="3" placeholder="Ciri-ciri pakaian, warna rumah, dll." class="w-full input-dark rounded-xl p-3.5 text-sm font-semibold transition"></textarea>
-      </div>
+        /* Area Konten Scrollable */
+        .content-area {
+            flex: 1;
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding-bottom: 80px; /* Ruang untuk navigasi bawah */
+        }
 
-      <!-- Metode Pembayaran -->
-      <div>
-        <label class="block text-xs font-bold text-slate-400 mb-2 uppercase tracking-wide">Metode Pembayaran</label>
-        <div class="relative">
-          <select id="input-metode" class="w-full input-dark rounded-xl p-3.5 text-sm font-semibold appearance-none transition">
-            <option value="Cash (Tunai)">Cash (Tunai)</option>
-            <option value="QRIS">QRIS</option>
-            <option value="Transfer Bank">Transfer Bank</option>
-            <option value="E-Wallet (GoPay/OVO/DANA)">E-Wallet</option>
-          </select>
-          <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-slate-400">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
-          </div>
-        </div>
-      </div>
+        /* Navigasi Bawah Terkunci */
+        .bottom-nav {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: #111827;
+            border-top: 1px solid #1f2937;
+            display: flex;
+            justify-content: space-around;
+            padding-top: 10px;
+            padding-bottom: calc(10px + env(safe-area-inset-bottom));
+            z-index: 50;
+        }
 
-      <!-- Tombol Pesan -->
-      <div class="pt-4">
-        <button onclick="kirimPesanan()" class="w-full bg-brand hover:bg-brand-dark text-white font-bold text-base py-4 rounded-xl shadow-[0_4px_20px_rgba(0,168,107,0.3)] transition flex items-center justify-center gap-2">
-          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M17.5 14.4c-.3-.1-1.7-.8-1.9-.9-.3-.1-.5-.1-.7.1-.2.3-.7.9-.9 1.1-.2.2-.3.2-.6.1-.3-.1-1.2-.5-2.3-1.4-.8-.7-1.4-1.6-1.5-1.9-.2-.3 0-.4.1-.6.1-.1.3-.3.4-.5.1-.2.2-.3.3-.5.1-.2 0-.3 0-.5 0-.1-.7-1.6-.9-2.2-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.4 0 1.4 1 2.8 1.2 3 .1.2 2 3.1 4.9 4.3.7.3 1.2.5 1.6.6.7.2 1.3.2 1.8.1.5-.1 1.7-.7 1.9-1.4.2-.7.2-1.3.2-1.4-.1-.2-.3-.2-.5-.3zM12 2C6.5 2 2 6.5 2 12c0 1.8.5 3.4 1.3 4.8L2 22l5.3-1.3c1.4.7 3 1.2 4.7 1.2 5.5 0 10-4.5 10-10S17.5 2 12 2z"/></svg>
-          Pesan Sekarang
-        </button>
-      </div>
-      
-      <p class="text-center text-[10px] text-slate-500 mt-2">Pesanan akan diteruskan ke WhatsApp Admin OZgo.</p>
-    </div>
-  </div>
+        /* Layer Halaman Baru (Transisi Mulus) */
+        .page-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #111827;
+            z-index: 60;
+            display: flex;
+            flex-direction: column;
+            transform: translateX(100%);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .page-layer.active {
+            transform: translateX(0);
+        }
 
-  <script>
-    const WA_NUMBER = "628568080847"; // GANTI NOMOR WA ANDA
-    let layananAktif = 'OZRide';
-
-    // Navigasi Pindah Halaman
-    function navTo(pageId) {
-      document.querySelectorAll('.app-page').forEach(page => {
-        page.classList.remove('active');
-      });
-      document.getElementById(pageId).classList.add('active');
-      window.scrollTo(0, 0);
-    }
-
-    // Buka Form Layanan
-    function bukaForm(namaLayanan) {
-      layananAktif = namaLayanan;
-      document.getElementById('header-title').textContent = `Pesan ${namaLayanan}`;
-      
-      // Reset form setiap kali dibuka
-      document.getElementById('input-nama').value = '';
-      document.getElementById('input-jemput').value = '';
-      document.getElementById('input-tujuan').value = '';
-      document.getElementById('input-keterangan').value = '';
-      
-      navTo('page-form');
-    }
-
-    // Kembali ke Menu Utama
-    function kembaliKeHome() {
-      navTo('page-home');
-    }
-
-    // Fitur Tombol GPS (Deteksi Lokasi Otomatis)
-    function deteksiLokasi() {
-      const btn = event.currentTarget;
-      const icon = btn.innerHTML;
-      
-      if (navigator.geolocation) {
-        btn.innerHTML = `<div class="w-5 h-5 border-2 border-brand border-t-transparent rounded-full animate-spin"></div>`;
+        /* ========================================== */
+        /* MODE TERANG (LIGHT THEME) OVERRIDES        */
+        /* ========================================== */
+        body.light-mode { background-color: #e5e7eb; }
+        .light-mode .app-container, .light-mode .page-layer { background-color: #f9fafb !important; }
+        .light-mode .bottom-nav { background-color: #ffffff !important; border-top-color: #e5e7eb !important; }
+        .light-mode header { background-color: #ffffff !important; border-bottom-color: #e5e7eb !important; color: #111827 !important; }
+        .light-mode header h1.text-green-500 { color: #22c55e !important; }
+        .light-mode header h1.text-orange-400 { color: #ea580c !important; }
+        .light-mode header h1.text-blue-400 { color: #2563eb !important; }
+        .light-mode header h1.text-purple-400 { color: #9333ea !important; }
+        .light-mode header p { color: #6b7280 !important; }
         
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
-            // Karena kita tidak pakai peta, kita isi dengan koordinat (Admin tinggal klik di WA)
-            const lat = position.coords.latitude;
-            const lon = position.coords.longitude;
-            document.getElementById('input-jemput').value = `https://maps.google.com/?q=${lat},${lon}`;
-            btn.innerHTML = icon;
-          },
-          (error) => {
-            alert("Gagal mendeteksi lokasi. Pastikan GPS HP aktif dan izin browser diizinkan.");
-            btn.innerHTML = icon;
-          },
-          { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
-        );
-      } else {
-        alert("Browser Anda tidak mendukung fitur deteksi lokasi.");
-      }
-    }
+        .light-mode .bg-gray-800 { background-color: #ffffff !important; border-color: #e5e7eb !important; color: #1f2937 !important; }
+        .light-mode header .bg-gray-800, .light-mode .flex.gap-2 .bg-gray-800 { background-color: #f3f4f6 !important; }
+        
+        .light-mode input, .light-mode textarea, .light-mode select { background-color: #ffffff !important; color: #111827 !important; border-color: #d1d5db !important; }
+        .light-mode input::placeholder, .light-mode textarea::placeholder { color: #9ca3af !important; }
+        
+        .light-mode h2, .light-mode label { color: #374151 !important; }
+        .light-mode .text-gray-200 { color: #1f2937 !important; }
+        .light-mode .text-gray-400 { color: #6b7280 !important; }
+        .light-mode .border-gray-700 { border-color: #e5e7eb !important; }
+        
+        /* Ikon Layanan */
+        .light-mode .bg-green-900\/50 { background-color: #dcfce7 !important; color: #16a34a !important; }
+        .light-mode .bg-orange-900\/50 { background-color: #ffedd5 !important; color: #ea580c !important; }
+        .light-mode .bg-blue-900\/50 { background-color: #dbeafe !important; color: #2563eb !important; }
+        .light-mode .bg-purple-900\/50 { background-color: #f3e8ff !important; color: #9333ea !important; }
 
-    // Kirim ke WhatsApp
-    function kirimPesanan() {
-      const nama = document.getElementById('input-nama').value.trim();
-      const jemput = document.getElementById('input-jemput').value.trim();
-      const tujuan = document.getElementById('input-tujuan').value.trim();
-      const ket = document.getElementById('input-keterangan').value.trim();
-      const metode = document.getElementById('input-metode').value;
+        /* Modal */
+        .light-mode #custom-modal .bg-gray-800 { background-color: #ffffff !important; }
+        .light-mode #modal-title { color: #111827 !important; }
+        .light-mode #modal-text { color: #4b5563 !important; }
+    </style>
+</head>
+<body>
 
-      // Validasi Kolom Wajib
-      if (!nama || !jemput || !tujuan) {
-        alert("Mohon lengkapi Nama, Titik Jemput, dan Titik Pengantaran.");
-        return;
-      }
+    <!-- Container Utama HP -->
+    <div class="app-container">
 
-      // Susun Pesan WhatsApp
-      let pesan = `Halo Admin *OZgo*, saya ingin memesan:%0A%0A`;
-      pesan += `*Layanan:* ${layananAktif}%0A`;
-      pesan += `*Nama:* ${nama}%0A`;
-      pesan += `*Jemput:* ${jemput}%0A`;
-      pesan += `*Tujuan:* ${tujuan}%0A`;
-      pesan += `*Pembayaran:* ${metode}%0A`;
-      
-      if (ket) {
-        pesan += `*Catatan:* ${ket}%0A`;
-      }
-      
-      pesan += `%0AMohon segera diproses ya. Terima kasih!`;
+        <!-- ========================================== -->
+        <!-- NOTIFIKASI INSTALL APLIKASI (PWA BANNER) -->
+        <!-- ========================================== -->
+        <div id="install-banner" class="absolute top-4 left-4 right-4 z-[100] bg-gradient-to-r from-green-600 to-green-800 text-white rounded-2xl shadow-2xl p-3 transform -translate-y-[150%] transition-transform duration-500 flex items-center justify-between border border-green-500/50 hidden">
+            <div class="flex items-center gap-3">
+                <img src="https://www.dropbox.com/scl/fi/jx15bbr1xikjals0mmttq/file_00000000557082119a5da29401166479.png?rlkey=rt8cmh71k9ii49xbhf25ad8fj&st=m1t7vd2y&raw=1" alt="Logo" class="w-10 h-10 rounded-xl bg-gray-900 object-cover">
+                <div>
+                    <h4 class="font-bold text-sm leading-tight">Install OZgo</h4>
+                    <p class="text-[10px] text-green-100 mt-0.5">Akses lebih cepat & ringan</p>
+                </div>
+            </div>
+            <button onclick="installApp()" class="bg-white text-green-700 text-xs font-bold px-4 py-2 rounded-xl active:scale-95 transition shadow-sm">
+                Install
+            </button>
+            <button onclick="tutupInstallBanner()" class="absolute -top-2 -right-2 bg-gray-800 text-gray-300 w-6 h-6 rounded-full flex items-center justify-center text-xs border border-gray-600 active:scale-95 shadow-md">
+                <i class="fa-solid fa-times"></i>
+            </button>
+        </div>
 
-      // Buka WhatsApp
-      window.open(`https://wa.me/${WA_NUMBER}?text=${pesan}`, '_blank');
-    }
-  </script>
+        <!-- HEADER (Bagian Atas Beranda) -->
+        <header class="bg-gray-900 text-white px-5 py-4 flex-none sticky top-0 z-40 rounded-b-3xl border-b border-gray-800 shadow-md">
+            <div class="flex justify-between items-center mb-4 mt-2">
+                <div>
+                    <h1 class="text-2xl font-black italic tracking-tighter text-green-500">OZgo</h1>
+                    <p class="text-[10px] text-gray-400 italic mt-0.5">Layanan Prioritas Warga Mabu</p>
+                </div>
+                <button onclick="toggleTheme()" class="bg-gray-800 w-8 h-8 rounded-full flex items-center justify-center text-gray-300 hover:text-white transition active:scale-95 shadow-sm" title="Ganti Tema">
+                    <i id="theme-icon" class="fa-solid fa-sun"></i>
+                </button>
+            </div>
+            
+            <div class="bg-gray-800 text-gray-400 rounded-full flex items-center px-4 py-2.5 border border-gray-700">
+                <i class="fa-solid fa-search mr-3"></i>
+                <input type="text" placeholder="Mau pesan apa hari ini?" class="bg-transparent outline-none w-full text-sm text-gray-200 placeholder-gray-500">
+            </div>
+        </header>
+
+        <!-- KONTEN BERANDA (Scrollable) -->
+        <main class="content-area px-5 pt-6" id="beranda-view">
+            
+            <h2 class="text-sm font-bold text-gray-200 mb-4">Layanan Utama</h2>
+            
+            <!-- Grid Layanan 2x2 -->
+            <div class="grid grid-cols-2 gap-4">
+                
+                <!-- Card OZRide (Membuka Form OZRide) -->
+                <div onclick="openOZRide()" class="bg-gray-800 rounded-2xl p-5 border border-gray-700 flex flex-col items-center justify-center cursor-pointer hover:bg-gray-700 transition active:scale-95">
+                    <div class="w-14 h-14 bg-green-900/50 text-green-400 rounded-full flex items-center justify-center text-2xl mb-3">
+                        <i class="fa-solid fa-motorcycle"></i>
+                    </div>
+                    <span class="font-bold text-gray-200 text-sm">OZRide</span>
+                </div>
+
+                <!-- Card OZFood -->
+                <div onclick="openOZFood()" class="bg-gray-800 rounded-2xl p-5 border border-gray-700 flex flex-col items-center justify-center cursor-pointer hover:bg-gray-700 transition active:scale-95">
+                    <div class="w-14 h-14 bg-orange-900/50 text-orange-400 rounded-full flex items-center justify-center text-2xl mb-3">
+                        <i class="fa-solid fa-utensils"></i>
+                    </div>
+                    <span class="font-bold text-gray-200 text-sm">OZFood</span>
+                </div>
+
+                <!-- Card OZSend -->
+                <div onclick="openOZSend()" class="bg-gray-800 rounded-2xl p-5 border border-gray-700 flex flex-col items-center justify-center cursor-pointer hover:bg-gray-700 transition active:scale-95">
+                    <div class="w-14 h-14 bg-blue-900/50 text-blue-400 rounded-full flex items-center justify-center text-2xl mb-3">
+                        <i class="fa-solid fa-box"></i>
+                    </div>
+                    <span class="font-bold text-gray-200 text-sm">OZSend</span>
+                </div>
+
+                <!-- Card OZMart -->
+                <div onclick="openOZMart()" class="bg-gray-800 rounded-2xl p-5 border border-gray-700 flex flex-col items-center justify-center cursor-pointer hover:bg-gray-700 transition active:scale-95">
+                    <div class="w-14 h-14 bg-purple-900/50 text-purple-400 rounded-full flex items-center justify-center text-2xl mb-3">
+                        <i class="fa-solid fa-store"></i>
+                    </div>
+                    <span class="font-bold text-gray-200 text-sm">OZMart</span>
+                </div>
+
+            </div>
+
+            <!-- Kartu Promo OZbudemen -->
+            <div onclick="showModal('OZbudemen', 'Silakan hubungi Admin untuk mengaktifkan paket OZbudemen dan nikmati layanan prioritas tanpa ribet!')" class="mt-6 bg-gradient-to-r from-green-700 to-green-900 rounded-2xl p-5 shadow-lg relative overflow-hidden cursor-pointer transition-transform active:scale-95 border border-green-600/50">
+                <!-- Dekorasi Background -->
+                <i class="fa-solid fa-crown absolute -right-3 -bottom-4 text-7xl text-white opacity-10"></i>
+                
+                <div class="flex items-center gap-4 relative z-10">
+                    <div class="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center text-white text-xl flex-shrink-0 shadow-inner backdrop-blur-sm">
+                        <i class="fa-solid fa-crown"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-white font-bold text-sm mb-1">Aktifkan OZbudemen</h3>
+                        <p class="text-green-100 text-xs leading-tight mb-1">Bayar 1 kali nikmati layanan prioritas 1 bulan</p>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+
+        <!-- NAVIGASI BAWAH (Fixed di dalam container) -->
+        <nav class="bottom-nav">
+            <div class="flex flex-col items-center cursor-pointer text-green-500 transition">
+                <i class="fa-solid fa-house text-xl mb-1"></i>
+                <span class="text-[10px] font-bold">Beranda</span>
+            </div>
+            <div onclick="bukaChat()" class="flex flex-col items-center cursor-pointer text-gray-500 hover:text-gray-300 transition">
+                <i class="fa-solid fa-comment-dots text-xl mb-1"></i>
+                <span class="text-[10px] font-bold">Chat</span>
+            </div>
+            <div onclick="bukaPesanan()" class="flex flex-col items-center cursor-pointer text-gray-500 hover:text-gray-300 transition">
+                <i class="fa-solid fa-receipt text-xl mb-1"></i>
+                <span class="text-[10px] font-bold">Pesanan</span>
+            </div>
+            <div onclick="showModal('Profile', 'Halaman Profil Pengguna.')" class="flex flex-col items-center cursor-pointer text-gray-500 hover:text-gray-300 transition">
+                <i class="fa-solid fa-user text-xl mb-1"></i>
+                <span class="text-[10px] font-bold">Profile</span>
+            </div>
+        </nav>
+
+        <!-- ========================================== -->
+        <!-- LAYER: FORM OZRIDE -->
+        <!-- ========================================== -->
+        <div id="ozride-layer" class="page-layer">
+            
+            <!-- Header OZRide -->
+            <header class="bg-gray-900 text-white px-5 py-4 flex items-center border-b border-gray-800 flex-none z-10 shadow-md">
+                <button onclick="closeOZRide()" class="mr-4 w-8 h-8 flex items-center justify-center rounded-full bg-gray-800 text-gray-300 hover:text-white transition active:scale-95">
+                    <i class="fa-solid fa-arrow-left text-lg"></i>
+                </button>
+                <div>
+                    <h1 class="text-lg font-bold">Pesan OZRide</h1>
+                    <p class="text-[10px] text-gray-400">Area Rangkasbitung & Sekitarnya</p>
+                </div>
+            </header>
+
+            <!-- Isi Form OZRide -->
+            <main class="flex-1 overflow-y-auto px-5 py-6">
+                
+                <!-- Nama Pemesan -->
+                <div class="mb-5">
+                    <label class="block text-xs font-bold text-gray-400 mb-2">Nama Pemesan</label>
+                    <input type="text" id="ride-nama" class="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-green-500 transition" placeholder="Contoh: Budi Santoso">
+                </div>
+
+                <!-- Titik Jemput -->
+                <div class="mb-5">
+                    <label class="block text-xs font-bold text-gray-400 mb-2">Titik Jemput (Alamat/Patokan)</label>
+                    <div class="flex gap-2">
+                        <input type="text" id="ride-jemput" class="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-green-500 transition" placeholder="Contoh: Stasiun Rangkasbitung">
+                        <button onclick="getLocation('ride-jemput')" class="bg-gray-800 border border-gray-700 text-green-500 rounded-xl px-4 flex items-center justify-center hover:bg-gray-700 active:scale-95 transition" title="Lacak Lokasi Saya">
+                            <i class="fa-solid fa-location-crosshairs text-lg"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Titik Pengantaran -->
+                <div class="mb-5">
+                    <label class="block text-xs font-bold text-gray-400 mb-2">Titik Pengantaran (Tujuan)</label>
+                    <input type="text" id="ride-antar" class="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-green-500 transition" placeholder="Contoh: Alun-Alun Rangkasbitung">
+                </div>
+
+                <!-- Keterangan / Deskripsi -->
+                <div class="mb-5">
+                    <label class="block text-xs font-bold text-gray-400 mb-2">Keterangan Tambahan (Opsional)</label>
+                    <textarea id="ride-keterangan" rows="2" class="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-green-500 transition resize-none" placeholder="Ciri-ciri pakaian, warna rumah, dll."></textarea>
+                </div>
+
+                <!-- Pembayaran -->
+                <div class="mb-8">
+                    <label class="block text-xs font-bold text-gray-400 mb-2">Metode Pembayaran</label>
+                    <div class="relative">
+                        <select id="ride-bayar" class="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-green-500 appearance-none">
+                            <option value="Cash">Cash (Tunai)</option>
+                            <option value="Transfer Bank">Transfer Bank</option>
+                            <option value="E-Wallet (Dana/Ovo/Gopay)">E-Wallet (Dana/Ovo/Gopay)</option>
+                            <option value="QRIS">QRIS</option>
+                        </select>
+                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-400">
+                            <i class="fa-solid fa-chevron-down text-xs"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tombol Pesan -->
+                <button onclick="pesanOZRide()" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3.5 rounded-xl transition active:scale-95 flex items-center justify-center gap-2 shadow-lg shadow-green-900/50">
+                    <i class="fa-brands fa-whatsapp text-lg"></i> Pesan Sekarang
+                </button>
+
+            </main>
+        </div>
+
+
+        <!-- ========================================== -->
+        <!-- LAYER: FORM OZFOOD -->
+        <!-- ========================================== -->
+        <div id="ozfood-layer" class="page-layer">
+            
+            <header class="bg-gray-900 text-white px-5 py-4 flex items-center border-b border-gray-800 flex-none z-10 shadow-md">
+                <button onclick="closeOZFood()" class="mr-4 w-8 h-8 flex items-center justify-center rounded-full bg-gray-800 text-gray-300 hover:text-white transition active:scale-95">
+                    <i class="fa-solid fa-arrow-left text-lg"></i>
+                </button>
+                <div>
+                    <h1 class="text-lg font-bold text-orange-400">Pesan OZFood</h1>
+                    <p class="text-[10px] text-gray-400">Layanan Pesan Antar Makanan</p>
+                </div>
+            </header>
+
+            <main class="flex-1 overflow-y-auto px-5 py-6">
+                
+                <div class="mb-5">
+                    <label class="block text-xs font-bold text-gray-400 mb-2">Nama Pemesan</label>
+                    <input type="text" id="food-nama" class="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-orange-500 transition" placeholder="Contoh: Budi Santoso">
+                </div>
+
+                <div class="mb-5">
+                    <label class="block text-xs font-bold text-gray-400 mb-2">Nama Resto / Warung</label>
+                    <input type="text" id="food-resto" class="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-orange-500 transition" placeholder="Contoh: RM. Padang Sederhana">
+                </div>
+
+                <div class="mb-5">
+                    <label class="block text-xs font-bold text-gray-400 mb-2">Detail Pesanan / Menu</label>
+                    <textarea id="food-menu" rows="3" class="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-orange-500 transition resize-none" placeholder="Contoh:&#10;2x Nasi Rendang&#10;1x Es Teh Manis"></textarea>
+                </div>
+
+                <div class="mb-5">
+                    <label class="block text-xs font-bold text-gray-400 mb-2">Alamat Pengantaran</label>
+                    <div class="flex gap-2">
+                        <input type="text" id="food-antar" class="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-orange-500 transition" placeholder="Alamat lengkap penerima">
+                        <button onclick="getLocation('food-antar')" class="bg-gray-800 border border-gray-700 text-orange-500 rounded-xl px-4 flex items-center justify-center hover:bg-gray-700 active:scale-95 transition" title="Lacak Lokasi Saya">
+                            <i class="fa-solid fa-location-crosshairs text-lg"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="mb-8">
+                    <label class="block text-xs font-bold text-gray-400 mb-2">Metode Pembayaran</label>
+                    <div class="relative">
+                        <select id="food-bayar" class="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-orange-500 appearance-none">
+                            <option value="Cash">Cash (Tunai)</option>
+                            <option value="Transfer Bank">Transfer Bank</option>
+                            <option value="E-Wallet (Dana/Ovo/Gopay)">E-Wallet (Dana/Ovo/Gopay)</option>
+                            <option value="QRIS">QRIS</option>
+                        </select>
+                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-400">
+                            <i class="fa-solid fa-chevron-down text-xs"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <button onclick="pesanOZFood()" class="w-full bg-orange-600 hover:bg-orange-700 text-white font-bold py-3.5 rounded-xl transition active:scale-95 flex items-center justify-center gap-2 shadow-lg shadow-orange-900/50">
+                    <i class="fa-brands fa-whatsapp text-lg"></i> Pesan Sekarang
+                </button>
+
+            </main>
+        </div>
+
+
+        <!-- ========================================== -->
+        <!-- LAYER: FORM OZSEND -->
+        <!-- ========================================== -->
+        <div id="ozsend-layer" class="page-layer">
+            
+            <header class="bg-gray-900 text-white px-5 py-4 flex items-center border-b border-gray-800 flex-none z-10 shadow-md">
+                <button onclick="closeOZSend()" class="mr-4 w-8 h-8 flex items-center justify-center rounded-full bg-gray-800 text-gray-300 hover:text-white transition active:scale-95">
+                    <i class="fa-solid fa-arrow-left text-lg"></i>
+                </button>
+                <div>
+                    <h1 class="text-lg font-bold text-blue-400">Pesan OZSend</h1>
+                    <p class="text-[10px] text-gray-400">Kirim Paket Cepat & Aman</p>
+                </div>
+            </header>
+
+            <main class="flex-1 overflow-y-auto px-5 py-6">
+                
+                <div class="mb-5">
+                    <label class="block text-xs font-bold text-gray-400 mb-2">Nama Pengirim (Pemesan)</label>
+                    <input type="text" id="send-nama" class="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-blue-500 transition" placeholder="Contoh: Budi Santoso">
+                </div>
+
+                <div class="mb-5">
+                    <label class="block text-xs font-bold text-gray-400 mb-2">Alamat Pengambilan</label>
+                    <input type="text" id="send-jemput" class="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-blue-500 transition" placeholder="Contoh: Jl. Multatuli No. 10">
+                </div>
+
+                <div class="grid grid-cols-2 gap-3 mb-5">
+                    <div class="col-span-2">
+                        <label class="block text-xs font-bold text-gray-400 mb-2">Jenis Barang</label>
+                        <input type="text" id="send-jenis" class="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-blue-500 transition" placeholder="Contoh: Dokumen / Pakaian / Makanan">
+                    </div>
+                    <div class="col-span-2">
+                        <label class="block text-xs font-bold text-gray-400 mb-2">Detail Barang</label>
+                        <textarea id="send-detail" rows="2" class="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-blue-500 transition resize-none" placeholder="Ciri-ciri barang atau instruksi khusus bawaan"></textarea>
+                    </div>
+                </div>
+
+                <div class="border-t border-gray-700 my-6"></div>
+                <h3 class="text-sm font-bold text-gray-200 mb-4"><i class="fa-solid fa-user-check text-blue-400 mr-2"></i>Data Penerima</h3>
+
+                <div class="mb-5">
+                    <label class="block text-xs font-bold text-gray-400 mb-2">Nama Penerima</label>
+                    <input type="text" id="send-penerima" class="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-blue-500 transition" placeholder="Nama orang yang menerima">
+                </div>
+                <div class="mb-5">
+                    <label class="block text-xs font-bold text-gray-400 mb-2">No. HP Penerima (Aktif)</label>
+                    <input type="tel" id="send-hp" class="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-blue-500 transition" placeholder="Contoh: 08123456789">
+                </div>
+
+                <div class="mb-5">
+                    <label class="block text-xs font-bold text-gray-400 mb-2">Alamat Pengantaran</label>
+                    <div class="flex gap-2">
+                        <input type="text" id="send-antar" class="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-blue-500 transition" placeholder="Alamat lengkap penerima">
+                        <button onclick="getLocation('send-antar')" class="bg-gray-800 border border-gray-700 text-blue-500 rounded-xl px-4 flex items-center justify-center hover:bg-gray-700 active:scale-95 transition" title="Lacak Lokasi Saya">
+                            <i class="fa-solid fa-location-crosshairs text-lg"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="mb-8">
+                    <label class="block text-xs font-bold text-gray-400 mb-2">Metode Pembayaran</label>
+                    <div class="relative">
+                        <select id="send-bayar" class="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-blue-500 appearance-none">
+                            <option value="Cash (Ditanggung Pengirim)">Cash (Ditanggung Pengirim)</option>
+                            <option value="Cash (Ditanggung Penerima)">Cash (Ditanggung Penerima)</option>
+                            <option value="Transfer Bank">Transfer Bank</option>
+                            <option value="E-Wallet (Dana/Ovo/Gopay)">E-Wallet (Dana/Ovo/Gopay)</option>
+                            <option value="QRIS">QRIS</option>
+                        </select>
+                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-400">
+                            <i class="fa-solid fa-chevron-down text-xs"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <button onclick="pesanOZSend()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 rounded-xl transition active:scale-95 flex items-center justify-center gap-2 shadow-lg shadow-blue-900/50">
+                    <i class="fa-brands fa-whatsapp text-lg"></i> Kirim Paket Sekarang
+                </button>
+
+            </main>
+        </div>
+
+
+        <!-- ========================================== -->
+        <!-- LAYER: FORM OZMART -->
+        <!-- ========================================== -->
+        <div id="ozmart-layer" class="page-layer">
+            
+            <header class="bg-gray-900 text-white px-5 py-4 flex items-center border-b border-gray-800 flex-none z-10 shadow-md">
+                <button onclick="closeOZMart()" class="mr-4 w-8 h-8 flex items-center justify-center rounded-full bg-gray-800 text-gray-300 hover:text-white transition active:scale-95">
+                    <i class="fa-solid fa-arrow-left text-lg"></i>
+                </button>
+                <div>
+                    <h1 class="text-lg font-bold text-purple-400">Pesan OZMart</h1>
+                    <p class="text-[10px] text-gray-400">Belanja Kebutuhan Harian</p>
+                </div>
+            </header>
+
+            <main class="flex-1 overflow-y-auto px-5 py-6">
+                
+                <div class="mb-5">
+                    <label class="block text-xs font-bold text-gray-400 mb-2">Nama Pemesan</label>
+                    <input type="text" id="mart-nama" class="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-purple-500 transition" placeholder="Contoh: Budi Santoso">
+                </div>
+
+                <div class="mb-5">
+                    <label class="block text-xs font-bold text-gray-400 mb-2">Alamat Toko / Warung (Tempat Belanja)</label>
+                    <div class="flex gap-2">
+                        <input type="text" id="mart-toko" class="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-purple-500 transition" placeholder="Contoh: Indomaret Multatuli">
+                        <button onclick="getLocation('mart-toko')" class="bg-gray-800 border border-gray-700 text-purple-500 rounded-xl px-4 flex items-center justify-center hover:bg-gray-700 active:scale-95 transition" title="Lacak Lokasi Toko">
+                            <i class="fa-solid fa-location-crosshairs text-lg"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3 mb-5">
+                    <div class="col-span-2">
+                        <label class="block text-xs font-bold text-gray-400 mb-2">Jenis Belanjaan</label>
+                        <input type="text" id="mart-jenis" class="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-purple-500 transition" placeholder="Contoh: Sembako / Obat / ATK">
+                    </div>
+                    <div class="col-span-2">
+                        <label class="block text-xs font-bold text-gray-400 mb-2">Daftar Detail Belanjaan</label>
+                        <textarea id="mart-detail" rows="3" class="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-purple-500 transition resize-none" placeholder="Contoh:&#10;1. Beras 5kg (1 sak)&#10;2. Minyak Goreng Bimoli 2L"></textarea>
+                    </div>
+                </div>
+
+                <div class="mb-5">
+                    <label class="block text-xs font-bold text-gray-400 mb-2">Alamat Pengantaran (Tujuan)</label>
+                    <div class="flex gap-2">
+                        <input type="text" id="mart-antar" class="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-purple-500 transition" placeholder="Alamat lengkap Anda">
+                        <button onclick="getLocation('mart-antar')" class="bg-gray-800 border border-gray-700 text-purple-500 rounded-xl px-4 flex items-center justify-center hover:bg-gray-700 active:scale-95 transition" title="Lacak Lokasi Saya">
+                            <i class="fa-solid fa-location-crosshairs text-lg"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="mb-8">
+                    <label class="block text-xs font-bold text-gray-400 mb-2">Metode Pembayaran</label>
+                    <div class="relative">
+                        <select id="mart-bayar" class="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-purple-500 appearance-none">
+                            <option value="Cash (Tunai)">Cash (Tunai)</option>
+                            <option value="Transfer Bank">Transfer Bank</option>
+                            <option value="E-Wallet (Dana/Ovo/Gopay)">E-Wallet (Dana/Ovo/Gopay)</option>
+                            <option value="QRIS">QRIS</option>
+                        </select>
+                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-400">
+                            <i class="fa-solid fa-chevron-down text-xs"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <button onclick="pesanOZMart()" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-3.5 rounded-xl transition active:scale-95 flex items-center justify-center gap-2 shadow-lg shadow-purple-900/50">
+                    <i class="fa-brands fa-whatsapp text-lg"></i> Titip Belanja Sekarang
+                </button>
+
+            </main>
+        </div>
+
+
+        <!-- POP-UP CUSTOM (Pengganti Alert) -->
+        <div id="custom-modal" class="hidden absolute inset-0 z-[100] bg-black/80 flex items-center justify-center p-5 opacity-0 transition-opacity duration-200">
+            <div id="modal-content" class="bg-gray-800 border border-gray-700 w-full max-w-[300px] rounded-3xl p-6 shadow-2xl transform scale-95 transition-transform duration-200 text-center">
+                <div class="w-16 h-16 bg-green-900/30 text-green-500 rounded-full flex items-center justify-center text-3xl mx-auto mb-4">
+                    <i id="modal-icon" class="fa-solid fa-info-circle"></i>
+                </div>
+                <h3 id="modal-title" class="text-xl font-bold text-white mb-2">Info</h3>
+                <p id="modal-text" class="text-sm text-gray-400 mb-6">Pesan diletakkan di sini.</p>
+                <button onclick="closeModal()" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-xl transition">
+                    Tutup
+                </button>
+            </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- PANDUAN INSTALL VISUAL (PENGGANTI POP-UP)  -->
+        <!-- ========================================== -->
+        <div id="install-guide-layer" class="hidden absolute inset-0 z-[110] bg-gray-900 flex flex-col p-6 opacity-0 transition-opacity duration-300">
+            <div class="flex-1 flex flex-col items-center justify-center text-center mt-10">
+                <img src="https://www.dropbox.com/scl/fi/jx15bbr1xikjals0mmttq/file_00000000557082119a5da29401166479.png?rlkey=rt8cmh71k9ii49xbhf25ad8fj&st=m1t7vd2y&raw=1" class="w-24 h-24 rounded-3xl shadow-lg mb-6 border border-gray-700">
+                <h2 class="text-2xl font-bold text-white mb-2">Install OZgo</h2>
+                <p class="text-gray-400 text-sm mb-8">Tambahkan ke Layar Utama agar lebih cepat diakses seperti aplikasi biasa.</p>
+                
+                <div class="bg-gray-800 border border-gray-700 rounded-2xl p-5 w-full text-left relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-1 h-full bg-green-500"></div>
+                    <h3 class="font-bold text-white mb-4"><i class="fa-solid fa-mobile-screen mr-2"></i> Ikuti 2 Langkah Ini:</h3>
+                    
+                    <div id="guide-android" class="hidden">
+                        <div class="flex items-center gap-4 mb-4">
+                            <div class="bg-gray-700 w-10 h-10 rounded-full flex items-center justify-center text-white shrink-0">1</div>
+                            <p class="text-sm text-gray-300">Ketuk ikon <b class="text-white bg-gray-700 px-2 py-0.5 rounded">Titik Tiga (⋮)</b> di pojok kanan/bawah layar Anda.</p>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <div class="bg-gray-700 w-10 h-10 rounded-full flex items-center justify-center text-white shrink-0">2</div>
+                            <p class="text-sm text-gray-300">Pilih menu <b class="text-green-400">"Tambahkan ke Layar Utama"</b> atau "Install Aplikasi".</p>
+                        </div>
+                    </div>
+
+                    <div id="guide-ios" class="hidden">
+                        <div class="flex items-center gap-4 mb-4">
+                            <div class="bg-gray-700 w-10 h-10 rounded-full flex items-center justify-center text-white shrink-0">1</div>
+                            <p class="text-sm text-gray-300">Ketuk ikon <b class="text-white"><i class="fa-solid fa-arrow-up-from-bracket"></i> (Share)</b> di menu bagian bawah layar Anda.</p>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <div class="bg-gray-700 w-10 h-10 rounded-full flex items-center justify-center text-white shrink-0">2</div>
+                            <p class="text-sm text-gray-300">Geser ke bawah, lalu pilih <b class="text-green-400">"Tambah ke Layar Utama"</b> (+).</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <button onclick="tutupPanduanInstall()" class="mt-auto w-full bg-gray-800 border border-gray-700 text-white font-bold py-4 rounded-xl hover:bg-gray-700 transition active:scale-95 mb-4">
+                Saya Mengerti, Tutup
+            </button>
+        </div>
+
+    </div> <!-- End of app-container -->
+
+    <script>
+        // ==========================================
+        // FUNGSI BUKA / TUTUP HALAMAN (LAYER) PURE DOM
+        // 100% AMAN UNTUK GOOGLE SITES (TIDAK AKAN BLANK)
+        // ==========================================
+        function closeSemuaLayer() {
+            const layers = ['ozride-layer', 'ozfood-layer', 'ozsend-layer', 'ozmart-layer'];
+            layers.forEach(id => {
+                document.getElementById(id).classList.remove('active');
+            });
+        }
+
+        function openOZRide() { document.getElementById('ozride-layer').classList.add('active'); }
+        function closeOZRide() { document.getElementById('ozride-layer').classList.remove('active'); }
+
+        function openOZFood() { document.getElementById('ozfood-layer').classList.add('active'); }
+        function closeOZFood() { document.getElementById('ozfood-layer').classList.remove('active'); }
+
+        function openOZSend() { document.getElementById('ozsend-layer').classList.add('active'); }
+        function closeOZSend() { document.getElementById('ozsend-layer').classList.remove('active'); }
+
+        function openOZMart() { document.getElementById('ozmart-layer').classList.add('active'); }
+        function closeOZMart() { document.getElementById('ozmart-layer').classList.remove('active'); }
+
+        // ==========================================
+        // FUNGSI PELACAK LOKASI (GPS)
+        // ==========================================
+        function getLocation(inputId) {
+            if (navigator.geolocation) {
+                document.getElementById(inputId).value = "Sedang melacak lokasi...";
+                navigator.geolocation.getCurrentPosition((position) => {
+                    const lat = position.coords.latitude;
+                    const lon = position.coords.longitude;
+                    const mapsLink = `https://maps.google.com/?q=${lat},${lon}`;
+                    document.getElementById(inputId).value = mapsLink;
+                    
+                    // Notifikasi edukasi agar pelanggan tahu mereka bisa menggeser titik via aplikasi Maps
+                    showModal("Lokasi Ditemukan \uD83D\uDCCD", "Titik koordinat Anda telah dimasukkan. Jika titik tersebut kurang akurat, Anda dapat mengedit teksnya atau menempelkan (Paste) link baru dari aplikasi Google Maps Anda setelah menggeser titik lokasi.");
+                }, (error) => {
+                    document.getElementById(inputId).value = "";
+                    showModal("Gagal", "Tidak dapat melacak lokasi. Pastikan GPS aktif dan browser diizinkan mengakses lokasi.");
+                }, {
+                    enableHighAccuracy: true
+                });
+            } else {
+                showModal("Error", "Browser/Perangkat Anda tidak mendukung fitur lokasi GPS.");
+            }
+        }
+
+        // ==========================================
+        // FUNGSI PEMESANAN (KIRIM KE WA)
+        // ==========================================
+        function pesanOZRide() {
+            const nama = document.getElementById('ride-nama').value.trim();
+            const jemput = document.getElementById('ride-jemput').value.trim();
+            const antar = document.getElementById('ride-antar').value.trim();
+            const ket = document.getElementById('ride-keterangan').value.trim();
+            const bayar = document.getElementById('ride-bayar').value;
+
+            if (!nama || !jemput || !antar) {
+                showModal("Data Belum Lengkap", "Mohon isi Nama, Titik Jemput, dan Titik Pengantaran terlebih dahulu.");
+                return;
+            }
+
+            let pesan = `*ORDER OZRide Baru!* 🛵\n\n`;
+            pesan += `*Nama Pemesan:* ${nama}\n\n`;
+            
+            if(jemput.includes("maps.google.com")) {
+                pesan += `*Titik Jemput (GPS Akurat):*\n${jemput}\n\n`;
+            } else {
+                pesan += `*Titik Jemput:* ${jemput}\n`;
+                pesan += `📍 *Cek Maps:* https://maps.google.com/?q=${encodeURIComponent(jemput + ' Rangkasbitung')}\n\n`;
+            }
+
+            if(antar.includes("maps.google.com")) {
+                pesan += `*Tujuan (GPS Akurat):*\n${antar}\n\n`;
+            } else {
+                pesan += `*Tujuan:* ${antar}\n`;
+                pesan += `📍 *Cek Maps:* https://maps.google.com/?q=${encodeURIComponent(antar + ' Rangkasbitung')}\n\n`;
+            }
+
+            if (ket !== "") pesan += `*Keterangan:* ${ket}\n`;
+            pesan += `*Pembayaran:* ${bayar}\n`;
+            pesan += `\nMohon segera diproses, terima kasih!`;
+
+            const pesanEncode = encodeURIComponent(pesan);
+            window.open(`https://wa.me/628568080847?text=${pesanEncode}`, "_blank");
+        }
+
+        function pesanOZFood() {
+            const nama = document.getElementById('food-nama').value.trim();
+            const resto = document.getElementById('food-resto').value.trim();
+            const menu = document.getElementById('food-menu').value.trim();
+            const antar = document.getElementById('food-antar').value.trim();
+            const bayar = document.getElementById('food-bayar').value;
+
+            if (!nama || !resto || !menu || !antar) {
+                showModal("Data Belum Lengkap", "Mohon isi semua kolom yang tersedia terlebih dahulu.");
+                return;
+            }
+
+            let pesan = `*ORDER OZFood Baru!* 🍔\n\n`;
+            pesan += `*Nama Pemesan:* ${nama}\n\n`;
+            
+            pesan += `*Nama Resto/Warung:* ${resto}\n`;
+            pesan += `📍 *Lokasi Resto:* https://maps.google.com/?q=${encodeURIComponent(resto + ' Rangkasbitung')}\n\n`;
+            
+            pesan += `*Detail Pesanan:*\n${menu}\n\n`;
+
+            if(antar.includes("maps.google.com")) {
+                pesan += `*Alamat Antar (GPS):*\n${antar}\n\n`;
+            } else {
+                pesan += `*Alamat Antar:* ${antar}\n`;
+                pesan += `📍 *Titik Antar:* https://maps.google.com/?q=${encodeURIComponent(antar + ' Rangkasbitung')}\n\n`;
+            }
+
+            pesan += `*Pembayaran:* ${bayar}\n`;
+            pesan += `\nMohon segera diproses, terima kasih!`;
+
+            const pesanEncode = encodeURIComponent(pesan);
+            window.open(`https://wa.me/628568080847?text=${pesanEncode}`, "_blank");
+        }
+
+        function pesanOZSend() {
+            const nama = document.getElementById('send-nama').value.trim();
+            const jemput = document.getElementById('send-jemput').value.trim();
+            const jenis = document.getElementById('send-jenis').value.trim();
+            const detail = document.getElementById('send-detail').value.trim();
+            const penerima = document.getElementById('send-penerima').value.trim();
+            const hp = document.getElementById('send-hp').value.trim();
+            const antar = document.getElementById('send-antar').value.trim();
+            const bayar = document.getElementById('send-bayar').value;
+
+            if (!nama || !jemput || !jenis || !penerima || !hp || !antar) {
+                showModal("Data Belum Lengkap", "Mohon isi semua data pengirim dan penerima dengan lengkap.");
+                return;
+            }
+
+            let pesan = `*ORDER OZSend Baru!* 📦\n\n`;
+            pesan += `*-- DATA PENGIRIM --*\n`;
+            pesan += `*Nama:* ${nama}\n`;
+            pesan += `*Alamat Ambil:* ${jemput}\n`;
+            pesan += `📍 *Maps Ambil:* https://maps.google.com/?q=${encodeURIComponent(jemput + ' Rangkasbitung')}\n\n`;
+            
+            pesan += `*-- DETAIL BARANG --*\n`;
+            pesan += `*Jenis:* ${jenis}\n`;
+            if (detail !== "") pesan += `*Ket Barang:* ${detail}\n`;
+            pesan += `\n*-- DATA PENERIMA --*\n`;
+            pesan += `*Nama:* ${penerima}\n`;
+            pesan += `*No HP:* ${hp}\n`;
+
+            if(antar.includes("maps.google.com")) {
+                pesan += `*Alamat Antar (GPS):*\n${antar}\n\n`;
+            } else {
+                pesan += `*Alamat Antar:* ${antar}\n`;
+                pesan += `📍 *Maps Antar:* https://maps.google.com/?q=${encodeURIComponent(antar + ' Rangkasbitung')}\n\n`;
+            }
+
+            pesan += `*Pembayaran:* ${bayar}\n`;
+            pesan += `\nMohon segera dijemput paketnya, terima kasih!`;
+
+            const pesanEncode = encodeURIComponent(pesan);
+            window.open(`https://wa.me/628568080847?text=${pesanEncode}`, "_blank");
+        }
+
+        function pesanOZMart() {
+            const nama = document.getElementById('mart-nama').value.trim();
+            const toko = document.getElementById('mart-toko').value.trim();
+            const jenis = document.getElementById('mart-jenis').value.trim();
+            const detail = document.getElementById('mart-detail').value.trim();
+            const antar = document.getElementById('mart-antar').value.trim();
+            const bayar = document.getElementById('mart-bayar').value;
+
+            if (!nama || !toko || !jenis || !detail || !antar) {
+                showModal("Data Belum Lengkap", "Mohon isi Nama, Alamat Toko, Jenis Belanjaan, Daftar Belanjaan, dan Alamat Pengantaran.");
+                return;
+            }
+
+            let pesan = `*ORDER OZMart Baru!* 🛒\n\n`;
+            pesan += `*Nama Pemesan:* ${nama}\n\n`;
+            
+            if(toko.includes("maps.google.com")) {
+                pesan += `*Lokasi Toko (GPS):*\n${toko}\n\n`;
+            } else {
+                pesan += `*Lokasi Toko:* ${toko}\n`;
+                pesan += `📍 *Maps Toko:* https://maps.google.com/?q=${encodeURIComponent(toko + ' Rangkasbitung')}\n\n`;
+            }
+
+            pesan += `*-- DETAIL BELANJAAN --*\n`;
+            pesan += `*Kategori:* ${jenis}\n`;
+            pesan += `*Daftar Belanjaan:*\n${detail}\n\n`;
+
+            if(antar.includes("maps.google.com")) {
+                pesan += `*Alamat Antar (GPS):*\n${antar}\n\n`;
+            } else {
+                pesan += `*Alamat Antar:* ${antar}\n`;
+                pesan += `📍 *Maps Antar:* https://maps.google.com/?q=${encodeURIComponent(antar + ' Rangkasbitung')}\n\n`;
+            }
+
+            pesan += `*Metode Pembayaran:* ${bayar}\n`;
+            pesan += `\nMohon segera dibelanjakan dan diantar, terima kasih!`;
+
+            const pesanEncode = encodeURIComponent(pesan);
+            window.open(`https://wa.me/628568080847?text=${pesanEncode}`, "_blank");
+        }
+
+        // ==========================================
+        // FUNGSI CHAT & PESANAN (NAVIGASI BAWAH)
+        // ==========================================
+        function bukaChat() {
+            const pesan = encodeURIComponent("Hallo admin OZgo, saya mau bertanya seputar layanan OZgo.");
+            window.open(`https://wa.me/628568080847?text=${pesan}`, "_blank");
+        }
+
+        function bukaPesanan() {
+            const pesan = encodeURIComponent("Hallo admin OZgo, saya ingin mengecek status pesanan saya.");
+            window.open(`https://wa.me/628568080847?text=${pesan}`, "_blank");
+        }
+
+        // ==========================================
+        // FUNGSI POP-UP BAWAAN
+        // ==========================================
+        function showModal(title, text) {
+            document.getElementById('modal-title').innerText = title;
+            document.getElementById('modal-text').innerText = text;
+            
+            const modal = document.getElementById('custom-modal');
+            const content = document.getElementById('modal-content');
+            
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                content.classList.remove('scale-95');
+            }, 10);
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('custom-modal');
+            const content = document.getElementById('modal-content');
+            
+            modal.classList.add('opacity-0');
+            content.classList.add('scale-95');
+            
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 200);
+        }
+
+        // ==========================================
+        // FUNGSI GANTI TEMA (DARK / LIGHT)
+        // ==========================================
+        function toggleTheme() {
+            const body = document.body;
+            const icon = document.getElementById('theme-icon');
+            
+            body.classList.toggle('light-mode');
+            
+            if (body.classList.contains('light-mode')) {
+                icon.classList.remove('fa-sun');
+                icon.classList.add('fa-moon');
+            } else {
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+            }
+        }
+
+        // ==========================================
+        // FUNGSI AUTO INSTALL PWA
+        // ==========================================
+        // FUNGSI AUTO INSTALL PWA & PANDUAN VISUAL
+        // ==========================================
+        let deferredPrompt;
+        const installBanner = document.getElementById('install-banner');
+        const guideLayer = document.getElementById('install-guide-layer');
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault(); 
+            deferredPrompt = e; 
+        });
+
+        setTimeout(() => {
+            if(!window.matchMedia('(display-mode: standalone)').matches && !navigator.standalone) {
+                installBanner.classList.remove('hidden');
+                setTimeout(() => {
+                    installBanner.classList.remove('-translate-y-[150%]');
+                }, 50);
+            }
+        }, 3000);
+
+        function installApp() {
+            tutupInstallBanner();
+
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    deferredPrompt = null;
+                });
+            } else {
+                // Tampilkan Panduan Visual
+                bukaPanduanInstall();
+            }
+        }
+
+        function tutupInstallBanner() {
+            installBanner.classList.add('-translate-y-[150%]');
+            setTimeout(() => {
+                installBanner.classList.add('hidden');
+            }, 500);
+        }
+
+        function bukaPanduanInstall() {
+            guideLayer.classList.remove('hidden');
+            
+            // Deteksi OS untuk menampilkan panduan yang tepat
+            const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+            if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+                document.getElementById('guide-ios').classList.remove('hidden');
+                document.getElementById('guide-android').classList.add('hidden');
+            } else {
+                document.getElementById('guide-android').classList.remove('hidden');
+                document.getElementById('guide-ios').classList.add('hidden');
+            }
+
+            setTimeout(() => {
+                guideLayer.classList.remove('opacity-0');
+            }, 10);
+        }
+
+        function tutupPanduanInstall() {
+            guideLayer.classList.add('opacity-0');
+            setTimeout(() => {
+                guideLayer.classList.add('hidden');
+            }, 300);
+        }
+    </script>
 </body>
 </html>
