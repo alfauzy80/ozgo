@@ -235,7 +235,7 @@
     }
 
     // ==========================================
-    // 4. PENCARIAN LOKASI (ANTI-TYPO & OVERPASS)
+    // 4. PENCARIAN LOKASI (PHOTON API & NOMINATIM)
     // ==========================================
     let timeoutSearch = null;
     function cariLokasi(query, tipe) {
@@ -253,8 +253,7 @@
 
         const queryLower = query.toLowerCase().trim();
         
-        // DETEKSI KATA KUNCI YANG LEBIH LUAS (Mengakomodasi Typo)
-        // Jika mengandung kata "sakit", "rs", "klinik", "puskesmas", dll.
+        // Deteksi kata kunci medis dengan toleransi typo
         const kataKunciMedis = ['sakit', 'rs', 'klinik', 'puskesmas', 'dokter', 'apotek', 'hospital', 'clinic'];
         const isMedis = kataKunciMedis.some(kata => queryLower.includes(kata));
         
@@ -262,48 +261,41 @@
 
         try {
           if (isMedis) {
-            // --- OVERPASS API: Mencari SEMUA Fasilitas Kesehatan di radius 15km ---
-            const overpassUrl = 'https://overpass-api.de/api/interpreter';
-            const overpassQuery = `
-              [out:json][timeout:15];
-              (
-                nwr["amenity"~"hospital|clinic|doctors|pharmacy"](around:15000,-6.3591,106.2494);
-              );
-              out center 30;
-            `;
+            // --- PHOTON API: Mencari SEMUA Fasilitas Kesehatan (Sangat Stabil) ---
+            // Parameter lat & lon digunakan sebagai titik pusat pencarian.
+            // osm_tag akan memfilter hasil khusus rumah sakit, klinik, dan apotek.
+            const photonUrl = `https://photon.komoot.io/api/?lat=-6.3591&lon=106.2494&limit=40&osm_tag=amenity:hospital&osm_tag=amenity:clinic&osm_tag=amenity:pharmacy`;
             
-            const res = await fetch(overpassUrl, { method: 'POST', body: overpassQuery });
+            const res = await fetch(photonUrl);
             const data = await res.json();
             
-            data.elements.forEach(el => {
-                const lat = el.lat || (el.center && el.center.lat);
-                const lon = el.lon || (el.center && el.center.lon);
-                const name = (el.tags && el.tags.name) ? el.tags.name : "Fasilitas Kesehatan";
-                const type = (el.tags && el.tags.amenity) ? el.tags.amenity.toUpperCase() : "";
-                const address = (el.tags && el.tags["addr:street"]) ? el.tags["addr:street"] : "Rangkasbitung";
-                
-                if (lat && lon) {
-                    results.push({
-                        lat: lat,
-                        lon: lon,
-                        name: name,
-                        display_name: `[${type}] ${address}`
-                    });
-                }
+            // Filter hasil agar hanya yang berada di area Rangkasbitung (radius ~15km)
+            const dataValid = data.features.filter(item => {
+                const lon = item.geometry.coordinates[0];
+                const lat = item.geometry.coordinates[1];
+                return (lat <= -6.28 && lat >= -6.44 && lon >= 106.18 && lon <= 106.32);
             });
-            
-            // Urutkan berdasarkan nama A-Z
-            results.sort((a, b) => a.name.localeCompare(b.name));
-            
+
+            results = dataValid.map(item => {
+                const nama = item.properties.name || "Fasilitas Kesehatan";
+                const jalan = item.properties.street || "Rangkasbitung";
+                const tipeFaskes = item.properties.osm_value ? item.properties.osm_value.toUpperCase() : "MEDIS";
+                return {
+                    lat: item.geometry.coordinates[1],
+                    lon: item.geometry.coordinates[0],
+                    name: nama,
+                    display_name: `[${tipeFaskes}] ${jalan}`
+                };
+            });
+
           } else {
-            // --- NOMINATIM API: Pencarian Tempat Umum (Mall, Jalan, dll) ---
+            // --- NOMINATIM API: Pencarian Tempat Umum (Mall, Jalan, Taman, dll) ---
             const queryPencarian = `${query} Rangkasbitung`;
-            const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(queryPencarian)}&viewbox=106.15,-6.25,106.35,-6.45&bounded=1&limit=15&countrycodes=id&accept-language=id`;
+            const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(queryPencarian)}&viewbox=106.18,-6.28,106.32,-6.44&bounded=1&limit=15&countrycodes=id&accept-language=id`;
 
             const res = await fetch(url);
             const data = await res.json();
             
-            // Filter koordinat
             const dataValid = data.filter(item => {
                 const lat = parseFloat(item.lat);
                 const lon = parseFloat(item.lon);
@@ -332,7 +324,8 @@
             });
           }
         } catch (error) {
-            listDiv.innerHTML = '<div class="p-3 text-xs text-red-500">Koneksi bermasalah. Coba lagi.</div>';
+            console.error(error);
+            listDiv.innerHTML = '<div class="p-3 text-xs text-red-500">Terjadi kesalahan jaringan. Coba ketik ulang.</div>';
         }
       }, 800);
     }
