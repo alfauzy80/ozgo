@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>OZgo — Preview Aplikasi</title>
+<title>OZgo — Aplikasi Ojek Online</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script>
@@ -61,16 +61,11 @@
     width: 20px; height: 20px; border-radius: 50%; background: #00A86B;
     cursor: pointer; border: 3px solid #fff;
   }
-  input[type=range].gold::-webkit-slider-thumb {
-    background: #F5B841; box-shadow: 0 2px 6px rgba(245,184,65,.5);
-  }
+  input[type=range].gold::-webkit-slider-thumb { background: #F5B841; box-shadow: 0 2px 6px rgba(245,184,65,.5); }
   #budemenPanel { transition: transform .35s cubic-bezier(.32,.72,0,1); }
   #budemenBackdrop { transition: opacity .35s ease; }
   .toast-in { animation: toastIn .35s cubic-bezier(.32,.72,0,1); }
-  @keyframes toastIn {
-    from { opacity: 0; transform: translateY(-12px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
+  @keyframes toastIn { from { opacity: 0; transform: translateY(-12px); } to { opacity: 1; transform: translateY(0); } }
   .price-anim { transition: transform .2s ease; }
   .price-anim.flash { transform: scale(1.06); color: #F5B841; }
 </style>
@@ -80,18 +75,17 @@
   <header class="max-w-6xl mx-auto text-center mb-12">
     <div class="inline-flex items-center gap-2 bg-white px-4 py-2 rounded-full shadow-sm border border-slate-200 mb-5">
       <span class="w-2 h-2 rounded-full bg-brand animate-pulse"></span>
-      <span class="text-xs font-semibold text-slate-600 tracking-wide">PREVIEW LENGKAP · OZgo App</span>
+      <span class="text-xs font-semibold text-slate-600 tracking-wide">OZgo App · Live Version</span>
     </div>
     <h1 class="text-4xl md:text-5xl font-extrabold text-ink tracking-tight">
       OZ<span class="text-brand">go</span>
     </h1>
     <p class="text-slate-500 mt-3 max-w-lg mx-auto">Ride · Send · Food · Mart — area Rangkasbitung.</p>
-    <p class="text-xs text-emerald-600 font-semibold mt-2">✨ Klik <b>OZbudemen</b> di Beranda untuk buka halaman aktivasi · Coba pilih tujuan di OZride</p>
   </header>
 
   <main class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10 justify-items-center">
 
-    <!-- ============ SCREEN 1: HOME + OZBUDEMEN SHEET ============ -->
+    <!-- ============ SCREEN 1: HOME ============ -->
     <div class="flex flex-col items-center gap-4">
       <div class="phone" id="phoneHome">
         <div class="notch"></div>
@@ -147,7 +141,7 @@
             </div>
           </div>
 
-          <!-- Kartu OZbudemen (bisa diklik) -->
+          <!-- Kartu OZbudemen -->
           <div id="budemenCard" class="mx-5 mt-5 rounded-2xl p-4 card-budemen text-white cursor-pointer hover:scale-[1.01] transition-transform" onclick="openBudemen()">
             <div class="relative z-10">
               <div class="flex items-center justify-between mb-2">
@@ -173,19 +167,6 @@
               </div>
             </div>
           </div>
-
-          <div class="px-5 mt-6">
-            <p class="font-bold text-ink text-sm mb-3">Aktivitas Terakhir</p>
-            <div class="flex items-center gap-3 py-2">
-              <div class="w-9 h-9 rounded-full bg-emerald-100 flex items-center justify-center">
-                <svg class="w-4 h-4 text-emerald-600" fill="currentColor" viewBox="0 0 24 24"><path d="M19.44 9.03L15.41 5H11v2h3.59l2 2H5c-2.8 0-5 2.2-5 5s2.2 5 5 5c2.46 0 4.45-1.69 4.9-4h1.65l2.77-2.77c-.21.54-.32 1.14-.32 1.77 0 2.8 2.2 5 5 5s5-2.2 5-5c0-2.65-1.97-4.77-4.56-4.97zM7.82 15C7.4 16.15 6.28 17 5 17c-1.63 0-3-1.37-3-3s1.37-3 3-3c1.28 0 2.4.85 2.82 2H5v2h2.82zM19 17c-1.63 0-3-1.37-3-3s1.37-3 3-3 3 1.37 3 3-1.37 3-3 3z"/></svg>
-              </div>
-              <div class="flex-1">
-                <p class="text-xs font-semibold text-ink">OZride ke Pasar Rangkasbitung</p>
-                <p class="text-[10px] text-slate-400">Kemarin · Rp 13.800</p>
-              </div>
-            </div>
-          </div>
         </div>
 
         <!-- Bottom nav -->
@@ -208,124 +189,51 @@
           </div>
         </div>
 
-        <!-- ====== OZBUDEMEN SHEET ====== -->
+        <!-- OZBUDEMEN SHEET -->
         <div id="budemenSheet" class="absolute inset-0 z-[60] hidden">
           <div id="budemenBackdrop" class="absolute inset-0 bg-black/50 opacity-0" onclick="closeBudemen()"></div>
           <div id="budemenPanel" class="absolute bottom-0 left-0 right-0 bg-white rounded-t-3xl transform translate-y-full" style="max-height: 94%;">
-            <!-- Header -->
             <div class="card-budemen rounded-t-3xl p-4 text-white relative">
               <div class="relative z-10">
                 <button onclick="closeBudemen()" class="absolute top-0 right-0 w-7 h-7 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center">
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
                 </button>
-                <span class="text-[9px] font-bold bg-gold/20 text-gold border border-gold/30 inline-flex items-center gap-1 px-2 py-0.5 rounded-full">
-                  <svg class="w-2.5 h-2.5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4-6.2-4.6-6.2 4.6 2.4-7.4L2 9.4h7.6L12 2z"/></svg>
-                  PREMIUM
-                </span>
+                <span class="text-[9px] font-bold bg-gold/20 text-gold border border-gold/30 inline-flex items-center gap-1 px-2 py-0.5 rounded-full">PREMIUM</span>
                 <p class="text-xl font-extrabold mt-2">Aktifkan OZbudemen</p>
                 <p class="text-[11px] text-white/70 mt-1">Layanan prioritas penuh selama 30 hari</p>
               </div>
             </div>
-
-            <!-- Body -->
             <div class="p-4 overflow-y-auto scroll" style="max-height: 55vh;">
               <p class="text-[11px] font-bold text-ink mb-2">Yang kamu dapatkan:</p>
               <div class="space-y-2">
-                <div class="flex items-start gap-2">
-                  <div class="w-6 h-6 rounded-md bg-emerald-100 flex items-center justify-center flex-shrink-0">
-                    <svg class="w-3.5 h-3.5 text-emerald-600" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
-                  </div>
-                  <div><p class="text-[11px] font-semibold text-ink">Driver prioritas</p><p class="text-[10px] text-slate-500 leading-tight">Selalu di depan antrean driver</p></div>
-                </div>
-                <div class="flex items-start gap-2">
-                  <div class="w-6 h-6 rounded-md bg-emerald-100 flex items-center justify-center flex-shrink-0">
-                    <svg class="w-3.5 h-3.5 text-emerald-600" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
-                  </div>
-                  <div><p class="text-[11px] font-semibold text-ink">Tanpa antre</p><p class="text-[10px] text-slate-500 leading-tight">Order langsung diterima driver</p></div>
-                </div>
-                <div class="flex items-start gap-2">
-                  <div class="w-6 h-6 rounded-md bg-emerald-100 flex items-center justify-center flex-shrink-0">
-                    <svg class="w-3.5 h-3.5 text-emerald-600" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
-                  </div>
-                  <div><p class="text-[11px] font-semibold text-ink">Support 24/7</p><p class="text-[10px] text-slate-500 leading-tight">Chat langsung dengan CS via WhatsApp</p></div>
-                </div>
-                <div class="flex items-start gap-2">
-                  <div class="w-6 h-6 rounded-md bg-emerald-100 flex items-center justify-center flex-shrink-0">
-                    <svg class="w-3.5 h-3.5 text-emerald-600" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
-                  </div>
-                  <div><p class="text-[11px] font-semibold text-ink">Batal gratis 3×</p><p class="text-[10px] text-slate-500 leading-tight">Batalkan tanpa biaya hingga 3 kali</p></div>
-                </div>
-                <div class="flex items-start gap-2">
-                  <div class="w-6 h-6 rounded-md bg-emerald-100 flex items-center justify-center flex-shrink-0">
-                    <svg class="w-3.5 h-3.5 text-emerald-600" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
-                  </div>
-                  <div><p class="text-[11px] font-semibold text-ink">Prioritas jam sibuk</p><p class="text-[10px] text-slate-500 leading-tight">Tetap dapat driver saat peak hour</p></div>
-                </div>
+                <div class="flex items-start gap-2"><div class="w-6 h-6 rounded-md bg-emerald-100 flex items-center justify-center flex-shrink-0 text-emerald-600">✓</div><div><p class="text-[11px] font-semibold text-ink">Driver prioritas</p></div></div>
+                <div class="flex items-start gap-2"><div class="w-6 h-6 rounded-md bg-emerald-100 flex items-center justify-center flex-shrink-0 text-emerald-600">✓</div><div><p class="text-[11px] font-semibold text-ink">Tanpa antre</p></div></div>
+                <div class="flex items-start gap-2"><div class="w-6 h-6 rounded-md bg-emerald-100 flex items-center justify-center flex-shrink-0 text-emerald-600">✓</div><div><p class="text-[11px] font-semibold text-ink">Support 24/7</p></div></div>
+                <div class="flex items-start gap-2"><div class="w-6 h-6 rounded-md bg-emerald-100 flex items-center justify-center flex-shrink-0 text-emerald-600">✓</div><div><p class="text-[11px] font-semibold text-ink">Batal gratis 3×</p></div></div>
+                <div class="flex items-start gap-2"><div class="w-6 h-6 rounded-md bg-emerald-100 flex items-center justify-center flex-shrink-0 text-emerald-600">✓</div><div><p class="text-[11px] font-semibold text-ink">Prioritas jam sibuk</p></div></div>
               </div>
-
-              <!-- Durasi -->
-              <div class="mt-3 bg-slate-50 rounded-xl p-2.5 flex items-center justify-between">
-                <span class="text-[10px] text-slate-500">Durasi aktif</span>
-                <span class="text-[11px] font-bold text-ink">1 bulan (30 hari)</span>
-              </div>
-
-              <!-- Pilih harga -->
               <p class="text-[11px] font-bold text-ink mt-3 mb-2">Pilih kontribusi kamu:</p>
               <div class="bg-gold-light border-2 border-gold rounded-2xl p-3 text-center">
-                <p class="text-[9px] text-slate-500 uppercase tracking-wide font-semibold">Kontribusi</p>
                 <p id="budemenPrice" class="text-2xl font-extrabold text-gold-dark mt-0.5">Rp 400.000</p>
-                <p class="text-[10px] text-slate-500 mt-0.5">untuk 1 bulan prioritas</p>
                 <input id="budemenSlider" type="range" min="300000" max="500000" step="50000" value="400000" class="mt-3 gold">
-                <div class="flex justify-between text-[9px] text-slate-500 mt-1 font-semibold">
-                  <span>Rp 300rb</span>
-                  <span>Rp 500rb</span>
-                </div>
-              </div>
-
-              <!-- Metode bayar -->
-              <p class="text-[11px] font-bold text-ink mt-3 mb-2">Metode pembayaran:</p>
-              <div class="grid grid-cols-4 gap-1.5">
-                <div class="border-2 border-brand bg-brand-light rounded-lg py-2 flex flex-col items-center gap-0.5">
-                  <span class="text-lg leading-none">💵</span>
-                  <span class="text-[9px] font-semibold text-ink">Cash</span>
-                </div>
-                <div class="border border-slate-200 rounded-lg py-2 flex flex-col items-center gap-0.5">
-                  <span class="text-lg leading-none">📱</span>
-                  <span class="text-[9px] font-semibold text-slate-500">E-Wallet</span>
-                </div>
-                <div class="border border-slate-200 rounded-lg py-2 flex flex-col items-center gap-0.5">
-                  <span class="text-lg leading-none">🏦</span>
-                  <span class="text-[9px] font-semibold text-slate-500">Bank</span>
-                </div>
-                <div class="border border-slate-200 rounded-lg py-2 flex flex-col items-center gap-0.5">
-                  <span class="text-lg leading-none">▦</span>
-                  <span class="text-[9px] font-semibold text-slate-500">QRIS</span>
-                </div>
+                <div class="flex justify-between text-[9px] text-slate-500 mt-1 font-semibold"><span>Rp 300rb</span><span>Rp 500rb</span></div>
               </div>
             </div>
-
-            <!-- Footer -->
             <div class="p-3 border-t border-slate-100 bg-white">
-              <button id="konfirmasiBudemen" onclick="konfirmasiBudemen()" class="w-full bg-gold hover:bg-gold-dark text-ink font-extrabold text-xs py-3 rounded-xl shadow-lg shadow-gold/30 transition">
-                Aktifkan Sekarang · Rp 400.000
-              </button>
-              <p class="text-[9px] text-slate-400 text-center mt-1.5">Konfirmasi akan dikirim ke WhatsApp 0856-8080-847</p>
+              <button id="konfirmasiBudemen" onclick="konfirmasiBudemen()" class="w-full bg-gold hover:bg-gold-dark text-ink font-extrabold text-xs py-3 rounded-xl shadow-lg transition">Aktifkan Sekarang · Rp 400.000</button>
             </div>
           </div>
         </div>
 
         <!-- Toast -->
         <div id="toast" class="absolute top-16 left-1/2 -translate-x-1/2 z-[80] bg-ink text-white text-[11px] font-semibold px-4 py-2.5 rounded-full shadow-2xl hidden">
-          <span class="flex items-center gap-1.5">
-            <svg class="w-3.5 h-3.5 text-emerald-400" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
-            <span id="toastText">OZbudemen aktif!</span>
-          </span>
+          <span class="flex items-center gap-1.5"><span id="toastText">OZbudemen aktif!</span></span>
         </div>
       </div>
-      <p class="text-xs font-semibold text-slate-500 tracking-wide">① BERANDA + SHEET OZBUDEMEN</p>
+      <p class="text-xs font-semibold text-slate-500 tracking-wide">① BERANDA</p>
     </div>
 
-    <!-- ============ SCREEN 2: OZRIDE + KALKULATOR + ANIMASI ============ -->
+    <!-- ============ SCREEN 2: OZRIDE + KALKULATOR ============ -->
     <div class="flex flex-col items-center gap-4">
       <div class="phone">
         <div class="notch"></div>
@@ -337,16 +245,11 @@
           </span>
         </div>
         <div class="absolute inset-0">
-          <iframe width="100%" height="100%" frameborder="0" scrolling="no"
-            src="https://www.openstreetmap.org/export/embed.html?bbox=106.2294%2C-6.3791%2C106.2694%2C-6.3391&layer=mapnik&marker=-6.3591%2C106.2494"
-            style="border:0; filter: saturate(1.05);">
-          </iframe>
+          <!-- PETA GOOGLE MAPS -->
+          <iframe width="100%" height="100%" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.com/maps?width=100%25&amp;height=600&amp;hl=en&amp;q=Rangkasbitung,%20Banten&amp;t=&amp;z=14&amp;ie=UTF8&amp;iwloc=B&amp;output=embed" style="border:0; filter: saturate(1.05);"></iframe>
         </div>
         <div class="absolute top-12 left-5 z-30 w-10 h-10 rounded-full bg-white shadow-lg flex items-center justify-center">
           <svg class="w-5 h-5 text-ink" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
-        </div>
-        <div class="absolute top-12 left-1/2 -translate-x-1/2 z-30 bg-white/95 backdrop-blur px-3 py-1.5 rounded-full shadow text-[10px] font-semibold text-ink flex items-center gap-1.5">
-          <span class="w-1.5 h-1.5 rounded-full bg-brand"></span> Rangkasbitung, Banten
         </div>
 
         <div class="absolute bottom-0 left-0 right-0 z-30 bg-white rounded-t-3xl shadow-2xl px-4 pt-3 pb-4" style="max-height: 76%; overflow-y: auto;">
@@ -365,54 +268,16 @@
           <p class="text-[10px] font-bold text-slate-500 uppercase tracking-wide mt-3 mb-1.5">Pilih Tujuan</p>
           <div id="destList" class="space-y-1.5">
             <div class="dest-item active border border-slate-200 rounded-xl px-2.5 py-2 flex items-center justify-between" data-km="6" data-name="Pasar Rangkasbitung">
-              <div class="flex items-center gap-2 min-w-0">
-                <span class="w-2 h-2 rounded-full bg-red-500 flex-shrink-0"></span>
-                <div class="min-w-0">
-                  <p class="text-[11px] font-semibold text-ink truncate">Pasar Rangkasbitung</p>
-                  <p class="text-[9px] text-slate-400">≈ 6 km · 15 mnt</p>
-                </div>
-              </div>
+              <div class="flex items-center gap-2 min-w-0"><span class="w-2 h-2 rounded-full bg-red-500 flex-shrink-0"></span><div class="min-w-0"><p class="text-[11px] font-semibold text-ink truncate">Pasar Rangkasbitung</p><p class="text-[9px] text-slate-400">≈ 6 km · 15 mnt</p></div></div>
               <p class="text-[11px] font-bold text-brand flex-shrink-0">Rp 13.800</p>
             </div>
             <div class="dest-item border border-slate-200 rounded-xl px-2.5 py-2 flex items-center justify-between" data-km="5" data-name="Stasiun Rangkasbitung">
-              <div class="flex items-center gap-2 min-w-0">
-                <span class="w-2 h-2 rounded-full bg-slate-300 flex-shrink-0"></span>
-                <div class="min-w-0">
-                  <p class="text-[11px] font-semibold text-ink truncate">Stasiun Rangkasbitung</p>
-                  <p class="text-[9px] text-slate-400">≈ 5 km · 13 mnt</p>
-                </div>
-              </div>
+              <div class="flex items-center gap-2 min-w-0"><span class="w-2 h-2 rounded-full bg-slate-300 flex-shrink-0"></span><div class="min-w-0"><p class="text-[11px] font-semibold text-ink truncate">Stasiun Rangkasbitung</p><p class="text-[9px] text-slate-400">≈ 5 km · 13 mnt</p></div></div>
               <p class="text-[11px] font-bold text-slate-600 flex-shrink-0">Rp 11.500</p>
             </div>
             <div class="dest-item border border-slate-200 rounded-xl px-2.5 py-2 flex items-center justify-between" data-km="5.5" data-name="Alun-Alun Rangkasbitung">
-              <div class="flex items-center gap-2 min-w-0">
-                <span class="w-2 h-2 rounded-full bg-slate-300 flex-shrink-0"></span>
-                <div class="min-w-0">
-                  <p class="text-[11px] font-semibold text-ink truncate">Alun-Alun</p>
-                  <p class="text-[9px] text-slate-400">≈ 5.5 km · 14 mnt</p>
-                </div>
-              </div>
+              <div class="flex items-center gap-2 min-w-0"><span class="w-2 h-2 rounded-full bg-slate-300 flex-shrink-0"></span><div class="min-w-0"><p class="text-[11px] font-semibold text-ink truncate">Alun-Alun</p><p class="text-[9px] text-slate-400">≈ 5.5 km · 14 mnt</p></div></div>
               <p class="text-[11px] font-bold text-slate-600 flex-shrink-0">Rp 12.700</p>
-            </div>
-            <div class="dest-item border border-slate-200 rounded-xl px-2.5 py-2 flex items-center justify-between" data-km="4" data-name="RSAD Rangkasbitung">
-              <div class="flex items-center gap-2 min-w-0">
-                <span class="w-2 h-2 rounded-full bg-slate-300 flex-shrink-0"></span>
-                <div class="min-w-0">
-                  <p class="text-[11px] font-semibold text-ink truncate">RSAD Rangkasbitung</p>
-                  <p class="text-[9px] text-slate-400">≈ 4 km · 11 mnt</p>
-                </div>
-              </div>
-              <p class="text-[11px] font-bold text-slate-600 flex-shrink-0">Rp 9.200</p>
-            </div>
-            <div class="dest-item border border-slate-200 rounded-xl px-2.5 py-2 flex items-center justify-between" data-km="3.5" data-name="Terminal Mandala">
-              <div class="flex items-center gap-2 min-w-0">
-                <span class="w-2 h-2 rounded-full bg-slate-300 flex-shrink-0"></span>
-                <div class="min-w-0">
-                  <p class="text-[11px] font-semibold text-ink truncate">Terminal Mandala</p>
-                  <p class="text-[9px] text-slate-400">≈ 3.5 km · 10 mnt</p>
-                </div>
-              </div>
-              <p class="text-[11px] font-bold text-slate-600 flex-shrink-0">Rp 8.100</p>
             </div>
           </div>
           <div class="mt-3 bg-slate-50 rounded-xl p-2.5">
@@ -423,24 +288,17 @@
             <input id="jarakSlider" type="range" min="1" max="20" step="0.1" value="6">
           </div>
           <div class="mt-3 bg-gradient-to-br from-brand to-emerald-600 rounded-xl p-3 text-white">
-            <div class="flex items-center justify-between text-[10px] text-white/80 mb-1">
-              <span>Jarak</span><span id="summaryJarak">6 km</span>
-            </div>
-            <div class="flex items-center justify-between text-[10px] text-white/80 mb-1.5">
-              <span>Tarif (Rp 2.300/km)</span><span id="summaryDasar">Rp 13.800</span>
-            </div>
             <div class="border-t border-white/20 pt-1.5 flex items-center justify-between">
-              <span class="text-[11px] font-semibold">Total</span>
+              <span class="text-[11px] font-semibold">Total Tarif</span>
               <span id="summaryTotal" class="text-lg font-extrabold inline-block">Rp 13.800</span>
             </div>
-            <p id="minNote" class="text-[9px] text-white/70 mt-1 leading-tight hidden">*Tarif minimum Rp 8.000 diterapkan</p>
           </div>
           <button id="pesanBtn" class="w-full mt-2.5 bg-brand hover:bg-brand-dark text-white font-bold text-xs py-3 rounded-xl shadow-lg shadow-brand/30 transition">
             Pesan OZbike · Rp 13.800
           </button>
         </div>
       </div>
-      <p class="text-xs font-semibold text-slate-500 tracking-wide">② OZRIDE + ANIMASI TARIF</p>
+      <p class="text-xs font-semibold text-slate-500 tracking-wide">② PESAN OZRIDE</p>
     </div>
 
     <!-- ============ SCREEN 3: PAYMENT ============ -->
@@ -456,16 +314,9 @@
         </div>
         <div class="h-full overflow-y-auto scroll px-5 pt-4 pb-28">
           <div class="flex items-center gap-3 mb-5">
-            <div class="w-9 h-9 rounded-full bg-slate-100 flex items-center justify-center">
-              <svg class="w-4 h-4 text-ink" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
-            </div>
             <h2 class="font-extrabold text-ink text-lg">Pembayaran</h2>
           </div>
           <div class="bg-gradient-to-br from-ink to-slate-800 rounded-2xl p-4 text-white mb-5">
-            <div class="flex justify-between text-[11px] text-white/60 mb-1">
-              <span>OZride · OZbike</span>
-              <span id="payJarak">6 km</span>
-            </div>
             <p class="text-sm font-semibold mb-3">Mabu Park → <span id="payTujuan">Pasar Rangkasbitung</span></p>
             <div class="border-t border-white/10 pt-3 flex justify-between items-end">
               <span class="text-[11px] text-white/60">Total</span>
@@ -475,28 +326,21 @@
           <p class="font-bold text-ink text-sm mb-3">Pilih Metode Pembayaran</p>
           <div class="border-2 border-brand bg-brand-light rounded-2xl p-3 flex items-center gap-3 mb-2">
             <div class="w-9 h-9 rounded-lg bg-white flex items-center justify-center text-lg">💵</div>
-            <div class="flex-1"><p class="text-sm font-bold text-ink">Cash / Tunai</p><p class="text-[10px] text-slate-500">Bayar langsung ke driver</p></div>
-            <div class="w-5 h-5 rounded-full border-2 border-brand bg-brand flex items-center justify-center">
-              <svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
-            </div>
+            <div class="flex-1"><p class="text-sm font-bold text-ink">Cash / Tunai</p></div>
           </div>
           <div class="border border-slate-200 rounded-2xl p-3 flex items-center gap-3 mb-2">
             <div class="w-9 h-9 rounded-lg bg-blue-50 flex items-center justify-center text-lg">📱</div>
-            <div class="flex-1"><p class="text-sm font-bold text-ink">E-Wallet</p><p class="text-[10px] text-slate-500">GoPay · OVO · DANA · ShopeePay</p></div>
-            <div class="w-5 h-5 rounded-full border-2 border-slate-200"></div>
+            <div class="flex-1"><p class="text-sm font-bold text-ink">E-Wallet</p></div>
           </div>
           <div class="border border-slate-200 rounded-2xl p-3 flex items-center gap-3 mb-2">
             <div class="w-9 h-9 rounded-lg bg-amber-50 flex items-center justify-center text-lg">🏦</div>
-            <div class="flex-1"><p class="text-sm font-bold text-ink">Transfer Bank</p><p class="text-[10px] text-slate-500">BCA · Mandiri · BRI · BNI</p></div>
-            <div class="w-5 h-5 rounded-full border-2 border-slate-200"></div>
+            <div class="flex-1"><p class="text-sm font-bold text-ink">Transfer Bank</p></div>
           </div>
           <div class="border border-slate-200 rounded-2xl p-3 flex items-center gap-3 mb-2">
             <div class="w-9 h-9 rounded-lg bg-purple-50 flex items-center justify-center text-lg">▦</div>
-            <div class="flex-1"><p class="text-sm font-bold text-ink">QRIS</p><p class="text-[10px] text-slate-500">Scan semua e-wallet & m-banking</p></div>
-            <div class="w-5 h-5 rounded-full border-2 border-slate-200"></div>
+            <div class="flex-1"><p class="text-sm font-bold text-ink">QRIS</p></div>
           </div>
           <div class="mt-4 bg-emerald-50 border border-emerald-100 rounded-2xl p-3 flex items-start gap-2.5">
-            <svg class="w-4 h-4 text-emerald-600 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M17.5 14.4c-.3-.1-1.7-.8-1.9-.9-.3-.1-.5-.1-.7.1-.2.3-.7.9-.9 1.1-.2.2-.3.2-.6.1-.3-.1-1.2-.5-2.3-1.4-.8-.7-1.4-1.6-1.5-1.9-.2-.3 0-.4.1-.6.1-.1.3-.3.4-.5.1-.2.2-.3.3-.5.1-.2 0-.3 0-.5 0-.1-.7-1.6-.9-2.2-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.4 0 1.4 1 2.8 1.2 3 .1.2 2 3.1 4.9 4.3.7.3 1.2.5 1.6.6.7.2 1.3.2 1.8.1.5-.1 1.7-.7 1.9-1.4.2-.7.2-1.3.2-1.4-.1-.2-.3-.2-.5-.3zM12 2C6.5 2 2 6.5 2 12c0 1.8.5 3.4 1.3 4.8L2 22l5.3-1.3c1.4.7 3 1.2 4.7 1.2 5.5 0 10-4.5 10-10S17.5 2 12 2z"/></svg>
             <p class="text-[10px] text-emerald-800 leading-relaxed">Konfirmasi pesanan akan dikirim ke WhatsApp <span class="font-bold">0856-8080-847</span></p>
           </div>
         </div>
@@ -511,125 +355,77 @@
 
   </main>
 
-  <footer class="max-w-3xl mx-auto text-center mt-14 text-xs text-slate-400">
-    <p><b class="text-slate-600">OZgo</b> · Ride · Send · Food · Mart — Area Rangkasbitung</p>
-    <p class="mt-1">Rumus: <code class="bg-slate-200 px-1.5 py-0.5 rounded">MAX(Rp 8.000, ⌈jarak × Rp 2.300 ÷ 100⌉ × 100)</code></p>
-  </footer>
-
 <script>
-  // ============================================================
-  // KONFIGURASI TARIF
-  // ============================================================
   const TARIF_PER_KM = 2300;
   const TARIF_MINIMUM = 8000;
   const PEMBULATAN = 100;
+  const WA_NUMBER = "628568080847"; // Nomor WhatsApp Anda (awali dengan 62)
 
   function hitungTarif(jarakKm) {
     const dasar = jarakKm * TARIF_PER_KM;
     const dibulatkan = Math.ceil(dasar / PEMBULATAN) * PEMBULATAN;
-    return {
-      dasar,
-      dibulatkan,
-      final: Math.max(TARIF_MINIMUM, dibulatkan),
-      isMin: dibulatkan < TARIF_MINIMUM
-    };
+    return Math.max(TARIF_MINIMUM, dibulatkan);
   }
-
-  function formatRp(n) {
-    return 'Rp ' + n.toLocaleString('id-ID');
-  }
-
-  // ============================================================
-  // ANIMASI ANGKA (count up/down)
-  // ============================================================
-  function animatePrice(el, from, to, duration = 380) {
-    if (from === to) {
-      el.textContent = formatRp(to);
-      return;
-    }
-    const start = performance.now();
-    const diff = to - from;
-    el.classList.add('flash');
-    setTimeout(() => el.classList.remove('flash'), 220);
-
-    function tick(now) {
-      const p = Math.min(1, (now - start) / duration);
-      const eased = 1 - Math.pow(1 - p, 3); // ease-out cubic
-      const val = Math.round(from + diff * eased);
-      el.textContent = formatRp(val);
-      if (p < 1) requestAnimationFrame(tick);
-    }
-    requestAnimationFrame(tick);
-  }
-
-  // ============================================================
-  // OZRIDE CALCULATOR
-  // ============================================================
-  const slider = document.getElementById('jarakSlider');
-  const jarakLabel = document.getElementById('jarakLabel');
-  const summaryJarak = document.getElementById('summaryJarak');
-  const summaryDasar = document.getElementById('summaryDasar');
-  const summaryTotal = document.getElementById('summaryTotal');
-  const minNote = document.getElementById('minNote');
-  const pesanBtn = document.getElementById('pesanBtn');
-  const bayarBtn = document.getElementById('bayarBtn');
-  const payJarak = document.getElementById('payJarak');
-  const payTujuan = document.getElementById('payTujuan');
-  const payTotal = document.getElementById('payTotal');
+  function formatRp(n) { return 'Rp ' + n.toLocaleString('id-ID'); }
 
   let currentPrice = 13800;
   let currentDestName = 'Pasar Rangkasbitung';
+  let currentJarak = 6;
 
   function updateUI(jarakKm, destName) {
-    const { final, isMin } = hitungTarif(jarakKm);
+    const final = hitungTarif(jarakKm);
     const jarakStr = jarakKm.toFixed(1).replace(/\.0$/, '') + ' km';
-
-    jarakLabel.textContent = jarakStr;
-    summaryJarak.textContent = jarakStr;
-    summaryDasar.textContent = isMin ? 'Tarif minimum' : formatRp(jarakKm * TARIF_PER_KM);
-    minNote.classList.toggle('hidden', !isMin);
-    pesanBtn.textContent = `Pesan OZbike · ${formatRp(final)}`;
-    bayarBtn.textContent = `Bayar Sekarang · ${formatRp(final)}`;
-    payJarak.textContent = jarakStr;
-    payTujuan.textContent = destName || 'Tujuan kustom';
-    payTotal.textContent = formatRp(final);
-
-    // Animasi angka kunci
-    animatePrice(summaryTotal, currentPrice, final);
+    
+    document.getElementById('jarakLabel').textContent = jarakStr;
+    document.getElementById('pesanBtn').textContent = `Pesan OZbike · ${formatRp(final)}`;
+    document.getElementById('bayarBtn').textContent = `Bayar Sekarang · ${formatRp(final)}`;
+    document.getElementById('payTujuan').textContent = destName;
+    document.getElementById('payTotal').textContent = formatRp(final);
+    document.getElementById('summaryTotal').textContent = formatRp(final);
+    
     currentPrice = final;
+    currentDestName = destName;
+    currentJarak = jarakKm;
   }
 
-  slider.addEventListener('input', (e) => {
-    document.querySelectorAll('.dest-item').forEach(el => {
-      el.classList.remove('active');
-      const dot = el.querySelector('.w-2');
-      if (dot) dot.classList.replace('bg-red-500', 'bg-slate-300');
-    });
-    currentDestName = 'Tujuan kustom';
-    updateUI(parseFloat(e.target.value), 'Tujuan kustom');
+  document.getElementById('jarakSlider').addEventListener('input', (e) => {
+    document.querySelectorAll('.dest-item').forEach(el => el.classList.remove('active'));
+    updateUI(parseFloat(e.target.value), 'Tujuan Kustom');
   });
 
   document.querySelectorAll('.dest-item').forEach(item => {
     item.addEventListener('click', () => {
-      document.querySelectorAll('.dest-item').forEach(el => {
-        el.classList.remove('active');
-        const dot = el.querySelector('.w-2');
-        if (dot) dot.classList.replace('bg-red-500', 'bg-slate-300');
-      });
+      document.querySelectorAll('.dest-item').forEach(el => el.classList.remove('active'));
       item.classList.add('active');
-      item.querySelector('.w-2').classList.replace('bg-slate-300', 'bg-red-500');
       const km = parseFloat(item.dataset.km);
-      currentDestName = item.dataset.name;
-      slider.value = km;
-      updateUI(km, currentDestName);
+      const name = item.dataset.name;
+      document.getElementById('jarakSlider').value = km;
+      updateUI(km, name);
     });
   });
 
   updateUI(6, 'Pasar Rangkasbitung');
 
-  // ============================================================
-  // OZBUDEMEN SHEET
-  // ============================================================
+  // ==========================================
+  // LOGIKA KIRIM PESANAN KE WHATSAPP
+  // ==========================================
+  function kirimKeWhatsApp(metode) {
+    const pesan = `Halo Admin OZgo, saya ingin memesan:%0A%0A*Layanan:* OZride (OZbike)%0A*Jemput:* Mabu Park, Aweh%0A*Tujuan:* ${currentDestName}%0A*Jarak:* ${currentJarak} km%0A*Total Tarif:* ${formatRp(currentPrice)}%0A*Pembayaran:* ${metode}%0A%0AMohon segera diproses ya. Terima kasih!`;
+    const waLink = `https://wa.me/${WA_NUMBER}?text=${pesan}`;
+    window.open(waLink, '_blank');
+  }
+
+  document.getElementById('pesanBtn').addEventListener('click', () => {
+    kirimKeWhatsApp('Cash (Bayar di Tempat)');
+  });
+
+  document.getElementById('bayarBtn').addEventListener('click', () => {
+    kirimKeWhatsApp('Sesuai Pilihan di Aplikasi');
+  });
+
+  // ==========================================
+  // OZBUDEMEN LOGIC
+  // ==========================================
   const sheet = document.getElementById('budemenSheet');
   const panel = document.getElementById('budemenPanel');
   const backdrop = document.getElementById('budemenBackdrop');
@@ -637,22 +433,15 @@
   const priceSlider = document.getElementById('budemenSlider');
   const konfirmasiBtn = document.getElementById('konfirmasiBudemen');
   const toast = document.getElementById('toast');
-  const toastText = document.getElementById('toastText');
-  const budemenCard = document.getElementById('budemenCard');
-  const budemenBtn = document.getElementById('budemenBtn');
-
   let budemenActive = false;
 
   function openBudemen() {
     if (budemenActive) {
-      showToast('OZbudemen kamu aktif · 30 hari tersisa');
+      showToast('OZbudemen kamu aktif');
       return;
     }
     sheet.classList.remove('hidden');
-    requestAnimationFrame(() => {
-      panel.style.transform = 'translateY(0)';
-      backdrop.style.opacity = '1';
-    });
+    setTimeout(() => { panel.style.transform = 'translateY(0)'; backdrop.style.opacity = '1'; }, 10);
   }
 
   function closeBudemen() {
@@ -672,38 +461,26 @@
     closeBudemen();
     setTimeout(() => {
       budemenActive = true;
-      showToast(`OZbudemen aktif! ${formatRp(val)} · 30 hari`);
-      // Ubah kartu jadi state aktif
-      budemenCard.innerHTML = `
+      showToast(`OZbudemen aktif!`);
+      // Kirim ke WA
+      const pesan = `Halo Admin OZgo, saya ingin mengaktifkan *OZbudemen* selama 1 bulan.%0A%0AKontribusi yang saya pilih: *${formatRp(val)}*%0A%0AMohon dibantu prosesnya. Terima kasih!`;
+      window.open(`https://wa.me/${WA_NUMBER}?text=${pesan}`, '_blank');
+      
+      document.getElementById('budemenCard').innerHTML = `
         <div class="relative z-10">
           <div class="flex items-center justify-between mb-1">
-            <span class="text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 inline-flex items-center gap-1 px-2 py-0.5 rounded-full">
-              <svg class="w-2.5 h-2.5" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
-              AKTIF
-            </span>
-            <span class="text-[10px] text-white/50 font-semibold">OZbudemen</span>
+            <span class="text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 inline-flex items-center gap-1 px-2 py-0.5 rounded-full">✓ AKTIF</span>
           </div>
           <p class="font-extrabold text-lg leading-tight text-white mt-1">Kamu <span class="text-emerald-300">Prioritas</span>!</p>
-          <p class="text-[11px] text-white/70 mt-1 leading-relaxed">Driver prioritas & tanpa antre aktif sampai <span class="text-white font-semibold">30 hari ke depan</span>.</p>
-          <div class="flex items-center justify-between mt-3 pt-3 border-t border-white/10">
-            <div>
-              <p class="text-[9px] text-white/50 leading-none">Sisa waktu</p>
-              <p class="text-sm font-extrabold text-emerald-300 mt-0.5">30 hari</p>
-            </div>
-            <button class="bg-white/10 hover:bg-white/20 text-white text-[11px] font-extrabold px-3 py-2 rounded-lg transition">Kelola</button>
-          </div>
+          <p class="text-[11px] text-white/70 mt-1">Driver prioritas aktif 30 hari ke depan.</p>
         </div>`;
     }, 380);
   }
 
   function showToast(msg) {
-    toastText.textContent = msg;
+    document.getElementById('toastText').textContent = msg;
     toast.classList.remove('hidden');
-    toast.classList.add('toast-in');
-    setTimeout(() => {
-      toast.classList.add('hidden');
-      toast.classList.remove('toast-in');
-    }, 2800);
+    setTimeout(() => toast.classList.add('hidden'), 2800);
   }
 </script>
 </body>
