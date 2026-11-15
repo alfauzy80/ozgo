@@ -32,6 +32,8 @@
   .loader { border: 3px solid #f3f3f3; border-top: 3px solid #00A86B; border-radius: 50%; width: 20px; height: 20px; animation: spin 1s linear infinite; }
   @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
   .autocomplete-list { max-height: 200px; overflow-y: auto; z-index: 2000; }
+  /* Teks bantuan geser pin */
+  .drag-hint { font-size: 10px; color: #64748b; margin-left: 26px; margin-top: 4px; display: none; }
 </style>
 </head>
 <body class="bg-slate-50 text-ink">
@@ -102,15 +104,20 @@
 
       <!-- Input Lokasi -->
       <div class="bg-slate-50 border border-slate-200 rounded-xl p-3 mb-3 relative">
-        <div class="flex items-center gap-3 mb-2">
+        <div class="flex items-center gap-3 mb-1">
           <span class="w-2.5 h-2.5 rounded-full bg-brand ring-4 ring-emerald-100"></span>
-          <input type="text" id="input-jemput" placeholder="Lokasi Jemput (cth: Mabu Park)" class="search-input w-full bg-transparent text-sm font-semibold text-ink placeholder-slate-400" oninput="cariLokasi(this.value, 'jemput')">
+          <input type="text" id="input-jemput" placeholder="Ketik Lokasi Jemput..." class="search-input w-full bg-transparent text-sm font-semibold text-ink placeholder-slate-400" oninput="cariLokasi(this.value, 'jemput')">
         </div>
-        <hr class="border-slate-200 ml-6 mb-2">
-        <div class="flex items-center gap-3">
+        <p id="hint-jemput" class="drag-hint">📍 Geser pin di peta untuk akurasi</p>
+        
+        <hr class="border-slate-200 ml-6 mb-2 mt-2">
+        
+        <div class="flex items-center gap-3 mb-1">
           <span class="w-2.5 h-2.5 rounded-full bg-red-500 ring-4 ring-red-100"></span>
-          <input type="text" id="input-tujuan" placeholder="Lokasi Tujuan (cth: Pasar Rangkasbitung)" class="search-input w-full bg-transparent text-sm font-semibold text-ink placeholder-slate-400" oninput="cariLokasi(this.value, 'tujuan')">
+          <input type="text" id="input-tujuan" placeholder="Ketik Lokasi Tujuan..." class="search-input w-full bg-transparent text-sm font-semibold text-ink placeholder-slate-400" oninput="cariLokasi(this.value, 'tujuan')">
         </div>
+        <p id="hint-tujuan" class="drag-hint">📍 Geser pin di peta untuk akurasi</p>
+
         <!-- Autocomplete Hasil Pencarian -->
         <div id="list-jemput" class="autocomplete-list absolute left-0 right-0 mt-1 bg-white border border-slate-200 rounded-xl shadow-lg hidden"></div>
         <div id="list-tujuan" class="autocomplete-list absolute left-0 right-0 mt-1 bg-white border border-slate-200 rounded-xl shadow-lg hidden"></div>
@@ -154,7 +161,6 @@
     // ==========================================
     // 1. INISIALISASI PETA
     // ==========================================
-    // Koordinat awal di Rangkasbitung
     const map = L.map('map', { zoomControl: false }).setView([-6.3591, 106.2494], 14);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19, attribution: '© OpenStreetMap'
@@ -189,10 +195,15 @@
       document.getElementById('view-order').classList.remove('hidden');
       document.getElementById('btnBack').classList.remove('hidden');
 
-      // Sembunyikan info tarif awal
       document.getElementById('info-tarif').classList.add('hidden');
-      document.getElementById('btn-pesan').disabled = true;
-      document.getElementById('btn-pesan').textContent = 'Lengkapi Lokasi';
+      document.getElementById('hint-jemput').style.display = 'none';
+      document.getElementById('hint-tujuan').style.display = 'none';
+      
+      const btn = document.getElementById('btn-pesan');
+      btn.disabled = true;
+      btn.textContent = 'Lengkapi Lokasi';
+      btn.classList.add('bg-slate-400');
+      btn.classList.remove('bg-brand');
     }
 
     function resetApp() {
@@ -200,7 +211,6 @@
       document.getElementById('view-home').classList.remove('hidden');
       document.getElementById('btnBack').classList.add('hidden');
       
-      // Reset form & map
       document.getElementById('input-jemput').value = '';
       document.getElementById('input-tujuan').value = '';
       document.getElementById('list-jemput').classList.add('hidden');
@@ -243,7 +253,7 @@
                 const div = document.createElement('div');
                 div.className = 'p-3 text-xs border-b border-slate-100 cursor-pointer hover:bg-slate-50';
                 div.innerHTML = `<p class="font-bold text-ink">${item.name}</p><p class="text-slate-400">${item.display_name}</p>`;
-                div.onclick = () => pilihLokasi(item.lat, item.lon, item.display_name.split(',')[0], tipe);
+                div.onclick = () => pilihLokasi(item.lat, item.lon, item.name || item.display_name.split(',')[0], tipe);
                 listDiv.appendChild(div);
               });
             }
@@ -256,22 +266,54 @@
       const pos = [parseFloat(lat), parseFloat(lon)];
       document.getElementById(`input-${tipe}`).value = nama;
       document.getElementById(`list-${tipe}`).classList.add('hidden');
+      document.getElementById(`hint-${tipe}`).style.display = 'block'; // Tampilkan hint geser
 
       if (tipe === 'jemput') {
         koordinatJemput = pos;
         if (pickupMarker) map.removeLayer(pickupMarker);
-        pickupMarker = L.marker(pos).addTo(map).bindPopup('Jemput').openPopup();
-        map.setView(pos, 15);
+        // Marker bisa digeser (draggable)
+        pickupMarker = L.marker(pos, { draggable: true }).addTo(map).bindPopup('Jemput').openPopup();
+        
+        // Event saat pin digeser
+        pickupMarker.on('dragend', function (e) {
+          const newPos = e.target.getLatLng();
+          koordinatJemput = [newPos.lat, newPos.lng];
+          updateAlamatDariKoordinat(newPos.lat, newPos.lng, 'jemput');
+        });
+        
+        map.setView(pos, 16);
       } else {
         koordinatTujuan = pos;
         if (destMarker) map.removeLayer(destMarker);
-        destMarker = L.marker(pos).addTo(map).bindPopup('Tujuan');
-        map.setView(pos, 15);
+        // Marker bisa digeser (draggable)
+        destMarker = L.marker(pos, { draggable: true }).addTo(map).bindPopup('Tujuan').openPopup();
+        
+        // Event saat pin digeser
+        destMarker.on('dragend', function (e) {
+          const newPos = e.target.getLatLng();
+          koordinatTujuan = [newPos.lat, newPos.lng];
+          updateAlamatDariKoordinat(newPos.lat, newPos.lng, 'tujuan');
+        });
+        
+        map.setView(pos, 16);
       }
 
       if (koordinatJemput && koordinatTujuan) {
         hitungRute();
       }
+    }
+
+    // Mengubah koordinat menjadi nama jalan saat pin digeser
+    function updateAlamatDariKoordinat(lat, lon, tipe) {
+      fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`)
+        .then(res => res.json())
+        .then(data => {
+          if (data && data.display_name) {
+            const namaSingkat = data.name || data.display_name.split(',')[0];
+            document.getElementById(`input-${tipe}`).value = namaSingkat;
+          }
+          if (koordinatJemput && koordinatTujuan) hitungRute();
+        });
     }
 
     // ==========================================
@@ -291,23 +333,19 @@
           document.getElementById('loading-rute').classList.remove('flex');
 
           if (data.code === 'Ok') {
-            // 1. Ambil Jarak
             const jarakMeter = data.routes[0].distance;
             jarakKm = parseFloat((jarakMeter / 1000).toFixed(1));
             
-            // 2. Hitung Tarif (Rp 2.300/km, min Rp 8.000)
+            // Tarif: Rp 2.300/km, min Rp 8.000
             let dasar = jarakKm * 2300;
             totalTarif = Math.ceil(dasar / 100) * 100;
             if (totalTarif < 8000) totalTarif = 8000;
 
-            // 3. Tampilkan Garis Rute di Peta
             if (routeLine) map.removeLayer(routeLine);
             routeLine = L.geoJSON(data.routes[0].geometry, { style: { color: '#00A86B', weight: 6, opacity: 0.8 } }).addTo(map);
             
-            // 4. Zoom Peta agar muat kedua titik
             map.fitBounds(routeLine.getBounds(), { padding: [50, 50] });
 
-            // 5. Update UI
             document.getElementById('txt-jarak').textContent = jarakKm + ' km';
             document.getElementById('txt-tarif').textContent = formatRp(totalTarif);
             document.getElementById('info-tarif').classList.remove('hidden');
@@ -318,7 +356,7 @@
             btn.classList.remove('bg-slate-400');
             btn.classList.add('bg-brand');
           } else {
-            alert("Rute tidak ditemukan. Pastikan lokasi masih di area yang diizinkan.");
+            alert("Rute tidak ditemukan.");
           }
         })
         .catch(err => {
@@ -330,12 +368,17 @@
     function formatRp(n) { return 'Rp ' + n.toLocaleString('id-ID'); }
 
     // ==========================================
-    // 6. KIRIM PESANAN KE WHATSAPP
+    // 6. KIRIM PESANAN KE WHATSAPP + LINK GMAPS
     // ==========================================
     function prosesPesanan() {
       const jemput = document.getElementById('input-jemput').value;
       const tujuan = document.getElementById('input-tujuan').value;
       const metode = document.getElementById('metode-bayar').value;
+
+      // Format Link Google Maps
+      const gmapsJemput = `https://maps.google.com/?q=${koordinatJemput[0]},${koordinatJemput[1]}`;
+      const gmapsTujuan = `https://maps.google.com/?q=${koordinatTujuan[0]},${koordinatTujuan[1]}`;
+      const gmapsRute = `https://www.google.com/maps/dir/?api=1&origin=${koordinatJemput[0]},${koordinatJemput[1]}&destination=${koordinatTujuan[0]},${koordinatTujuan[1]}`;
 
       const pesan = `Halo Admin *OZgo*, saya ingin memesan:%0A%0A` +
                     `*Layanan:* ${layananAktif}%0A` +
@@ -344,11 +387,14 @@
                     `*Jarak:* ${jarakKm} km%0A` +
                     `*Total Tarif:* ${formatRp(totalTarif)}%0A` +
                     `*Pembayaran:* ${metode}%0A%0A` +
+                    `📍 *Buka di Google Maps:*%0A` +
+                    `- Titik Jemput: ${gmapsJemput}%0A` +
+                    `- Titik Tujuan: ${gmapsTujuan}%0A` +
+                    `- Rute Perjalanan: ${gmapsRute}%0A%0A` +
                     `Mohon segera diproses ya. Terima kasih!`;
 
       window.open(`https://wa.me/${WA_NUMBER}?text=${pesan}`, '_blank');
       
-      // Kembali ke home setelah kirim
       setTimeout(() => { resetApp(); }, 1000);
     }
   </script>
