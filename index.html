@@ -235,7 +235,7 @@
     }
 
     // ==========================================
-    // 4. PENCARIAN LOKASI (NOMINATIM & OVERPASS)
+    // 4. PENCARIAN LOKASI (ANTI-TYPO & OVERPASS)
     // ==========================================
     let timeoutSearch = null;
     function cariLokasi(query, tipe) {
@@ -252,8 +252,11 @@
         listDiv.classList.remove('hidden');
 
         const queryLower = query.toLowerCase().trim();
-        // Deteksi jika mencari fasilitas kesehatan
-        const isMedis = /^(rs|rumah sakit|puskesmas|klinik|dokter|apotek)$/i.test(queryLower);
+        
+        // DETEKSI KATA KUNCI YANG LEBIH LUAS (Mengakomodasi Typo)
+        // Jika mengandung kata "sakit", "rs", "klinik", "puskesmas", dll.
+        const kataKunciMedis = ['sakit', 'rs', 'klinik', 'puskesmas', 'dokter', 'apotek', 'hospital', 'clinic'];
+        const isMedis = kataKunciMedis.some(kata => queryLower.includes(kata));
         
         let results = [];
 
@@ -261,13 +264,12 @@
           if (isMedis) {
             // --- OVERPASS API: Mencari SEMUA Fasilitas Kesehatan di radius 15km ---
             const overpassUrl = 'https://overpass-api.de/api/interpreter';
-            // Mencari node/way dengan tag amenity hospital, clinic, doctors, atau pharmacy
             const overpassQuery = `
               [out:json][timeout:15];
               (
                 nwr["amenity"~"hospital|clinic|doctors|pharmacy"](around:15000,-6.3591,106.2494);
               );
-              out center;
+              out center 30;
             `;
             
             const res = await fetch(overpassUrl, { method: 'POST', body: overpassQuery });
@@ -289,6 +291,10 @@
                     });
                 }
             });
+            
+            // Urutkan berdasarkan nama A-Z
+            results.sort((a, b) => a.name.localeCompare(b.name));
+            
           } else {
             // --- NOMINATIM API: Pencarian Tempat Umum (Mall, Jalan, dll) ---
             const queryPencarian = `${query} Rangkasbitung`;
