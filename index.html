@@ -32,7 +32,6 @@
   .loader { border: 3px solid #f3f3f3; border-top: 3px solid #00A86B; border-radius: 50%; width: 20px; height: 20px; animation: spin 1s linear infinite; }
   @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
   .autocomplete-list { max-height: 200px; overflow-y: auto; z-index: 2000; }
-  /* Teks bantuan geser pin */
   .drag-hint { font-size: 10px; color: #64748b; margin-left: 26px; margin-top: 4px; display: none; }
 </style>
 </head>
@@ -41,7 +40,7 @@
   <!-- PETA FULL SCREEN -->
   <div id="map"></div>
 
-  <!-- TOMBOL KEMBALI (Jika di halaman order) -->
+  <!-- TOMBOL KEMBALI -->
   <button id="btnBack" onclick="resetApp()" class="hidden absolute top-4 left-4 z-[1000] w-10 h-10 bg-white rounded-full shadow-lg flex items-center justify-center active:scale-95">
     <svg class="w-5 h-5 text-ink" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
   </button>
@@ -159,9 +158,18 @@
   <!-- SCRIPT LOGIKA APLIKASI -->
   <script>
     // ==========================================
-    // 1. INISIALISASI PETA
+    // 1. INISIALISASI PETA & BATAS WILAYAH
     // ==========================================
     const map = L.map('map', { zoomControl: false }).setView([-6.3591, 106.2494], 14);
+    
+    // KUNCI PETA: Hanya bisa digeser di area Rangkasbitung
+    const batasRangkasbitung = [
+      [-6.50, 106.10], // Batas Bawah Kiri (Southwest)
+      [-6.20, 106.40]  // Batas Atas Kanan (Northeast)
+    ];
+    map.setMaxBounds(batasRangkasbitung);
+    map.setMinZoom(12); // Minimal zoom agar tidak terlalu jauh
+
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19, attribution: '© OpenStreetMap'
     }).addTo(map);
@@ -228,7 +236,7 @@
     }
 
     // ==========================================
-    // 4. PENCARIAN LOKASI (Geocoding)
+    // 4. PENCARIAN LOKASI (Hanya Area Rangkasbitung)
     // ==========================================
     let timeoutSearch = null;
     function cariLokasi(query, tipe) {
@@ -241,13 +249,14 @@
       }
 
       timeoutSearch = setTimeout(() => {
-        // Batasi pencarian di area Banten/Rangkasbitung
-        fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${query}&viewbox=105.5,-5.8,106.8,-7.0&bounded=1&limit=5`)
+        // viewbox=106.15,-6.25,106.35,-6.45 : Membatasi kotak pencarian hanya di Rangkasbitung
+        // bounded=1 : Memaksa hasil HARUS di dalam kotak tersebut
+        fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${query}&viewbox=106.15,-6.25,106.35,-6.45&bounded=1&limit=5&countrycodes=id`)
           .then(res => res.json())
           .then(data => {
             listDiv.innerHTML = '';
             if (data.length === 0) {
-              listDiv.innerHTML = '<div class="p-3 text-xs text-slate-500">Lokasi tidak ditemukan.</div>';
+              listDiv.innerHTML = '<div class="p-3 text-xs text-slate-500">Lokasi tidak ditemukan di area Rangkasbitung.</div>';
             } else {
               data.forEach(item => {
                 const div = document.createElement('div');
@@ -266,15 +275,13 @@
       const pos = [parseFloat(lat), parseFloat(lon)];
       document.getElementById(`input-${tipe}`).value = nama;
       document.getElementById(`list-${tipe}`).classList.add('hidden');
-      document.getElementById(`hint-${tipe}`).style.display = 'block'; // Tampilkan hint geser
+      document.getElementById(`hint-${tipe}`).style.display = 'block';
 
       if (tipe === 'jemput') {
         koordinatJemput = pos;
         if (pickupMarker) map.removeLayer(pickupMarker);
-        // Marker bisa digeser (draggable)
         pickupMarker = L.marker(pos, { draggable: true }).addTo(map).bindPopup('Jemput').openPopup();
         
-        // Event saat pin digeser
         pickupMarker.on('dragend', function (e) {
           const newPos = e.target.getLatLng();
           koordinatJemput = [newPos.lat, newPos.lng];
@@ -285,10 +292,8 @@
       } else {
         koordinatTujuan = pos;
         if (destMarker) map.removeLayer(destMarker);
-        // Marker bisa digeser (draggable)
         destMarker = L.marker(pos, { draggable: true }).addTo(map).bindPopup('Tujuan').openPopup();
         
-        // Event saat pin digeser
         destMarker.on('dragend', function (e) {
           const newPos = e.target.getLatLng();
           koordinatTujuan = [newPos.lat, newPos.lng];
@@ -303,7 +308,6 @@
       }
     }
 
-    // Mengubah koordinat menjadi nama jalan saat pin digeser
     function updateAlamatDariKoordinat(lat, lon, tipe) {
       fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`)
         .then(res => res.json())
@@ -336,7 +340,6 @@
             const jarakMeter = data.routes[0].distance;
             jarakKm = parseFloat((jarakMeter / 1000).toFixed(1));
             
-            // Tarif: Rp 2.300/km, min Rp 8.000
             let dasar = jarakKm * 2300;
             totalTarif = Math.ceil(dasar / 100) * 100;
             if (totalTarif < 8000) totalTarif = 8000;
@@ -375,7 +378,6 @@
       const tujuan = document.getElementById('input-tujuan').value;
       const metode = document.getElementById('metode-bayar').value;
 
-      // Format Link Google Maps
       const gmapsJemput = `https://maps.google.com/?q=${koordinatJemput[0]},${koordinatJemput[1]}`;
       const gmapsTujuan = `https://maps.google.com/?q=${koordinatTujuan[0]},${koordinatTujuan[1]}`;
       const gmapsRute = `https://www.google.com/maps/dir/?api=1&origin=${koordinatJemput[0]},${koordinatJemput[1]}&destination=${koordinatTujuan[0]},${koordinatTujuan[1]}`;
