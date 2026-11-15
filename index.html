@@ -3,12 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>OZgo — Ojek Online Rangkasbitung</title>
+<title>OZgo — Pesan Layanan</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-
 <script>
   tailwind.config = {
     theme: {
@@ -16,6 +13,7 @@
         colors: {
           brand: { DEFAULT: '#00A86B', dark: '#007A4D', light: '#E6F7EF' },
           ink: '#0B1220',
+          inputbg: '#1A2235'
         },
         fontFamily: { sans: ['"Plus Jakarta Sans"', 'sans-serif'] }
       }
@@ -23,340 +21,216 @@
   }
 </script>
 <style>
-  body { font-family: 'Plus Jakarta Sans', sans-serif; -webkit-tap-highlight-color: transparent; overflow: hidden; }
-  #map { width: 100%; height: 100vh; z-index: 0; }
-  .sheet { z-index: 1000; transition: transform 0.3s ease; }
-  .search-input { outline: none; }
-  .search-input:focus { border-color: #00A86B; }
-  .autocomplete-list { max-height: 250px; overflow-y: auto; z-index: 2000; }
+  body { font-family: 'Plus Jakarta Sans', sans-serif; -webkit-tap-highlight-color: transparent; background-color: #0B1220; color: #ffffff; }
+  .app-page { display: none; animation: fadeIn 0.2s ease; }
+  .app-page.active { display: block; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+  .input-dark { background-color: #1A2235; border: 1px solid #2A364F; color: #ffffff; outline: none; }
+  .input-dark:focus { border-color: #00A86B; box-shadow: 0 0 0 2px rgba(0,168,107,0.2); }
+  .input-dark::placeholder { color: #64748B; }
 </style>
 </head>
-<body class="bg-slate-50 text-ink">
+<body class="min-h-screen">
 
-  <div id="map"></div>
+  <!-- ========================================== -->
+  <!-- HALAMAN 1: BERANDA (MENU)                  -->
+  <!-- ========================================== -->
+  <div id="page-home" class="app-page active p-5 max-w-lg mx-auto pt-10">
+    <h1 class="text-2xl font-extrabold mb-1">Mau pesan apa hari ini?</h1>
+    <p class="text-sm text-slate-400 mb-6">Pilih layanan OZgo favoritmu.</p>
+    
+    <div class="grid grid-cols-2 gap-4">
+      <!-- OZride -->
+      <div onclick="bukaForm('OZride')" class="bg-[#1A2235] border border-[#2A364F] rounded-2xl p-4 shadow-sm active:scale-95 transition cursor-pointer flex flex-col items-center">
+        <div class="w-12 h-12 rounded-xl bg-emerald-500/20 flex items-center justify-center mb-3 text-2xl">🏍️</div>
+        <p class="font-bold text-white text-sm">OZride</p>
+        <p class="text-[11px] text-slate-400">Ojek Motor</p>
+      </div>
+      <!-- OZfood -->
+      <div onclick="bukaForm('OZfood')" class="bg-[#1A2235] border border-[#2A364F] rounded-2xl p-4 shadow-sm active:scale-95 transition cursor-pointer flex flex-col items-center">
+        <div class="w-12 h-12 rounded-xl bg-red-500/20 flex items-center justify-center mb-3 text-2xl">🍱</div>
+        <p class="font-bold text-white text-sm">OZfood</p>
+        <p class="text-[11px] text-slate-400">Pesan Makanan</p>
+      </div>
+      <!-- OZsend -->
+      <div onclick="bukaForm('OZsend')" class="bg-[#1A2235] border border-[#2A364F] rounded-2xl p-4 shadow-sm active:scale-95 transition cursor-pointer flex flex-col items-center">
+        <div class="w-12 h-12 rounded-xl bg-orange-500/20 flex items-center justify-center mb-3 text-2xl">📦</div>
+        <p class="font-bold text-white text-sm">OZsend</p>
+        <p class="text-[11px] text-slate-400">Kirim Barang</p>
+      </div>
+      <!-- OZmart -->
+      <div onclick="bukaForm('OZmart')" class="bg-[#1A2235] border border-[#2A364F] rounded-2xl p-4 shadow-sm active:scale-95 transition cursor-pointer flex flex-col items-center">
+        <div class="w-12 h-12 rounded-xl bg-purple-500/20 flex items-center justify-center mb-3 text-2xl">🛒</div>
+        <p class="font-bold text-white text-sm">OZmart</p>
+        <p class="text-[11px] text-slate-400">Belanja Harian</p>
+      </div>
+    </div>
+  </div>
 
-  <button id="btnBack" onclick="resetApp()" class="hidden absolute top-4 left-4 z-[1000] w-10 h-10 bg-white rounded-full shadow-lg flex items-center justify-center active:scale-95">
-    <svg class="w-5 h-5 text-ink" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
-  </button>
-
-  <div class="absolute bottom-0 left-0 right-0 bg-white rounded-t-3xl shadow-[0_-10px_40px_rgba(0,0,0,0.1)] sheet max-w-lg mx-auto px-5 pt-3 pb-6" style="max-height: 85vh; overflow-y: auto;">
-    <div class="w-12 h-1.5 bg-slate-200 rounded-full mx-auto mb-4"></div>
-
-    <!-- MENU UTAMA -->
-    <div id="view-home">
-      <h1 class="text-2xl font-extrabold text-ink mb-1">Mau pesan apa hari ini?</h1>
-      <p class="text-sm text-slate-500 mb-4">Pilih layanan OZgo favoritmu.</p>
-      
-      <div class="grid grid-cols-2 gap-3">
-        <div onclick="pilihLayanan('OZride', '#00A86B', '🏍️')" class="border border-slate-100 bg-white rounded-2xl p-4 shadow-sm active:scale-95 transition cursor-pointer flex flex-col items-center">
-          <div class="w-12 h-12 rounded-xl bg-emerald-100 flex items-center justify-center mb-2 text-2xl">🏍️</div>
-          <p class="font-bold text-ink text-sm">OZride</p>
-          <p class="text-[11px] text-slate-400">Ojek Motor</p>
-        </div>
-        <div onclick="pilihLayanan('OZfood', '#EF4444', '🍱')" class="border border-slate-100 bg-white rounded-2xl p-4 shadow-sm active:scale-95 transition cursor-pointer flex flex-col items-center">
-          <div class="w-12 h-12 rounded-xl bg-red-100 flex items-center justify-center mb-2 text-2xl">🍱</div>
-          <p class="font-bold text-ink text-sm">OZfood</p>
-          <p class="text-[11px] text-slate-400">Pesan Makanan</p>
-        </div>
-        <div onclick="pilihLayanan('OZsend', '#F97316', '📦')" class="border border-slate-100 bg-white rounded-2xl p-4 shadow-sm active:scale-95 transition cursor-pointer flex flex-col items-center">
-          <div class="w-12 h-12 rounded-xl bg-orange-100 flex items-center justify-center mb-2 text-2xl">📦</div>
-          <p class="font-bold text-ink text-sm">OZsend</p>
-          <p class="text-[11px] text-slate-400">Kirim Barang</p>
-        </div>
-        <div onclick="pilihLayanan('OZmart', '#8B5CF6', '🛒')" class="border border-slate-100 bg-white rounded-2xl p-4 shadow-sm active:scale-95 transition cursor-pointer flex flex-col items-center">
-          <div class="w-12 h-12 rounded-xl bg-purple-100 flex items-center justify-center mb-2 text-2xl">🛒</div>
-          <p class="font-bold text-ink text-sm">OZmart</p>
-          <p class="text-[11px] text-slate-400">Belanja Harian</p>
-        </div>
+  <!-- ========================================== -->
+  <!-- HALAMAN 2: FORM PESANAN (PERSIS SS)        -->
+  <!-- ========================================== -->
+  <div id="page-form" class="app-page pb-10 max-w-lg mx-auto">
+    
+    <!-- Header Form -->
+    <div class="bg-[#0F172A] p-5 flex items-center gap-4 border-b border-[#1E293B] sticky top-0 z-50">
+      <button onclick="kembaliKeHome()" class="w-10 h-10 rounded-full bg-[#1E293B] flex items-center justify-center active:scale-90 transition">
+        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+      </button>
+      <div>
+        <h2 id="header-title" class="text-lg font-bold text-white leading-tight">Pesan OZRide</h2>
+        <p class="text-[11px] text-slate-400">Area Rangkasbitung & Sekitarnya</p>
       </div>
     </div>
 
-    <!-- FORM PESANAN -->
-    <div id="view-order" class="hidden">
-      <div class="flex items-center gap-3 mb-4">
-        <div id="icon-layanan" class="w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold text-xl"></div>
-        <div>
-          <h2 id="title-layanan" class="text-lg font-extrabold text-ink">OZride</h2>
-          <p class="text-xs text-slate-500">Tentukan lokasi Anda</p>
+    <div class="p-5 space-y-4">
+      <!-- Nama Pemesan -->
+      <div>
+        <label class="block text-xs font-bold text-slate-400 mb-2 uppercase tracking-wide">Nama Pemesan</label>
+        <input type="text" id="input-nama" placeholder="Masukkan nama Anda" class="w-full input-dark rounded-xl p-3.5 text-sm font-semibold transition">
+      </div>
+
+      <!-- Titik Jemput -->
+      <div>
+        <label class="block text-xs font-bold text-slate-400 mb-2 uppercase tracking-wide">Titik Jemput (Alamat/Patokan)</label>
+        <div class="flex gap-2">
+          <input type="text" id="input-jemput" placeholder="Contoh: Mabu Park" class="w-full input-dark rounded-xl p-3.5 text-sm font-semibold transition">
+          <!-- Tombol GPS -->
+          <button onclick="deteksiLokasi()" class="w-14 bg-[#1A2235] border border-[#2A364F] rounded-xl flex items-center justify-center active:scale-95 transition flex-shrink-0">
+            <svg class="w-6 h-6 text-brand" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8a4 4 0 100 8 4 4 0 000-8z"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 2v2m0 16v2M2 12h2m16 0h2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M4.93 19.07l1.41-1.41m11.32-11.32l1.41-1.41"/></svg>
+          </button>
         </div>
       </div>
 
-      <div class="bg-slate-50 border border-slate-200 rounded-xl p-3 mb-3 relative">
-        <div class="flex items-center gap-3 mb-1">
-          <span class="w-2.5 h-2.5 rounded-full bg-brand ring-4 ring-emerald-100"></span>
-          <input type="text" id="input-jemput" placeholder="Ketik Lokasi Jemput..." class="search-input w-full bg-transparent text-sm font-semibold text-ink placeholder-slate-400" oninput="cariLokasi(this.value, 'jemput')">
-        </div>
-        
-        <hr class="border-slate-200 ml-6 mb-2 mt-2">
-        
-        <div class="flex items-center gap-3 mb-1">
-          <span class="w-2.5 h-2.5 rounded-full bg-red-500 ring-4 ring-red-100"></span>
-          <input type="text" id="input-tujuan" placeholder="Ketik Lokasi Tujuan..." class="search-input w-full bg-transparent text-sm font-semibold text-ink placeholder-slate-400" oninput="cariLokasi(this.value, 'tujuan')">
-        </div>
-
-        <!-- Autocomplete -->
-        <div id="list-jemput" class="autocomplete-list absolute left-0 right-0 mt-1 bg-white border border-slate-200 rounded-xl shadow-lg hidden"></div>
-        <div id="list-tujuan" class="autocomplete-list absolute left-0 right-0 mt-1 bg-white border border-slate-200 rounded-xl shadow-lg hidden"></div>
+      <!-- Titik Pengantaran -->
+      <div>
+        <label class="block text-xs font-bold text-slate-400 mb-2 uppercase tracking-wide">Titik Pengantaran (Tujuan)</label>
+        <input type="text" id="input-tujuan" placeholder="Contoh: Labbaik" class="w-full input-dark rounded-xl p-3.5 text-sm font-semibold transition">
       </div>
 
-      <!-- Info Tarif -->
-      <div id="info-tarif" class="hidden bg-emerald-50 border border-emerald-100 rounded-xl p-3 mb-3 flex items-center justify-between">
-        <div>
-          <p class="text-[10px] text-slate-500 font-semibold uppercase">Jarak Tempuh</p>
-          <p id="txt-jarak" class="text-sm font-bold text-ink">0 km</p>
-        </div>
-        <div class="text-right">
-          <p class="text-[10px] text-slate-500 font-semibold uppercase">Total Tarif</p>
-          <p id="txt-tarif" class="text-lg font-extrabold text-brand">Rp 0</p>
+      <!-- Keterangan Tambahan -->
+      <div>
+        <label class="block text-xs font-bold text-slate-400 mb-2 uppercase tracking-wide">Keterangan Tambahan (Opsional)</label>
+        <textarea id="input-keterangan" rows="3" placeholder="Ciri-ciri pakaian, warna rumah, dll." class="w-full input-dark rounded-xl p-3.5 text-sm font-semibold transition"></textarea>
+      </div>
+
+      <!-- Metode Pembayaran -->
+      <div>
+        <label class="block text-xs font-bold text-slate-400 mb-2 uppercase tracking-wide">Metode Pembayaran</label>
+        <div class="relative">
+          <select id="input-metode" class="w-full input-dark rounded-xl p-3.5 text-sm font-semibold appearance-none transition">
+            <option value="Cash (Tunai)">Cash (Tunai)</option>
+            <option value="QRIS">QRIS</option>
+            <option value="Transfer Bank">Transfer Bank</option>
+            <option value="E-Wallet (GoPay/OVO/DANA)">E-Wallet</option>
+          </select>
+          <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-slate-400">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+          </div>
         </div>
       </div>
 
-      <div id="loading-rute" class="hidden items-center justify-center gap-2 mb-3">
-        <div class="flex space-x-1">
-            <div class="w-2 h-2 bg-emerald-500 rounded-full animate-bounce"></div>
-            <div class="w-2 h-2 bg-emerald-500 rounded-full animate-bounce" style="animation-delay: 0.1s"></div>
-            <div class="w-2 h-2 bg-emerald-500 rounded-full animate-bounce" style="animation-delay: 0.2s"></div>
-        </div>
-        <p class="text-xs text-slate-500 font-semibold">Menghitung rute...</p>
+      <!-- Tombol Pesan -->
+      <div class="pt-4">
+        <button onclick="kirimPesanan()" class="w-full bg-brand hover:bg-brand-dark text-white font-bold text-base py-4 rounded-xl shadow-[0_4px_20px_rgba(0,168,107,0.3)] transition flex items-center justify-center gap-2">
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M17.5 14.4c-.3-.1-1.7-.8-1.9-.9-.3-.1-.5-.1-.7.1-.2.3-.7.9-.9 1.1-.2.2-.3.2-.6.1-.3-.1-1.2-.5-2.3-1.4-.8-.7-1.4-1.6-1.5-1.9-.2-.3 0-.4.1-.6.1-.1.3-.3.4-.5.1-.2.2-.3.3-.5.1-.2 0-.3 0-.5 0-.1-.7-1.6-.9-2.2-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.4 0 1.4 1 2.8 1.2 3 .1.2 2 3.1 4.9 4.3.7.3 1.2.5 1.6.6.7.2 1.3.2 1.8.1.5-.1 1.7-.7 1.9-1.4.2-.7.2-1.3.2-1.4-.1-.2-.3-.2-.5-.3zM12 2C6.5 2 2 6.5 2 12c0 1.8.5 3.4 1.3 4.8L2 22l5.3-1.3c1.4.7 3 1.2 4.7 1.2 5.5 0 10-4.5 10-10S17.5 2 12 2z"/></svg>
+          Pesan Sekarang
+        </button>
       </div>
-
-      <p class="text-xs font-bold text-slate-500 uppercase mb-2 mt-4">Metode Pembayaran</p>
-      <select id="metode-bayar" class="w-full bg-slate-50 border border-slate-200 text-sm font-semibold rounded-xl p-3 mb-4 outline-none">
-        <option value="Cash / Tunai">💵 Cash / Tunai</option>
-        <option value="QRIS">▦ QRIS</option>
-        <option value="Transfer Bank">🏦 Transfer Bank</option>
-        <option value="E-Wallet (GoPay/OVO/DANA)">📱 E-Wallet</option>
-      </select>
-
-      <button id="btn-pesan" onclick="prosesPesanan()" class="w-full bg-brand hover:bg-brand-dark text-white font-bold text-sm py-4 rounded-xl shadow-lg transition disabled:opacity-50 disabled:cursor-not-allowed" disabled>
-        Lengkapi Lokasi
-      </button>
+      
+      <p class="text-center text-[10px] text-slate-500 mt-2">Pesanan akan diteruskan ke WhatsApp Admin OZgo.</p>
     </div>
   </div>
 
   <script>
-    const map = L.map('map', { zoomControl: false }).setView([-6.3591, 106.2494], 14);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '© OpenStreetMap' }).addTo(map);
-
-    let pickupMarker = null;
-    let destMarker = null;
-    let routeLine = null;
-
     const WA_NUMBER = "628568080847"; // GANTI NOMOR WA ANDA
-    let layananAktif = 'OZride';
-    let koordinatJemput = null;
-    let koordinatTujuan = null;
-    let jarakKm = 0;
-    let totalTarif = 0;
+    let layananAktif = 'OZRide';
 
-    function pilihLayanan(nama, warna, emoji) {
-      layananAktif = nama;
-      document.getElementById('title-layanan').textContent = nama;
-      const iconDiv = document.getElementById('icon-layanan');
-      iconDiv.style.backgroundColor = warna;
-      iconDiv.textContent = emoji;
-      document.getElementById('view-home').classList.add('hidden');
-      document.getElementById('view-order').classList.remove('hidden');
-      document.getElementById('btnBack').classList.remove('hidden');
-      document.getElementById('info-tarif').classList.add('hidden');
-      
-      const btn = document.getElementById('btn-pesan');
-      btn.disabled = true;
-      btn.textContent = 'Lengkapi Lokasi';
-      btn.classList.add('bg-slate-400');
-      btn.classList.remove('bg-brand');
+    // Navigasi Pindah Halaman
+    function navTo(pageId) {
+      document.querySelectorAll('.app-page').forEach(page => {
+        page.classList.remove('active');
+      });
+      document.getElementById(pageId).classList.add('active');
+      window.scrollTo(0, 0);
     }
 
-    function resetApp() {
-      document.getElementById('view-order').classList.add('hidden');
-      document.getElementById('view-home').classList.remove('hidden');
-      document.getElementById('btnBack').classList.add('hidden');
+    // Buka Form Layanan
+    function bukaForm(namaLayanan) {
+      layananAktif = namaLayanan;
+      document.getElementById('header-title').textContent = `Pesan ${namaLayanan}`;
+      
+      // Reset form setiap kali dibuka
+      document.getElementById('input-nama').value = '';
       document.getElementById('input-jemput').value = '';
       document.getElementById('input-tujuan').value = '';
-      document.getElementById('list-jemput').classList.add('hidden');
-      document.getElementById('list-tujuan').classList.add('hidden');
-      if(pickupMarker) map.removeLayer(pickupMarker);
-      if(destMarker) map.removeLayer(destMarker);
-      if(routeLine) map.removeLayer(routeLine);
-      koordinatJemput = null;
-      koordinatTujuan = null;
-      jarakKm = 0;
-      map.setView([-6.3591, 106.2494], 14);
+      document.getElementById('input-keterangan').value = '';
+      
+      navTo('page-form');
     }
 
-    // ==========================================
-    // PENCARIAN LOKASI: OTOMATIS ATAU TEKS MANUAL
-    // ==========================================
-    let timeoutSearch = null;
-    function cariLokasi(query, tipe) {
-      clearTimeout(timeoutSearch);
-      const listDiv = document.getElementById(`list-${tipe}`);
+    // Kembali ke Menu Utama
+    function kembaliKeHome() {
+      navTo('page-home');
+    }
+
+    // Fitur Tombol GPS (Deteksi Lokasi Otomatis)
+    function deteksiLokasi() {
+      const btn = event.currentTarget;
+      const icon = btn.innerHTML;
       
-      if (query.length < 3) {
-        listDiv.classList.add('hidden');
+      if (navigator.geolocation) {
+        btn.innerHTML = `<div class="w-5 h-5 border-2 border-brand border-t-transparent rounded-full animate-spin"></div>`;
+        
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            // Karena kita tidak pakai peta, kita isi dengan koordinat (Admin tinggal klik di WA)
+            const lat = position.coords.latitude;
+            const lon = position.coords.longitude;
+            document.getElementById('input-jemput').value = `https://maps.google.com/?q=${lat},${lon}`;
+            btn.innerHTML = icon;
+          },
+          (error) => {
+            alert("Gagal mendeteksi lokasi. Pastikan GPS HP aktif dan izin browser diizinkan.");
+            btn.innerHTML = icon;
+          },
+          { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+        );
+      } else {
+        alert("Browser Anda tidak mendukung fitur deteksi lokasi.");
+      }
+    }
+
+    // Kirim ke WhatsApp
+    function kirimPesanan() {
+      const nama = document.getElementById('input-nama').value.trim();
+      const jemput = document.getElementById('input-jemput').value.trim();
+      const tujuan = document.getElementById('input-tujuan').value.trim();
+      const ket = document.getElementById('input-keterangan').value.trim();
+      const metode = document.getElementById('input-metode').value;
+
+      // Validasi Kolom Wajib
+      if (!nama || !jemput || !tujuan) {
+        alert("Mohon lengkapi Nama, Titik Jemput, dan Titik Pengantaran.");
         return;
       }
 
-      timeoutSearch = setTimeout(async () => {
-        listDiv.innerHTML = '<div class="p-3 text-xs text-slate-500 text-center">Mencari...</div>';
-        listDiv.classList.remove('hidden');
-
-        try {
-          const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query + ' Rangkasbitung')}&limit=10&countrycodes=id&accept-language=id`;
-          const res = await fetch(url);
-          const data = await res.json();
-
-          listDiv.innerHTML = '';
-          
-          if (data.length === 0) {
-            // JIKA TIDAK KETEMU, TAWARKAN TEKS MANUAL (Seperti Google Sites)
-            listDiv.innerHTML = `
-              <div class="p-4 text-center">
-                <p class="text-xs text-slate-600 mb-2">Tempat tidak ada di peta, tapi tidak masalah!</p>
-                <button onclick="gunakanTeksManual('${tipe}', '${query}')" class="bg-brand text-white text-xs font-bold px-4 py-2.5 rounded-lg w-full shadow-md">
-                  Gunakan "${query}" (Kirim ke Admin)
-                </button>
-              </div>
-            `;
-          } else {
-            data.forEach(item => {
-              const div = document.createElement('div');
-              div.className = 'p-3 text-xs border-b border-slate-100 cursor-pointer hover:bg-slate-50';
-              const namaTempat = item.name || item.display_name.split(',')[0];
-              div.innerHTML = `<p class="font-bold text-ink">${namaTempat}</p><p class="text-slate-400 text-[10px]">${item.display_name}</p>`;
-              div.onclick = () => pilihLokasi(item.lat, item.lon, namaTempat, tipe);
-              listDiv.appendChild(div);
-            });
-          }
-        } catch (error) {
-            listDiv.innerHTML = `<div class="p-3 text-xs text-red-500 text-center">Koneksi lambat.</div>`;
-        }
-      }, 800);
-    }
-
-    // Fungsi jika user memilih tetap pakai teks manual (tanpa koordinat peta)
-    function gunakanTeksManual(tipe, teks) {
-      document.getElementById(`input-${tipe}`).value = teks;
-      document.getElementById(`list-${tipe}`).classList.add('hidden');
+      // Susun Pesan WhatsApp
+      let pesan = `Halo Admin *OZgo*, saya ingin memesan:%0A%0A`;
+      pesan += `*Layanan:* ${layananAktif}%0A`;
+      pesan += `*Nama:* ${nama}%0A`;
+      pesan += `*Jemput:* ${jemput}%0A`;
+      pesan += `*Tujuan:* ${tujuan}%0A`;
+      pesan += `*Pembayaran:* ${metode}%0A`;
       
-      if (tipe === 'jemput') {
-        koordinatJemput = "manual";
-        if(pickupMarker) map.removeLayer(pickupMarker);
-      } else {
-        koordinatTujuan = "manual";
-        if(destMarker) map.removeLayer(destMarker);
+      if (ket) {
+        pesan += `*Catatan:* ${ket}%0A`;
       }
-
-      cekTombolPesan();
-    }
-
-    function pilihLokasi(lat, lon, nama, tipe) {
-      const pos = [parseFloat(lat), parseFloat(lon)];
-      document.getElementById(`input-${tipe}`).value = nama;
-      document.getElementById(`list-${tipe}`).classList.add('hidden');
-
-      if (tipe === 'jemput') {
-        koordinatJemput = pos;
-        if (pickupMarker) map.removeLayer(pickupMarker);
-        pickupMarker = L.marker(pos, { draggable: false }).addTo(map);
-        map.setView(pos, 15);
-      } else {
-        koordinatTujuan = pos;
-        if (destMarker) map.removeLayer(destMarker);
-        destMarker = L.marker(pos, { draggable: false }).addTo(map);
-        map.setView(pos, 15);
-      }
-
-      cekTombolPesan();
-    }
-
-    // Mengecek apakah kedua kolom sudah terisi
-    function cekTombolPesan() {
-      const btn = document.getElementById('btn-pesan');
       
-      if (koordinatJemput && koordinatTujuan) {
-        btn.disabled = false;
-        btn.classList.remove('bg-slate-400');
-        btn.classList.add('bg-brand');
-        
-        // Jika kedua-duanya punya koordinat peta, hitung rute jarak
-        if (koordinatJemput !== "manual" && koordinatTujuan !== "manual") {
-          hitungRute();
-        } else {
-          // Jika salah satu manual (teks), kita tidak bisa hitung jarak otomatis
-          document.getElementById('info-tarif').classList.add('hidden');
-          btn.textContent = `Pesan ${layananAktif} Sekarang`;
-        }
-      }
-    }
+      pesan += `%0AMohon segera diproses ya. Terima kasih!`;
 
-    function hitungRute() {
-      document.getElementById('loading-rute').classList.remove('hidden');
-      document.getElementById('loading-rute').classList.add('flex');
-      
-      const url = `https://router.project-osrm.org/route/v1/driving/${koordinatJemput[1]},${koordinatJemput[0]};${koordinatTujuan[1]},${koordinatTujuan[0]}?overview=full&geometries=geojson`;
-
-      fetch(url)
-        .then(res => res.json())
-        .then(data => {
-          document.getElementById('loading-rute').classList.add('hidden');
-          document.getElementById('loading-rute').classList.remove('flex');
-
-          if (data.code === 'Ok') {
-            const jarakMeter = data.routes[0].distance;
-            jarakKm = parseFloat((jarakMeter / 1000).toFixed(1));
-            
-            let dasar = jarakKm * 2300;
-            totalTarif = Math.ceil(dasar / 100) * 100;
-            if (totalTarif < 8000) totalTarif = 8000;
-
-            if (routeLine) map.removeLayer(routeLine);
-            routeLine = L.geoJSON(data.routes[0].geometry, { style: { color: '#00A86B', weight: 6, opacity: 0.8 } }).addTo(map);
-            
-            map.fitBounds(routeLine.getBounds(), { padding: [50, 50] });
-
-            document.getElementById('txt-jarak').textContent = jarakKm + ' km';
-            document.getElementById('txt-tarif').textContent = formatRp(totalTarif);
-            document.getElementById('info-tarif').classList.remove('hidden');
-
-            const btn = document.getElementById('btn-pesan');
-            btn.textContent = `Pesan ${layananAktif} • ${formatRp(totalTarif)}`;
-          }
-        })
-        .catch(err => {
-          document.getElementById('loading-rute').classList.add('hidden');
-        });
-    }
-
-    function formatRp(n) { return 'Rp ' + n.toLocaleString('id-ID'); }
-
-    // ==========================================
-    // KIRIM PESANAN KE WHATSAPP
-    // ==========================================
-    function prosesPesanan() {
-      const jemput = document.getElementById('input-jemput').value;
-      const tujuan = document.getElementById('input-tujuan').value;
-      const metode = document.getElementById('metode-bayar').value;
-
-      let infoJarak = "Akan dihitung oleh Admin";
-      let infoTarif = "Menyesuaikan jarak";
-
-      if (koordinatJemput !== "manual" && koordinatTujuan !== "manual" && jarakKm > 0) {
-          infoJarak = jarakKm + " km";
-          infoTarif = formatRp(totalTarif);
-      }
-
-      const pesan = `Halo Admin *OZgo*, saya ingin memesan:%0A%0A` +
-                    `*Layanan:* ${layananAktif}%0A` +
-                    `*Jemput:* ${jemput}%0A` +
-                    `*Tujuan:* ${tujuan}%0A` +
-                    `*Jarak:* ${infoJarak}%0A` +
-                    `*Tarif:* ${infoTarif}%0A` +
-                    `*Pembayaran:* ${metode}%0A%0A` +
-                    `Mohon segera diproses ya. Terima kasih!`;
-
+      // Buka WhatsApp
       window.open(`https://wa.me/${WA_NUMBER}?text=${pesan}`, '_blank');
-      setTimeout(() => { resetApp(); }, 1000);
     }
   </script>
 </body>
