@@ -1054,6 +1054,99 @@ function tutupPanduanInstall() {
   renderAddresses();
   applyProfileDefaults();
 })();
+    // ==========================================
+    // FITUR TOMBOL BACK (HARDWARE BACK BUTTON)
+    // ==========================================
+    let exitPending = false;
+    let backTimer;
+
+    // Tambahkan state awal agar kita bisa mencegat tombol back pertama
+    history.pushState({ page: 'ozgo' }, '', location.href);
+
+    function checkActiveModals() {
+        const modals = ['custom-modal', 'address-picker-modal', 'rating-modal', 'paste-update-modal'];
+        for (const id of modals) {
+            const el = document.getElementById(id);
+            if (el && !el.classList.contains('hidden')) {
+                return id;
+            }
+        }
+        return null;
+    }
+
+    function closeAnyActiveModal() {
+        const active = checkActiveModals();
+        if (!active) return false;
+        
+        if (active === 'custom-modal') closeModal();
+        else if (active === 'address-picker-modal') closeAddressPicker();
+        else if (active === 'rating-modal') closeRatingModal();
+        else if (active === 'paste-update-modal') closePasteUpdateModal();
+        return true;
+    }
+
+    function checkActiveLayer() {
+        const layers = ['ozride', 'ozfood', 'ozsend', 'ozmart', 'tracking'];
+        for (const id of layers) {
+            const el = document.getElementById('layer-' + id);
+            if (el && el.classList.contains('active')) {
+                return id;
+            }
+        }
+        return null;
+    }
+
+    function checkCurrentTab() {
+        const tabs = ['beranda', 'chat', 'pesanan', 'profile'];
+        for (const t of tabs) {
+            const el = document.getElementById('main-' + t);
+            if (el && !el.classList.contains('hidden')) {
+                return t;
+            }
+        }
+        return 'beranda';
+    }
+
+    window.addEventListener('popstate', function (e) {
+        // 1. Cek jika ada modal yang sedang terbuka
+        if (closeAnyActiveModal()) {
+            history.pushState({ page: 'ozgo' }, '', location.href); // Tahan user di app
+            return;
+        }
+
+        // 2. Cek jika ada layanan (OZRide, dll) yang sedang terbuka
+        const activeLayer = checkActiveLayer();
+        if (activeLayer) {
+            closeLayer(activeLayer);
+            history.pushState({ page: 'ozgo' }, '', location.href); // Tahan user di app
+            return;
+        }
+
+        // 3. Cek jika posisi saat ini bukan di Beranda
+        const currentTab = checkCurrentTab();
+        if (currentTab !== 'beranda') {
+            switchTab('beranda');
+            history.pushState({ page: 'ozgo' }, '', location.href); // Tahan user di app
+            return;
+        }
+
+        // 4. Jika sudah di Beranda Utama -> Logika Klik 2 Kali untuk Keluar
+        if (exitPending) {
+            // Biarkan default history action berjalan, yang akan menutup aplikasi
+            window.history.back(); 
+        } else {
+            exitPending = true;
+            toast('Tekan sekali lagi untuk keluar', 'error');
+            
+            clearTimeout(backTimer);
+            backTimer = setTimeout(() => {
+                exitPending = false; // Reset jika lewat 2 detik
+            }, 2000);
+
+            // Push state agar user tidak langsung keluar saat back pertama
+            history.pushState({ page: 'ozgo' }, '', location.href);
+        }
+    });
 </script>
 </body>
 </html>
