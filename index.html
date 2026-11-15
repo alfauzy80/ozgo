@@ -55,41 +55,33 @@
       <p class="text-sm text-slate-500 mb-4">Pilih layanan OZgo favoritmu.</p>
       
       <div class="grid grid-cols-2 gap-3">
-        <div onclick="pilihLayanan('OZride', '#00A86B')" class="border border-slate-100 bg-white rounded-2xl p-4 shadow-sm active:scale-95 transition cursor-pointer flex flex-col items-center">
-          <div class="w-12 h-12 rounded-xl bg-emerald-100 flex items-center justify-center mb-2">
-            <svg class="w-7 h-7 text-emerald-600" fill="currentColor" viewBox="0 0 24 24"><path d="M19.44 9.03L15.41 5H11v2h3.59l2 2H5c-2.8 0-5 2.2-5 5s2.2 5 5 5c2.46 0 4.45-1.69 4.9-4h1.65l2.77-2.77c-.21.54-.32 1.14-.32 1.77 0 2.8 2.2 5 5 5s5-2.2 5-5c0-2.65-1.97-4.77-4.56-4.97zM7.82 15C7.4 16.15 6.28 17 5 17c-1.63 0-3-1.37-3-3s1.37-3 3-3c1.28 0 2.4.85 2.82 2H5v2h2.82zM19 17c-1.63 0-3-1.37-3-3s1.37-3 3-3 3 1.37 3 3-1.37 3-3 3z"/></svg>
-          </div>
+        <div onclick="pilihLayanan('OZride', '#00A86B', '🏍️')" class="border border-slate-100 bg-white rounded-2xl p-4 shadow-sm active:scale-95 transition cursor-pointer flex flex-col items-center">
+          <div class="w-12 h-12 rounded-xl bg-emerald-100 flex items-center justify-center mb-2 text-2xl">🏍️</div>
           <p class="font-bold text-ink text-sm">OZride</p>
           <p class="text-[11px] text-slate-400">Ojek Motor</p>
         </div>
 
-        <div onclick="pilihLayanan('OZfood', '#EF4444')" class="border border-slate-100 bg-white rounded-2xl p-4 shadow-sm active:scale-95 transition cursor-pointer flex flex-col items-center">
-          <div class="w-12 h-12 rounded-xl bg-red-100 flex items-center justify-center mb-2">
-            <svg class="w-6 h-6 text-red-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 8h16l-1.5 12h-13L4 8z"/><path stroke-linecap="round" stroke-linejoin="round" d="M8 8V6a4 4 0 018 0v2"/></svg>
-          </div>
+        <div onclick="pilihLayanan('OZfood', '#EF4444', '🍱')" class="border border-slate-100 bg-white rounded-2xl p-4 shadow-sm active:scale-95 transition cursor-pointer flex flex-col items-center">
+          <div class="w-12 h-12 rounded-xl bg-red-100 flex items-center justify-center mb-2 text-2xl">🍱</div>
           <p class="font-bold text-ink text-sm">OZfood</p>
           <p class="text-[11px] text-slate-400">Pesan Makanan</p>
         </div>
 
-        <div onclick="pilihLayanan('OZsend', '#F97316')" class="border border-slate-100 bg-white rounded-2xl p-4 shadow-sm active:scale-95 transition cursor-pointer flex flex-col items-center">
-          <div class="w-12 h-12 rounded-xl bg-orange-100 flex items-center justify-center mb-2">
-            <svg class="w-6 h-6 text-orange-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
-          </div>
+        <div onclick="pilihLayanan('OZsend', '#F97316', '📦')" class="border border-slate-100 bg-white rounded-2xl p-4 shadow-sm active:scale-95 transition cursor-pointer flex flex-col items-center">
+          <div class="w-12 h-12 rounded-xl bg-orange-100 flex items-center justify-center mb-2 text-2xl">📦</div>
           <p class="font-bold text-ink text-sm">OZsend</p>
           <p class="text-[11px] text-slate-400">Kirim Barang</p>
         </div>
 
-        <div onclick="pilihLayanan('OZmart', '#8B5CF6')" class="border border-slate-100 bg-white rounded-2xl p-4 shadow-sm active:scale-95 transition cursor-pointer flex flex-col items-center">
-          <div class="w-12 h-12 rounded-xl bg-purple-100 flex items-center justify-center mb-2">
-            <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.3 4.6a1 1 0 00.9 1.4H19"/><circle cx="9" cy="20" r="1"/><circle cx="17" cy="20" r="1"/></svg>
-          </div>
+        <div onclick="pilihLayanan('OZmart', '#8B5CF6', '🛒')" class="border border-slate-100 bg-white rounded-2xl p-4 shadow-sm active:scale-95 transition cursor-pointer flex flex-col items-center">
+          <div class="w-12 h-12 rounded-xl bg-purple-100 flex items-center justify-center mb-2 text-2xl">🛒</div>
           <p class="font-bold text-ink text-sm">OZmart</p>
           <p class="text-[11px] text-slate-400">Belanja Harian</p>
         </div>
       </div>
     </div>
 
-    <!-- HALAMAN 2: FORM PESANAN -->
+    <!-- HALAMAN 2: FORM PESANAN (Berlaku untuk semua layanan) -->
     <div id="view-order" class="hidden">
       <div class="flex items-center gap-3 mb-4">
         <div id="icon-layanan" class="w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold text-xl"></div>
@@ -192,13 +184,13 @@
     // ==========================================
     // 3. NAVIGASI LAYANAN
     // ==========================================
-    function pilihLayanan(nama, warna) {
+    function pilihLayanan(nama, warna, emoji) {
       layananAktif = nama;
       document.getElementById('title-layanan').textContent = nama;
       
       const iconDiv = document.getElementById('icon-layanan');
       iconDiv.style.backgroundColor = warna;
-      iconDiv.textContent = nama === 'OZride' ? '🏍️' : (nama === 'OZfood' ? '🍱' : (nama === 'OZsend' ? '📦' : '🛒'));
+      iconDiv.textContent = emoji;
 
       document.getElementById('view-home').classList.add('hidden');
       document.getElementById('view-order').classList.remove('hidden');
@@ -237,7 +229,7 @@
     }
 
     // ==========================================
-    // 4. PENCARIAN LOKASI (MULTI-QUERY NOMINATIM)
+    // 4. PENCARIAN LOKASI (SIMPEL & AKURAT)
     // ==========================================
     let timeoutSearch = null;
     function cariLokasi(query, tipe) {
@@ -253,64 +245,22 @@
         listDiv.innerHTML = '<div class="p-3 text-xs text-slate-500 text-center">Mencari lokasi...</div>';
         listDiv.classList.remove('hidden');
 
-        const queryLower = query.toLowerCase().trim();
-        
-        // Deteksi kata kunci medis (termasuk typo)
-        const kataKunciMedis = ['sakit', 'rs', 'klinik', 'puskesmas', 'dokter', 'apotek', 'hospital', 'clinic'];
-        const isMedis = kataKunciMedis.some(kata => queryLower.includes(kata));
-        
         try {
-          let urls = [];
+          // Pencarian murni: Tambahkan "Rangkasbitung" di belakang teks
+          const queryPencarian = `${query} Rangkasbitung`;
+          const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(queryPencarian)}&viewbox=106.15,-6.25,106.35,-6.45&bounded=1&limit=10&countrycodes=id&accept-language=id`;
 
-          if (isMedis) {
-            // TRIK MULTI-QUERY: Cari 4 jenis fasilitas kesehatan sekaligus
-            const baseQuery = "&viewbox=106.15,-6.25,106.35,-6.45&bounded=1&limit=10&countrycodes=id&accept-language=id";
-            urls = [
-              `https://nominatim.openstreetmap.org/search?format=json&q=rumah+sakit+rangkasbitung${baseQuery}`,
-              `https://nominatim.openstreetmap.org/search?format=json&q=klinik+rangkasbitung${baseQuery}`,
-              `https://nominatim.openstreetmap.org/search?format=json&q=puskesmas+rangkasbitung${baseQuery}`,
-              `https://nominatim.openstreetmap.org/search?format=json&q=apotek+rangkasbitung${baseQuery}`
-            ];
-          } else {
-            // Pencarian umum
-            const queryPencarian = `${query} Rangkasbitung`;
-            urls = [
-              `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(queryPencarian)}&viewbox=106.15,-6.25,106.35,-6.45&bounded=1&limit=15&countrycodes=id&accept-language=id`
-            ];
-          }
+          const res = await fetch(url);
+          const data = await res.json();
 
-          // Jalankan semua pencarian secara paralel
-          const fetchPromises = urls.map(url => fetch(url).then(res => res.json()));
-          const responses = await Promise.all(fetchPromises);
-          
-          // Gabungkan semua hasil
-          const allData = responses.flat();
-
-          // Filter Duplikat (jika ada tempat yang muncul di lebih dari 1 query)
-          const uniqueData = [];
-          const seen = new Set();
-          allData.forEach(item => {
-              if (!seen.has(item.place_id)) {
-                  seen.add(item.place_id);
-                  uniqueData.push(item);
-              }
-          });
-
-          // Filter Koordinat (Hanya Rangkasbitung)
-          const dataValid = uniqueData.filter(item => {
+          // Filter koordinat (pastikan tidak keluar batas)
+          const dataValid = data.filter(item => {
               const lat = parseFloat(item.lat);
               const lon = parseFloat(item.lon);
               return (lat <= -6.28 && lat >= -6.44 && lon >= 106.18 && lon <= 106.32);
           });
 
-          // Urutkan berdasarkan abjad
-          dataValid.sort((a, b) => {
-              const nameA = a.name || a.display_name;
-              const nameB = b.name || b.display_name;
-              return nameA.localeCompare(nameB);
-          });
-
-          // Render ke Dropdown
+          // Render hasil
           listDiv.innerHTML = '';
           if (dataValid.length === 0) {
             listDiv.innerHTML = '<div class="p-3 text-xs text-slate-500 text-center">Lokasi tidak ditemukan di area Rangkasbitung.</div>';
@@ -322,16 +272,16 @@
               const namaTempat = item.name || item.display_name.split(',')[0];
               const alamatLengkap = item.display_name;
               
-              div.innerHTML = `<p class="font-bold text-ink">${namaTempat}</p><p class="text-slate-400">${alamatLengkap}</p>`;
+              div.innerHTML = `<p class="font-bold text-ink">${namaTempat}</p><p class="text-slate-400 text-[10px]">${alamatLengkap}</p>`;
               div.onclick = () => pilihLokasi(item.lat, item.lon, namaTempat, tipe);
               listDiv.appendChild(div);
             });
           }
         } catch (error) {
             console.error(error);
-            listDiv.innerHTML = '<div class="p-3 text-xs text-red-500 text-center">Koneksi jaringan lambat. Coba ketik ulang.</div>';
+            listDiv.innerHTML = '<div class="p-3 text-xs text-red-500 text-center">Koneksi lambat. Coba ketik ulang.</div>';
         }
-      }, 800);
+      }, 1000); // Jeda 1 detik agar server tidak memblokir (Rate Limit)
     }
 
     function pilihLokasi(lat, lon, nama, tipe) {
@@ -422,7 +372,7 @@
             btn.classList.remove('bg-slate-400');
             btn.classList.add('bg-brand');
           } else {
-            alert("Rute tidak ditemukan.");
+            alert("Rute tidak ditemukan. Jarak terlalu jauh atau jalan terputus.");
           }
         })
         .catch(err => {
