@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>OZgo — Aplikasi Ojek Online Rangkasbitung</title>
+<title>OZgo — Ojek Online Rangkasbitung</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
@@ -29,7 +29,6 @@
   .search-input { outline: none; }
   .search-input:focus { border-color: #00A86B; }
   .autocomplete-list { max-height: 250px; overflow-y: auto; z-index: 2000; }
-  .drag-hint { font-size: 10px; color: #64748b; margin-left: 26px; margin-top: 4px; display: none; }
 </style>
 </head>
 <body class="bg-slate-50 text-ink">
@@ -87,7 +86,6 @@
           <span class="w-2.5 h-2.5 rounded-full bg-brand ring-4 ring-emerald-100"></span>
           <input type="text" id="input-jemput" placeholder="Ketik Lokasi Jemput..." class="search-input w-full bg-transparent text-sm font-semibold text-ink placeholder-slate-400" oninput="cariLokasi(this.value, 'jemput')">
         </div>
-        <p id="hint-jemput" class="drag-hint">📍 Geser pin di peta untuk akurasi</p>
         
         <hr class="border-slate-200 ml-6 mb-2 mt-2">
         
@@ -95,12 +93,13 @@
           <span class="w-2.5 h-2.5 rounded-full bg-red-500 ring-4 ring-red-100"></span>
           <input type="text" id="input-tujuan" placeholder="Ketik Lokasi Tujuan..." class="search-input w-full bg-transparent text-sm font-semibold text-ink placeholder-slate-400" oninput="cariLokasi(this.value, 'tujuan')">
         </div>
-        <p id="hint-tujuan" class="drag-hint">📍 Geser pin di peta untuk akurasi</p>
 
+        <!-- Autocomplete -->
         <div id="list-jemput" class="autocomplete-list absolute left-0 right-0 mt-1 bg-white border border-slate-200 rounded-xl shadow-lg hidden"></div>
         <div id="list-tujuan" class="autocomplete-list absolute left-0 right-0 mt-1 bg-white border border-slate-200 rounded-xl shadow-lg hidden"></div>
       </div>
 
+      <!-- Info Tarif -->
       <div id="info-tarif" class="hidden bg-emerald-50 border border-emerald-100 rounded-xl p-3 mb-3 flex items-center justify-between">
         <div>
           <p class="text-[10px] text-slate-500 font-semibold uppercase">Jarak Tempuh</p>
@@ -137,11 +136,7 @@
 
   <script>
     const map = L.map('map', { zoomControl: false }).setView([-6.3591, 106.2494], 14);
-    map.setMinZoom(12); // Sedikit dilonggarkan
-
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxZoom: 19, attribution: '© OpenStreetMap'
-    }).addTo(map);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '© OpenStreetMap' }).addTo(map);
 
     let pickupMarker = null;
     let destMarker = null;
@@ -164,8 +159,7 @@
       document.getElementById('view-order').classList.remove('hidden');
       document.getElementById('btnBack').classList.remove('hidden');
       document.getElementById('info-tarif').classList.add('hidden');
-      document.getElementById('hint-jemput').style.display = 'none';
-      document.getElementById('hint-tujuan').style.display = 'none';
+      
       const btn = document.getElementById('btn-pesan');
       btn.disabled = true;
       btn.textContent = 'Lengkapi Lokasi';
@@ -191,7 +185,7 @@
     }
 
     // ==========================================
-    // PENCARIAN LOKASI (SUPER LONGGAR & ANTI BUNTU)
+    // PENCARIAN LOKASI: OTOMATIS ATAU TEKS MANUAL
     // ==========================================
     let timeoutSearch = null;
     function cariLokasi(query, tipe) {
@@ -204,42 +198,28 @@
       }
 
       timeoutSearch = setTimeout(async () => {
-        listDiv.innerHTML = '<div class="p-3 text-xs text-slate-500 text-center">Mencari lokasi...</div>';
+        listDiv.innerHTML = '<div class="p-3 text-xs text-slate-500 text-center">Mencari...</div>';
         listDiv.classList.remove('hidden');
 
-        // Perbaiki singkatan umum
-        let searchQuery = query;
-        const qLower = query.toLowerCase();
-        if (qLower.startsWith('rs ')) searchQuery = searchQuery.replace(/rs /gi, 'rumah sakit ');
-        if (qLower.startsWith('mi ')) searchQuery = searchQuery.replace(/mi /gi, 'mie ');
-        
         try {
-          // Hapus batasan viewbox di URL agar server mencari seluas mungkin
-          const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(searchQuery + ' Rangkasbitung')}&limit=15&countrycodes=id&accept-language=id`;
-
+          const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query + ' Rangkasbitung')}&limit=10&countrycodes=id&accept-language=id`;
           const res = await fetch(url);
           const data = await res.json();
 
-          // Filter longgar: Pastikan berada di koordinat Lebak/Banten (bukan di luar provinsi)
-          const dataValid = data.filter(item => {
-              const lat = parseFloat(item.lat);
-              const lon = parseFloat(item.lon);
-              return (lat <= -6.10 && lat >= -6.60 && lon >= 106.00 && lon <= 106.50);
-          });
-
           listDiv.innerHTML = '';
-          if (dataValid.length === 0) {
-            // FITUR PENYELAMAT: JIKA TIDAK KETEMU, TAWARKAN PIN MANUAL
+          
+          if (data.length === 0) {
+            // JIKA TIDAK KETEMU, TAWARKAN TEKS MANUAL (Seperti Google Sites)
             listDiv.innerHTML = `
-              <div class="p-3 text-center">
-                <p class="text-xs text-slate-500 mb-2">Tempat tidak ditemukan di database peta.</p>
-                <button onclick="taruhPinManual('${tipe}')" class="bg-brand text-white text-xs font-bold px-4 py-2 rounded-lg w-full">
-                  📍 Taruh Pin Manual di Peta
+              <div class="p-4 text-center">
+                <p class="text-xs text-slate-600 mb-2">Tempat tidak ada di peta, tapi tidak masalah!</p>
+                <button onclick="gunakanTeksManual('${tipe}', '${query}')" class="bg-brand text-white text-xs font-bold px-4 py-2.5 rounded-lg w-full shadow-md">
+                  Gunakan "${query}" (Kirim ke Admin)
                 </button>
               </div>
             `;
           } else {
-            dataValid.forEach(item => {
+            data.forEach(item => {
               const div = document.createElement('div');
               div.className = 'p-3 text-xs border-b border-slate-100 cursor-pointer hover:bg-slate-50';
               const namaTempat = item.name || item.display_name.split(',')[0];
@@ -249,99 +229,70 @@
             });
           }
         } catch (error) {
-            listDiv.innerHTML = `
-              <div class="p-3 text-center">
-                <p class="text-xs text-red-500 mb-2">Koneksi lambat.</p>
-                <button onclick="taruhPinManual('${tipe}')" class="bg-brand text-white text-xs font-bold px-4 py-2 rounded-lg w-full">
-                  📍 Taruh Pin Manual di Peta
-                </button>
-              </div>
-            `;
+            listDiv.innerHTML = `<div class="p-3 text-xs text-red-500 text-center">Koneksi lambat.</div>`;
         }
-      }, 1000);
+      }, 800);
     }
 
-    // Fungsi untuk menaruh pin manual jika pencarian gagal
-    function taruhPinManual(tipe) {
-      const listDiv = document.getElementById(`list-${tipe}`);
-      listDiv.classList.add('hidden');
+    // Fungsi jika user memilih tetap pakai teks manual (tanpa koordinat peta)
+    function gunakanTeksManual(tipe, teks) {
+      document.getElementById(`input-${tipe}`).value = teks;
+      document.getElementById(`list-${tipe}`).classList.add('hidden');
       
-      const centerPos = map.getCenter();
-      document.getElementById(`input-${tipe}`).value = "Lokasi Manual (Geser Pin)";
-      document.getElementById(`hint-${tipe}`).style.display = 'block';
-
       if (tipe === 'jemput') {
-        koordinatJemput = [centerPos.lat, centerPos.lng];
-        if (pickupMarker) map.removeLayer(pickupMarker);
-        pickupMarker = L.marker(koordinatJemput, { draggable: true }).addTo(map).bindPopup('Geser ke lokasi jemput').openPopup();
-        pickupMarker.on('dragend', function (e) {
-          const newPos = e.target.getLatLng();
-          koordinatJemput = [newPos.lat, newPos.lng];
-        });
+        koordinatJemput = "manual";
+        if(pickupMarker) map.removeLayer(pickupMarker);
       } else {
-        koordinatTujuan = [centerPos.lat, centerPos.lng];
-        if (destMarker) map.removeLayer(destMarker);
-        destMarker = L.marker(koordinatTujuan, { draggable: true }).addTo(map).bindPopup('Geser ke lokasi tujuan').openPopup();
-        destMarker.on('dragend', function (e) {
-          const newPos = e.target.getLatLng();
-          koordinatTujuan = [newPos.lat, newPos.lng];
-        });
+        koordinatTujuan = "manual";
+        if(destMarker) map.removeLayer(destMarker);
       }
 
-      if (koordinatJemput && koordinatTujuan) {
-        hitungRute();
-      }
+      cekTombolPesan();
     }
 
     function pilihLokasi(lat, lon, nama, tipe) {
       const pos = [parseFloat(lat), parseFloat(lon)];
       document.getElementById(`input-${tipe}`).value = nama;
       document.getElementById(`list-${tipe}`).classList.add('hidden');
-      document.getElementById(`hint-${tipe}`).style.display = 'block';
 
       if (tipe === 'jemput') {
         koordinatJemput = pos;
         if (pickupMarker) map.removeLayer(pickupMarker);
-        pickupMarker = L.marker(pos, { draggable: true }).addTo(map).bindPopup('Jemput').openPopup();
-        pickupMarker.on('dragend', function (e) {
-          const newPos = e.target.getLatLng();
-          koordinatJemput = [newPos.lat, newPos.lng];
-          updateAlamatDariKoordinat(newPos.lat, newPos.lng, 'jemput');
-        });
-        map.setView(pos, 16);
+        pickupMarker = L.marker(pos, { draggable: false }).addTo(map);
+        map.setView(pos, 15);
       } else {
         koordinatTujuan = pos;
         if (destMarker) map.removeLayer(destMarker);
-        destMarker = L.marker(pos, { draggable: true }).addTo(map).bindPopup('Tujuan').openPopup();
-        destMarker.on('dragend', function (e) {
-          const newPos = e.target.getLatLng();
-          koordinatTujuan = [newPos.lat, newPos.lng];
-          updateAlamatDariKoordinat(newPos.lat, newPos.lng, 'tujuan');
-        });
-        map.setView(pos, 16);
+        destMarker = L.marker(pos, { draggable: false }).addTo(map);
+        map.setView(pos, 15);
       }
 
-      if (koordinatJemput && koordinatTujuan) {
-        hitungRute();
-      }
+      cekTombolPesan();
     }
 
-    function updateAlamatDariKoordinat(lat, lon, tipe) {
-      fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&accept-language=id`)
-        .then(res => res.json())
-        .then(data => {
-          if (data && data.display_name) {
-            const namaSingkat = data.name || data.display_name.split(',')[0];
-            document.getElementById(`input-${tipe}`).value = namaSingkat;
-          }
-          if (koordinatJemput && koordinatTujuan) hitungRute();
-        });
+    // Mengecek apakah kedua kolom sudah terisi
+    function cekTombolPesan() {
+      const btn = document.getElementById('btn-pesan');
+      
+      if (koordinatJemput && koordinatTujuan) {
+        btn.disabled = false;
+        btn.classList.remove('bg-slate-400');
+        btn.classList.add('bg-brand');
+        
+        // Jika kedua-duanya punya koordinat peta, hitung rute jarak
+        if (koordinatJemput !== "manual" && koordinatTujuan !== "manual") {
+          hitungRute();
+        } else {
+          // Jika salah satu manual (teks), kita tidak bisa hitung jarak otomatis
+          document.getElementById('info-tarif').classList.add('hidden');
+          btn.textContent = `Pesan ${layananAktif} Sekarang`;
+        }
+      }
     }
 
     function hitungRute() {
       document.getElementById('loading-rute').classList.remove('hidden');
       document.getElementById('loading-rute').classList.add('flex');
-      document.getElementById('info-tarif').classList.add('hidden');
       
       const url = `https://router.project-osrm.org/route/v1/driving/${koordinatJemput[1]},${koordinatJemput[0]};${koordinatTujuan[1]},${koordinatTujuan[0]}?overview=full&geometries=geojson`;
 
@@ -369,42 +320,39 @@
             document.getElementById('info-tarif').classList.remove('hidden');
 
             const btn = document.getElementById('btn-pesan');
-            btn.disabled = false;
             btn.textContent = `Pesan ${layananAktif} • ${formatRp(totalTarif)}`;
-            btn.classList.remove('bg-slate-400');
-            btn.classList.add('bg-brand');
-          } else {
-            alert("Rute jalan tidak ditemukan. Pastikan pin berada di atas jalan.");
           }
         })
         .catch(err => {
           document.getElementById('loading-rute').classList.add('hidden');
-          alert("Gagal terhubung ke server rute.");
         });
     }
 
     function formatRp(n) { return 'Rp ' + n.toLocaleString('id-ID'); }
 
+    // ==========================================
+    // KIRIM PESANAN KE WHATSAPP
+    // ==========================================
     function prosesPesanan() {
       const jemput = document.getElementById('input-jemput').value;
       const tujuan = document.getElementById('input-tujuan').value;
       const metode = document.getElementById('metode-bayar').value;
 
-      const gmapsJemput = `https://maps.google.com/?q=${koordinatJemput[0]},${koordinatJemput[1]}`;
-      const gmapsTujuan = `https://maps.google.com/?q=${koordinatTujuan[0]},${koordinatTujuan[1]}`;
-      const gmapsRute = `https://www.google.com/maps/dir/?api=1&origin=${koordinatJemput[0]},${koordinatJemput[1]}&destination=${koordinatTujuan[0]},${koordinatTujuan[1]}`;
+      let infoJarak = "Akan dihitung oleh Admin";
+      let infoTarif = "Menyesuaikan jarak";
+
+      if (koordinatJemput !== "manual" && koordinatTujuan !== "manual" && jarakKm > 0) {
+          infoJarak = jarakKm + " km";
+          infoTarif = formatRp(totalTarif);
+      }
 
       const pesan = `Halo Admin *OZgo*, saya ingin memesan:%0A%0A` +
                     `*Layanan:* ${layananAktif}%0A` +
                     `*Jemput:* ${jemput}%0A` +
                     `*Tujuan:* ${tujuan}%0A` +
-                    `*Jarak:* ${jarakKm} km%0A` +
-                    `*Total Tarif:* ${formatRp(totalTarif)}%0A` +
+                    `*Jarak:* ${infoJarak}%0A` +
+                    `*Tarif:* ${infoTarif}%0A` +
                     `*Pembayaran:* ${metode}%0A%0A` +
-                    `📍 *Buka di Google Maps:*%0A` +
-                    `- Titik Jemput: ${gmapsJemput}%0A` +
-                    `- Titik Tujuan: ${gmapsTujuan}%0A` +
-                    `- Rute Perjalanan: ${gmapsRute}%0A%0A` +
                     `Mohon segera diproses ya. Terima kasih!`;
 
       window.open(`https://wa.me/${WA_NUMBER}?text=${pesan}`, '_blank');
