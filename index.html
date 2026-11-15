@@ -29,8 +29,6 @@
   .sheet { z-index: 1000; transition: transform 0.3s ease; }
   .search-input { outline: none; }
   .search-input:focus { border-color: #00A86B; }
-  .loader { border: 3px solid #f3f3f3; border-top: 3px solid #00A86B; border-radius: 50%; width: 20px; height: 20px; animation: spin 1s linear infinite; }
-  @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
   .autocomplete-list { max-height: 250px; overflow-y: auto; z-index: 2000; }
   .drag-hint { font-size: 10px; color: #64748b; margin-left: 26px; margin-top: 4px; display: none; }
 </style>
@@ -136,7 +134,11 @@
 
       <!-- Loading Rute -->
       <div id="loading-rute" class="hidden items-center justify-center gap-2 mb-3">
-        <div class="loader"></div>
+        <div class="flex space-x-1">
+            <div class="w-2 h-2 bg-emerald-500 rounded-full animate-bounce"></div>
+            <div class="w-2 h-2 bg-emerald-500 rounded-full animate-bounce" style="animation-delay: 0.1s"></div>
+            <div class="w-2 h-2 bg-emerald-500 rounded-full animate-bounce" style="animation-delay: 0.2s"></div>
+        </div>
         <p class="text-xs text-slate-500 font-semibold">Menghitung rute...</p>
       </div>
 
@@ -235,7 +237,7 @@
     }
 
     // ==========================================
-    // 4. PENCARIAN LOKASI (PHOTON API & NOMINATIM)
+    // 4. PENCARIAN LOKASI (MULTI-QUERY NOMINATIM)
     // ==========================================
     let timeoutSearch = null;
     function cariLokasi(query, tipe) {
@@ -248,84 +250,86 @@
       }
 
       timeoutSearch = setTimeout(async () => {
-        listDiv.innerHTML = '<div class="p-3 text-xs text-slate-500">Mencari...</div>';
+        listDiv.innerHTML = '<div class="p-3 text-xs text-slate-500 text-center">Mencari lokasi...</div>';
         listDiv.classList.remove('hidden');
 
         const queryLower = query.toLowerCase().trim();
         
-        // Deteksi kata kunci medis dengan toleransi typo
+        // Deteksi kata kunci medis (termasuk typo)
         const kataKunciMedis = ['sakit', 'rs', 'klinik', 'puskesmas', 'dokter', 'apotek', 'hospital', 'clinic'];
         const isMedis = kataKunciMedis.some(kata => queryLower.includes(kata));
         
-        let results = [];
-
         try {
+          let urls = [];
+
           if (isMedis) {
-            // --- PHOTON API: Mencari SEMUA Fasilitas Kesehatan (Sangat Stabil) ---
-            // Parameter lat & lon digunakan sebagai titik pusat pencarian.
-            // osm_tag akan memfilter hasil khusus rumah sakit, klinik, dan apotek.
-            const photonUrl = `https://photon.komoot.io/api/?lat=-6.3591&lon=106.2494&limit=40&osm_tag=amenity:hospital&osm_tag=amenity:clinic&osm_tag=amenity:pharmacy`;
-            
-            const res = await fetch(photonUrl);
-            const data = await res.json();
-            
-            // Filter hasil agar hanya yang berada di area Rangkasbitung (radius ~15km)
-            const dataValid = data.features.filter(item => {
-                const lon = item.geometry.coordinates[0];
-                const lat = item.geometry.coordinates[1];
-                return (lat <= -6.28 && lat >= -6.44 && lon >= 106.18 && lon <= 106.32);
-            });
-
-            results = dataValid.map(item => {
-                const nama = item.properties.name || "Fasilitas Kesehatan";
-                const jalan = item.properties.street || "Rangkasbitung";
-                const tipeFaskes = item.properties.osm_value ? item.properties.osm_value.toUpperCase() : "MEDIS";
-                return {
-                    lat: item.geometry.coordinates[1],
-                    lon: item.geometry.coordinates[0],
-                    name: nama,
-                    display_name: `[${tipeFaskes}] ${jalan}`
-                };
-            });
-
+            // TRIK MULTI-QUERY: Cari 4 jenis fasilitas kesehatan sekaligus
+            const baseQuery = "&viewbox=106.15,-6.25,106.35,-6.45&bounded=1&limit=10&countrycodes=id&accept-language=id";
+            urls = [
+              `https://nominatim.openstreetmap.org/search?format=json&q=rumah+sakit+rangkasbitung${baseQuery}`,
+              `https://nominatim.openstreetmap.org/search?format=json&q=klinik+rangkasbitung${baseQuery}`,
+              `https://nominatim.openstreetmap.org/search?format=json&q=puskesmas+rangkasbitung${baseQuery}`,
+              `https://nominatim.openstreetmap.org/search?format=json&q=apotek+rangkasbitung${baseQuery}`
+            ];
           } else {
-            // --- NOMINATIM API: Pencarian Tempat Umum (Mall, Jalan, Taman, dll) ---
+            // Pencarian umum
             const queryPencarian = `${query} Rangkasbitung`;
-            const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(queryPencarian)}&viewbox=106.18,-6.28,106.32,-6.44&bounded=1&limit=15&countrycodes=id&accept-language=id`;
-
-            const res = await fetch(url);
-            const data = await res.json();
-            
-            const dataValid = data.filter(item => {
-                const lat = parseFloat(item.lat);
-                const lon = parseFloat(item.lon);
-                return (lat <= -6.28 && lat >= -6.44 && lon >= 106.18 && lon <= 106.32);
-            });
-
-            results = dataValid.map(item => ({
-                lat: parseFloat(item.lat),
-                lon: parseFloat(item.lon),
-                name: item.name || item.display_name.split(',')[0],
-                display_name: item.display_name
-            }));
+            urls = [
+              `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(queryPencarian)}&viewbox=106.15,-6.25,106.35,-6.45&bounded=1&limit=15&countrycodes=id&accept-language=id`
+            ];
           }
 
-          // Tampilkan hasil ke Dropdown
+          // Jalankan semua pencarian secara paralel
+          const fetchPromises = urls.map(url => fetch(url).then(res => res.json()));
+          const responses = await Promise.all(fetchPromises);
+          
+          // Gabungkan semua hasil
+          const allData = responses.flat();
+
+          // Filter Duplikat (jika ada tempat yang muncul di lebih dari 1 query)
+          const uniqueData = [];
+          const seen = new Set();
+          allData.forEach(item => {
+              if (!seen.has(item.place_id)) {
+                  seen.add(item.place_id);
+                  uniqueData.push(item);
+              }
+          });
+
+          // Filter Koordinat (Hanya Rangkasbitung)
+          const dataValid = uniqueData.filter(item => {
+              const lat = parseFloat(item.lat);
+              const lon = parseFloat(item.lon);
+              return (lat <= -6.28 && lat >= -6.44 && lon >= 106.18 && lon <= 106.32);
+          });
+
+          // Urutkan berdasarkan abjad
+          dataValid.sort((a, b) => {
+              const nameA = a.name || a.display_name;
+              const nameB = b.name || b.display_name;
+              return nameA.localeCompare(nameB);
+          });
+
+          // Render ke Dropdown
           listDiv.innerHTML = '';
-          if (results.length === 0) {
-            listDiv.innerHTML = '<div class="p-3 text-xs text-slate-500">Lokasi tidak ditemukan di area Rangkasbitung.</div>';
+          if (dataValid.length === 0) {
+            listDiv.innerHTML = '<div class="p-3 text-xs text-slate-500 text-center">Lokasi tidak ditemukan di area Rangkasbitung.</div>';
           } else {
-            results.forEach(item => {
+            dataValid.forEach(item => {
               const div = document.createElement('div');
               div.className = 'p-3 text-xs border-b border-slate-100 cursor-pointer hover:bg-slate-50';
-              div.innerHTML = `<p class="font-bold text-ink">${item.name}</p><p class="text-slate-400">${item.display_name}</p>`;
-              div.onclick = () => pilihLokasi(item.lat, item.lon, item.name, tipe);
+              
+              const namaTempat = item.name || item.display_name.split(',')[0];
+              const alamatLengkap = item.display_name;
+              
+              div.innerHTML = `<p class="font-bold text-ink">${namaTempat}</p><p class="text-slate-400">${alamatLengkap}</p>`;
+              div.onclick = () => pilihLokasi(item.lat, item.lon, namaTempat, tipe);
               listDiv.appendChild(div);
             });
           }
         } catch (error) {
             console.error(error);
-            listDiv.innerHTML = '<div class="p-3 text-xs text-red-500">Terjadi kesalahan jaringan. Coba ketik ulang.</div>';
+            listDiv.innerHTML = '<div class="p-3 text-xs text-red-500 text-center">Koneksi jaringan lambat. Coba ketik ulang.</div>';
         }
       }, 800);
     }
