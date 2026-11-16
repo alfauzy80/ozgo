@@ -2,7 +2,7 @@
   "name": "OZgo App",
   "short_name": "OZgo",
   "description": "Layanan Prioritas Warga Mabu",
-  "id": "./",
+  "id": "/",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
