@@ -1,9 +1,9 @@
 // ==========================================
-// SERVICE WORKER OZgo App — v13
+// SERVICE WORKER OZgo App — v14
 // Naikkan CACHE_VERSION setiap kali index.html /
 // manifest.json / aset statis diubah.
 // ==========================================
-const CACHE_VERSION = 'ozgo-v13';
+const CACHE_VERSION = 'ozgo-v14';
 
 const PRECACHE_ASSETS = [
   './',
@@ -91,7 +91,6 @@ self.addEventListener('fetch', (event) => {
       return res;
     }).catch(() => null);
 
-    // dipanggil sinkron sebelum await pertama → aman
     event.waitUntil(networkPromise.then(() => {}).catch(() => {}));
 
     const cache = await caches.open(CACHE_VERSION);
