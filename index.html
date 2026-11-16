@@ -118,7 +118,6 @@
     50%{transform:translateY(-8px) scale(1.04)}
   }
 
-  /* Monogram SVG "OZ" — selalu tampil (fallback instan) */
   #cover-logo-fallback{
     position:absolute;
     inset:0;
@@ -126,7 +125,6 @@
     height:100%;
   }
 
-  /* Logo asli — overlay di atas monogram, fade-in saat loaded */
   .cover-logo{
     position:absolute;
     inset:0;
@@ -227,6 +225,58 @@
   .light-mode .filter-chip.active{background:#16a34a !important;border-color:#16a34a !important;color:#fff !important}
   .light-mode .toast{background:#111827 !important;color:#fff !important}
   .light-mode .page-layer .bg-gray-900,.light-mode .page-layer header{background:#fff !important}
+
+  /* ====== PATCH v3.1.7 ====== */
+  /* Safe area iPhone */
+  .bottom-nav{ bottom: calc(15px + env(safe-area-inset-bottom, 0px)) !important; }
+  .content-area{ padding-bottom: calc(110px + env(safe-area-inset-bottom, 0px)) !important; }
+
+  /* Rasa tap native */
+  button, [onclick], .quick-chip, .filter-chip{ -webkit-tap-highlight-color: transparent; }
+  .bottom-nav > div, button{ -webkit-user-select:none; user-select:none; }
+
+  /* Pesan error dikontrol JS (menjangkau field di dalam wrapper flex) */
+  .error-msg.show{ display:block !important; }
+
+  /* Light mode: modal tetap gelap agar kontras aman */
+  .light-mode #custom-modal .bg-gray-800,
+  .light-mode #rating-modal .bg-gray-800,
+  .light-mode #preview-modal .bg-gray-800,
+  .light-mode #address-picker-modal .bg-gray-800{
+    background-color:#1f2937 !important; border-color:#374151 !important; color:#e5e7eb !important;
+  }
+  .light-mode #custom-modal .bg-gray-900,
+  .light-mode #rating-modal .bg-gray-900,
+  .light-mode #preview-modal .bg-gray-900,
+  .light-mode #address-picker-modal .bg-gray-900{
+    background-color:#111827 !important; border-color:#374151 !important; color:#e5e7eb !important;
+  }
+  .light-mode #custom-modal .bg-gray-700,
+  .light-mode #rating-modal .bg-gray-700,
+  .light-mode #preview-modal .bg-gray-700,
+  .light-mode #address-picker-modal .bg-gray-700{
+    background-color:#374151 !important; color:#fff !important;
+  }
+  .light-mode #custom-modal .text-gray-300,
+  .light-mode #rating-modal .text-gray-300,
+  .light-mode #preview-modal .text-gray-300,
+  .light-mode #address-picker-modal .text-gray-300{ color:#d1d5db !important; }
+  .light-mode #custom-modal .text-gray-400,
+  .light-mode #rating-modal .text-gray-400,
+  .light-mode #preview-modal .text-gray-400,
+  .light-mode #address-picker-modal .text-gray-400{ color:#9ca3af !important; }
+  .light-mode #custom-modal .border-gray-700,
+  .light-mode #rating-modal .border-gray-700,
+  .light-mode #preview-modal .border-gray-700,
+  .light-mode #address-picker-modal .border-gray-700{ border-color:#374151 !important; }
+  .light-mode #modal-title,
+  .light-mode #rating-content h3,
+  .light-mode #preview-content h3,
+  .light-mode #address-picker-content h3{ color:#fff !important; }
+  .light-mode #modal-text{ color:#9ca3af !important; }
+  .light-mode #preview-text{ color:#d1d5db !important; }
+  .light-mode #rating-text{ background-color:#111827 !important; color:#fff !important; border-color:#374151 !important; }
+  .light-mode #rating-text::placeholder{ color:#6b7280 !important; }
 </style>
 </head>
 <body>
@@ -237,7 +287,6 @@
   <div id="app-cover" class="app-cover" onclick="hideCover()">
     <div class="cover-inner">
       <div class="cover-logo-wrap">
-        <!-- Monogram SVG: selalu tampil, tidak menunggu network -->
         <svg id="cover-logo-fallback" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
           <defs>
             <linearGradient id="ozGrad" x1="0" y1="0" x2="1" y2="1">
@@ -251,7 +300,6 @@
                 font-family="Orbitron, Arial, sans-serif" font-weight="900" font-style="italic"
                 font-size="46" fill="url(#ozGrad)" letter-spacing="-2">OZ</text>
         </svg>
-        <!-- Logo asli: fade-in saat selesai load -->
         <img id="cover-logo-img"
              class="cover-logo"
              alt="OZgo Logo"
@@ -375,8 +423,8 @@
 
     <div class="bg-gray-800 border border-gray-700 rounded-2xl p-5 mb-4">
       <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-4">Data Diri</h3>
-      <div class="mb-3"><label class="block text-xs font-bold text-gray-400 mb-1.5">Nama Lengkap</label><input type="text" id="profile-nama" list="nama-datalist" class="w-full bg-gray-900 border border-gray-700 rounded-xl px-4 py-2.5 text-white text-sm outline-none focus:border-green-500 transition" placeholder="Nama Anda"></div>
-      <div class="mb-4"><label class="block text-xs font-bold text-gray-400 mb-1.5">No. HP / WhatsApp</label><input type="tel" id="profile-hp" class="w-full bg-gray-900 border border-gray-700 rounded-xl px-4 py-2.5 text-white text-sm outline-none focus:border-green-500 transition" placeholder="08xxxxxxxxxx"></div>
+      <div class="mb-3"><label class="block text-xs font-bold text-gray-400 mb-1.5">Nama Lengkap</label><input type="text" id="profile-nama" autocomplete="name" list="nama-datalist" class="w-full bg-gray-900 border border-gray-700 rounded-xl px-4 py-2.5 text-white text-sm outline-none focus:border-green-500 transition" placeholder="Nama Anda"></div>
+      <div class="mb-4"><label class="block text-xs font-bold text-gray-400 mb-1.5">No. HP / WhatsApp</label><input type="tel" id="profile-hp" inputmode="tel" autocomplete="tel" class="w-full bg-gray-900 border border-gray-700 rounded-xl px-4 py-2.5 text-white text-sm outline-none focus:border-green-500 transition" placeholder="08xxxxxxxxxx"></div>
       <button onclick="saveProfile()" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2.5 rounded-xl active:scale-95 transition text-sm">Simpan Data</button>
     </div>
 
@@ -400,7 +448,7 @@
       <div onclick="toggleTheme()" class="flex items-center justify-between p-4 border-b border-gray-700 cursor-pointer active:bg-gray-700 transition"><div class="flex items-center gap-3"><div class="w-9 h-9 rounded-lg bg-gray-700 flex items-center justify-center text-gray-300"><i class="fa-solid fa-palette text-sm"></i></div><span class="text-sm font-semibold text-gray-200">Ganti Tema</span></div><i class="fa-solid fa-chevron-right text-gray-500 text-xs"></i></div>
       <div onclick="installApp()" class="flex items-center justify-between p-4 border-b border-gray-700 cursor-pointer active:bg-gray-700 transition"><div class="flex items-center gap-3"><div class="w-9 h-9 rounded-lg bg-gray-700 flex items-center justify-center text-gray-300"><i class="fa-solid fa-download text-sm"></i></div><span class="text-sm font-semibold text-gray-200">Install Aplikasi</span></div><i class="fa-solid fa-chevron-right text-gray-500 text-xs"></i></div>
       <div onclick="shareApp()" class="flex items-center justify-between p-4 border-b border-gray-700 cursor-pointer active:bg-gray-700 transition"><div class="flex items-center gap-3"><div class="w-9 h-9 rounded-lg bg-gray-700 flex items-center justify-center text-gray-300"><i class="fa-solid fa-share-nodes text-sm"></i></div><span class="text-sm font-semibold text-gray-200">Bagikan Aplikasi</span></div><i class="fa-solid fa-chevron-right text-gray-500 text-xs"></i></div>
-      <div onclick="showModal('Tentang OZgo','Aplikasi layanan prioritas warga Mabu. Versi 3.1.6\n\nArea: Rangkasbitung & sekitarnya.')" class="flex items-center justify-between p-4 cursor-pointer active:bg-gray-700 transition"><div class="flex items-center gap-3"><div class="w-9 h-9 rounded-lg bg-gray-700 flex items-center justify-center text-gray-300"><i class="fa-solid fa-circle-info text-sm"></i></div><span class="text-sm font-semibold text-gray-200">Tentang Aplikasi</span></div><span class="text-[10px] text-gray-500 font-mono">v3.1.6</span></div>
+      <div onclick="showModal('Tentang OZgo','Aplikasi layanan prioritas warga Mabu. Versi 3.1.7\n\nArea: Rangkasbitung & sekitarnya.')" class="flex items-center justify-between p-4 cursor-pointer active:bg-gray-700 transition"><div class="flex items-center gap-3"><div class="w-9 h-9 rounded-lg bg-gray-700 flex items-center justify-center text-gray-300"><i class="fa-solid fa-circle-info text-sm"></i></div><span class="text-sm font-semibold text-gray-200">Tentang Aplikasi</span></div><span class="text-[10px] text-gray-500 font-mono">v3.1.7</span></div>
     </div>
   </main>
 
@@ -420,7 +468,7 @@
     <main class="flex-1 overflow-y-auto px-5 py-6">
       <div class="mb-4">
         <label class="block text-xs font-bold text-gray-400 mb-2">Nama Pemesan</label>
-        <input type="text" id="ride-nama" list="nama-datalist" class="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-green-500 transition" placeholder="Contoh: Budi Santoso">
+        <input type="text" id="ride-nama" autocomplete="name" list="nama-datalist" class="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-green-500 transition" placeholder="Contoh: Budi Santoso">
         <p class="error-msg">Nama wajib diisi</p>
       </div>
       <div class="mb-4">
@@ -464,7 +512,7 @@
       <div><h1 class="text-lg font-bold text-orange-400">Pesan OZFood</h1><p class="text-[10px] text-gray-400">Layanan Pesan Antar Makanan</p></div>
     </header>
     <main class="flex-1 overflow-y-auto px-5 py-6">
-      <div class="mb-4"><label class="block text-xs font-bold text-gray-400 mb-2">Nama Pemesan</label><input type="text" id="food-nama" list="nama-datalist" class="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-orange-500 transition" placeholder="Contoh: Budi Santoso"><p class="error-msg">Nama wajib diisi</p></div>
+      <div class="mb-4"><label class="block text-xs font-bold text-gray-400 mb-2">Nama Pemesan</label><input type="text" id="food-nama" autocomplete="name" list="nama-datalist" class="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-orange-500 transition" placeholder="Contoh: Budi Santoso"><p class="error-msg">Nama wajib diisi</p></div>
       <div class="mb-4"><label class="block text-xs font-bold text-gray-400 mb-2">Nama Resto / Warung</label><input type="text" id="food-resto" class="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-orange-500 transition" placeholder="Contoh: RM. Padang Sederhana"><p class="error-msg">Nama resto wajib diisi</p></div>
       <div class="mb-4"><label class="block text-xs font-bold text-gray-400 mb-2">Detail Pesanan / Menu</label><textarea id="food-menu" rows="3" class="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-orange-500 transition resize-none" placeholder="Contoh:&#10;2x Nasi Rendang&#10;1x Es Teh Manis"></textarea><p class="error-msg">Menu wajib diisi</p></div>
       <div class="mb-4">
@@ -488,7 +536,7 @@
       <div><h1 class="text-lg font-bold text-blue-400">Pesan OZSend</h1><p class="text-[10px] text-gray-400">Kirim Paket Cepat & Aman</p></div>
     </header>
     <main class="flex-1 overflow-y-auto px-5 py-6">
-      <div class="mb-4"><label class="block text-xs font-bold text-gray-400 mb-2">Nama Pengirim (Pemesan)</label><input type="text" id="send-nama" list="nama-datalist" class="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-blue-500 transition" placeholder="Contoh: Budi Santoso"><p class="error-msg">Nama pengirim wajib diisi</p></div>
+      <div class="mb-4"><label class="block text-xs font-bold text-gray-400 mb-2">Nama Pengirim (Pemesan)</label><input type="text" id="send-nama" autocomplete="name" list="nama-datalist" class="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-blue-500 transition" placeholder="Contoh: Budi Santoso"><p class="error-msg">Nama pengirim wajib diisi</p></div>
       <div class="mb-4">
         <label class="block text-xs font-bold text-gray-400 mb-2">Alamat Pengambilan</label>
         <div class="flex gap-2">
@@ -502,8 +550,8 @@
       <div class="mb-4"><label class="block text-xs font-bold text-gray-400 mb-2">Detail Barang (Opsional)</label><textarea id="send-detail" rows="2" class="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-blue-500 transition resize-none" placeholder="Ciri-ciri atau instruksi khusus"></textarea></div>
       <div class="border-t border-gray-700 my-5"></div>
       <h3 class="text-sm font-bold text-gray-200 mb-4"><i class="fa-solid fa-user-check text-blue-400 mr-2"></i>Data Penerima</h3>
-      <div class="mb-4"><label class="block text-xs font-bold text-gray-400 mb-2">Nama Penerima</label><input type="text" id="send-penerima" list="nama-datalist" class="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-blue-500 transition" placeholder="Nama orang yang menerima"><p class="error-msg">Nama penerima wajib diisi</p></div>
-      <div class="mb-4"><label class="block text-xs font-bold text-gray-400 mb-2">No. HP Penerima</label><input type="tel" id="send-hp" class="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-blue-500 transition" placeholder="08123456789"><p class="error-msg">No HP penerima wajib diisi</p></div>
+      <div class="mb-4"><label class="block text-xs font-bold text-gray-400 mb-2">Nama Penerima</label><input type="text" id="send-penerima" autocomplete="name" list="nama-datalist" class="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-blue-500 transition" placeholder="Nama orang yang menerima"><p class="error-msg">Nama penerima wajib diisi</p></div>
+      <div class="mb-4"><label class="block text-xs font-bold text-gray-400 mb-2">No. HP Penerima</label><input type="tel" id="send-hp" inputmode="tel" autocomplete="tel" class="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-blue-500 transition" placeholder="08123456789"><p class="error-msg">No HP penerima wajib diisi</p></div>
       <div class="mb-4">
         <label class="block text-xs font-bold text-gray-400 mb-2">Alamat Pengantaran</label>
         <div class="flex gap-2">
@@ -525,7 +573,7 @@
       <div><h1 class="text-lg font-bold text-purple-400">Pesan OZMart</h1><p class="text-[10px] text-gray-400">Belanja Kebutuhan Harian</p></div>
     </header>
     <main class="flex-1 overflow-y-auto px-5 py-6">
-      <div class="mb-4"><label class="block text-xs font-bold text-gray-400 mb-2">Nama Pemesan</label><input type="text" id="mart-nama" list="nama-datalist" class="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-purple-500 transition" placeholder="Contoh: Budi Santoso"><p class="error-msg">Nama wajib diisi</p></div>
+      <div class="mb-4"><label class="block text-xs font-bold text-gray-400 mb-2">Nama Pemesan</label><input type="text" id="mart-nama" autocomplete="name" list="nama-datalist" class="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-purple-500 transition" placeholder="Contoh: Budi Santoso"><p class="error-msg">Nama wajib diisi</p></div>
       <div class="mb-4">
         <label class="block text-xs font-bold text-gray-400 mb-2">Alamat Toko / Tempat Belanja</label>
         <div class="flex gap-2">
@@ -887,7 +935,12 @@ function renderOrders() {
   const list = currentFilter === 'all' ? all : all.filter(o => o.type === currentFilter);
   if (!list.length) { container.innerHTML = `<p class="text-center text-gray-500 text-sm py-10">Tidak ada pesanan ${escapeHtml(currentFilter)}</p>`; return; }
 
-  const colorMap = { OZRide: 'green', OZFood: 'orange', OZSend: 'blue', OZMart: 'purple' };
+  const colorMap = {
+    OZRide: 'text-green-400',
+    OZFood: 'text-orange-400',
+    OZSend: 'text-blue-400',
+    OZMart: 'text-purple-400'
+  };
   container.innerHTML = list.map(o => {
     const hasRating = o.rating && o.rating > 0;
     const stars = hasRating ? '★'.repeat(o.rating) + '☆'.repeat(5 - o.rating) : '';
@@ -896,7 +949,7 @@ function renderOrders() {
     <div class="bg-gray-800 border border-gray-700 rounded-2xl p-4">
       <div class="flex justify-between items-start mb-2">
         <div>
-          <span class="text-[10px] font-black uppercase tracking-wider text-${colorMap[o.type] || 'green'}-400">${o.type}</span>
+          <span class="text-[10px] font-black uppercase tracking-wider ${colorMap[o.type] || 'text-green-400'}">${o.type}</span>
           <p class="text-xs text-gray-500 font-mono mt-0.5">#${o.id}</p>
         </div>
         <span class="text-[10px] bg-yellow-900/40 text-yellow-400 px-2 py-1 rounded-md font-bold">${escapeHtml(o.status)}</span>
@@ -959,14 +1012,21 @@ function closeRatingModal() {
 }
 
 /* ============ VALIDATION ============ */
+function setFieldError(id, hasError) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.classList.toggle('field-error', hasError);
+  const msg = el.closest('.mb-4')?.querySelector('.error-msg');
+  if (msg) msg.classList.toggle('show', hasError);
+}
 function isFilled(id) {
   const el = document.getElementById(id);
-  const ok = el.value.trim() !== '';
-  el.classList.toggle('field-error', !ok);
+  const ok = !!el && el.value.trim() !== '';
+  setFieldError(id, !ok);
   return ok;
 }
 function clearFieldErrors(prefix, fields) {
-  fields.forEach(f => document.getElementById(prefix + '-' + f)?.classList.remove('field-error'));
+  fields.forEach(f => setFieldError(prefix + '-' + f, false));
 }
 
 /* ============ LOCATION ============ */
@@ -1337,6 +1397,17 @@ window.addEventListener('popstate', function () {
   });
 
   handleUrlParams();
+
+  // Hapus tanda error saat pengguna mulai mengetik
+  document.addEventListener('input', (e) => {
+    if (e.target && e.target.classList && e.target.classList.contains('field-error')) {
+      setFieldError(e.target.id, false);
+    }
+  });
+
+  // Indikator koneksi
+  window.addEventListener('offline', () => toast('Anda sedang offline', 'error'));
+  window.addEventListener('online',  () => toast('Kembali online ✓', 'success'));
 })();
 </script>
 </body>
