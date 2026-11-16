@@ -76,7 +76,7 @@
     .brand-logo{font-size:2.15rem}
   }
 
-  /* ===== COVER DEPAN (SPLASH IN-APP, TAP TO ENTER) ===== */
+  /* ===== COVER DEPAN ===== */
   .app-cover{
     position:absolute;
     inset:0;
@@ -106,7 +106,6 @@
     width:100%;
   }
 
-  /* ====== ANIMASI "OZgo" (HURUF MENYATU SEPERTI LOGO BERANDA) ====== */
   .cover-brand{
     font-family:'Orbitron',sans-serif;
     font-weight:900;
@@ -288,33 +287,24 @@
   .light-mode .toast{background:#111827 !important;color:#fff !important}
   .light-mode .page-layer .bg-gray-900,.light-mode .page-layer header{background:#fff !important}
 
-  /* ====== PATCH v3.2.2 ====== */
   .bottom-nav{ bottom: calc(15px + env(safe-area-inset-bottom, 0px)) !important; }
   .content-area{ padding-bottom: calc(110px + env(safe-area-inset-bottom, 0px)) !important; }
-
   button, [onclick], .quick-chip, .filter-chip{ -webkit-tap-highlight-color: transparent; }
   .bottom-nav > div, button{ -webkit-user-select:none; user-select:none; }
-
   .error-msg.show{ display:block !important; }
 
   .light-mode #custom-modal .bg-gray-800,
   .light-mode #rating-modal .bg-gray-800,
   .light-mode #preview-modal .bg-gray-800,
-  .light-mode #address-picker-modal .bg-gray-800{
-    background-color:#1f2937 !important; border-color:#374151 !important; color:#e5e7eb !important;
-  }
+  .light-mode #address-picker-modal .bg-gray-800{ background-color:#1f2937 !important; border-color:#374151 !important; color:#e5e7eb !important; }
   .light-mode #custom-modal .bg-gray-900,
   .light-mode #rating-modal .bg-gray-900,
   .light-mode #preview-modal .bg-gray-900,
-  .light-mode #address-picker-modal .bg-gray-900{
-    background-color:#111827 !important; border-color:#374151 !important; color:#e5e7eb !important;
-  }
+  .light-mode #address-picker-modal .bg-gray-900{ background-color:#111827 !important; border-color:#374151 !important; color:#e5e7eb !important; }
   .light-mode #custom-modal .bg-gray-700,
   .light-mode #rating-modal .bg-gray-700,
   .light-mode #preview-modal .bg-gray-700,
-  .light-mode #address-picker-modal .bg-gray-700{
-    background-color:#374151 !important; color:#fff !important;
-  }
+  .light-mode #address-picker-modal .bg-gray-700{ background-color:#374151 !important; color:#fff !important; }
   .light-mode #custom-modal .text-gray-300,
   .light-mode #rating-modal .text-gray-300,
   .light-mode #preview-modal .text-gray-300,
@@ -341,7 +331,7 @@
 
 <div class="app-container">
 
-  <!-- ============ COVER DEPAN (TAP TO ENTER) ============ -->
+  <!-- COVER DEPAN -->
   <div id="app-cover" class="app-cover" onclick="hideCover()">
     <div class="cover-inner">
       <h1 class="cover-brand" aria-label="OZgo">
@@ -485,7 +475,7 @@
       <div onclick="toggleTheme()" class="flex items-center justify-between p-4 border-b border-gray-700 cursor-pointer active:bg-gray-700 transition"><div class="flex items-center gap-3"><div class="w-9 h-9 rounded-lg bg-gray-700 flex items-center justify-center text-gray-300"><i class="fa-solid fa-palette text-sm"></i></div><span class="text-sm font-semibold text-gray-200">Ganti Tema</span></div><i class="fa-solid fa-chevron-right text-gray-500 text-xs"></i></div>
       <div onclick="installApp()" class="flex items-center justify-between p-4 border-b border-gray-700 cursor-pointer active:bg-gray-700 transition"><div class="flex items-center gap-3"><div class="w-9 h-9 rounded-lg bg-gray-700 flex items-center justify-center text-gray-300"><i class="fa-solid fa-download text-sm"></i></div><span class="text-sm font-semibold text-gray-200">Install Aplikasi</span></div><i class="fa-solid fa-chevron-right text-gray-500 text-xs"></i></div>
       <div onclick="shareApp()" class="flex items-center justify-between p-4 border-b border-gray-700 cursor-pointer active:bg-gray-700 transition"><div class="flex items-center gap-3"><div class="w-9 h-9 rounded-lg bg-gray-700 flex items-center justify-center text-gray-300"><i class="fa-solid fa-share-nodes text-sm"></i></div><span class="text-sm font-semibold text-gray-200">Bagikan Aplikasi</span></div><i class="fa-solid fa-chevron-right text-gray-500 text-xs"></i></div>
-      <div onclick="showModal('Tentang OZgo','Aplikasi layanan prioritas warga Mabu. Versi 3.2.2\n\nArea: Rangkasbitung & sekitarnya.')" class="flex items-center justify-between p-4 cursor-pointer active:bg-gray-700 transition"><div class="flex items-center gap-3"><div class="w-9 h-9 rounded-lg bg-gray-700 flex items-center justify-center text-gray-300"><i class="fa-solid fa-circle-info text-sm"></i></div><span class="text-sm font-semibold text-gray-200">Tentang Aplikasi</span></div><span class="text-[10px] text-gray-500 font-mono">v3.2.2</span></div>
+      <div onclick="showModal('Tentang OZgo','Aplikasi layanan prioritas warga Mabu. Versi 3.2.3\n\nArea: Rangkasbitung & sekitarnya.')" class="flex items-center justify-between p-4 cursor-pointer active:bg-gray-700 transition"><div class="flex items-center gap-3"><div class="w-9 h-9 rounded-lg bg-gray-700 flex items-center justify-center text-gray-300"><i class="fa-solid fa-circle-info text-sm"></i></div><span class="text-sm font-semibold text-gray-200">Tentang Aplikasi</span></div><span class="text-[10px] text-gray-500 font-mono">v3.2.3</span></div>
     </div>
   </main>
 
@@ -496,7 +486,7 @@
     <div id="nav-profile" onclick="switchTab('profile')" class="flex flex-col items-center cursor-pointer text-gray-500 hover:text-gray-300 transition"><i class="fa-solid fa-user text-xl mb-1"></i><span class="text-[10px] font-bold">Profile</span></div>
   </nav>
 
-  <!-- ============ LAYER OZRIDE ============ -->
+  <!-- LAYER OZRIDE -->
   <div id="layer-ozride" class="page-layer">
     <header class="bg-gray-900 text-white px-5 py-4 flex items-center border-b border-gray-800 flex-none z-10 shadow-md">
       <button onclick="closeLayer('ozride')" class="mr-4 w-8 h-8 flex items-center justify-center rounded-full bg-gray-800 text-gray-300 hover:text-white transition active:scale-95"><i class="fa-solid fa-arrow-left text-lg"></i></button>
@@ -542,7 +532,7 @@
     </main>
   </div>
 
-  <!-- ============ LAYER OZFOOD ============ -->
+  <!-- LAYER OZFOOD -->
   <div id="layer-ozfood" class="page-layer">
     <header class="bg-gray-900 text-white px-5 py-4 flex items-center border-b border-gray-800 flex-none z-10 shadow-md">
       <button onclick="closeLayer('ozfood')" class="mr-4 w-8 h-8 flex items-center justify-center rounded-full bg-gray-800 text-gray-300 hover:text-white transition active:scale-95"><i class="fa-solid fa-arrow-left text-lg"></i></button>
@@ -566,7 +556,7 @@
     </main>
   </div>
 
-  <!-- ============ LAYER OZSEND ============ -->
+  <!-- LAYER OZSEND -->
   <div id="layer-ozsend" class="page-layer">
     <header class="bg-gray-900 text-white px-5 py-4 flex items-center border-b border-gray-800 flex-none z-10 shadow-md">
       <button onclick="closeLayer('ozsend')" class="mr-4 w-8 h-8 flex items-center justify-center rounded-full bg-gray-800 text-gray-300 hover:text-white transition active:scale-95"><i class="fa-solid fa-arrow-left text-lg"></i></button>
@@ -603,7 +593,7 @@
     </main>
   </div>
 
-  <!-- ============ LAYER OZMART ============ -->
+  <!-- LAYER OZMART -->
   <div id="layer-ozmart" class="page-layer">
     <header class="bg-gray-900 text-white px-5 py-4 flex items-center border-b border-gray-800 flex-none z-10 shadow-md">
       <button onclick="closeLayer('ozmart')" class="mr-4 w-8 h-8 flex items-center justify-center rounded-full bg-gray-800 text-gray-300 hover:text-white transition active:scale-95"><i class="fa-solid fa-arrow-left text-lg"></i></button>
@@ -636,7 +626,7 @@
     </main>
   </div>
 
-  <!-- ============ MODAL INFO ============ -->
+  <!-- MODAL INFO -->
   <div id="custom-modal" style="display: none;" class="absolute inset-0 z-[100] bg-black/80 flex items-center justify-center p-5 opacity-0 transition-opacity duration-200">
     <div id="modal-content" class="bg-gray-800 border border-gray-700 w-full max-w-[300px] rounded-3xl p-6 shadow-2xl transform scale-95 transition-transform duration-200 text-center">
       <div class="w-16 h-16 bg-green-900/30 text-green-500 rounded-full flex items-center justify-center text-3xl mx-auto mb-4"><i id="modal-icon" class="fa-solid fa-info-circle"></i></div>
@@ -646,7 +636,7 @@
     </div>
   </div>
 
-  <!-- ============ MODAL PILIH ALAMAT ============ -->
+  <!-- MODAL PILIH ALAMAT -->
   <div id="address-picker-modal" style="display: none;" class="absolute inset-0 z-[100] bg-black/80 flex items-center justify-center p-5 opacity-0 transition-opacity duration-200">
     <div id="address-picker-content" class="bg-gray-800 border border-gray-700 w-full max-w-[340px] rounded-3xl p-5 shadow-2xl transform scale-95 transition-transform duration-200">
       <div class="flex items-center justify-between mb-4">
@@ -660,7 +650,7 @@
     </div>
   </div>
 
-  <!-- ============ MODAL RATING ============ -->
+  <!-- MODAL RATING -->
   <div id="rating-modal" style="display: none;" class="absolute inset-0 z-[100] bg-black/80 flex items-center justify-center p-5 opacity-0 transition-opacity duration-200">
     <div id="rating-content" class="bg-gray-800 border border-gray-700 w-full max-w-[320px] rounded-3xl p-6 shadow-2xl transform scale-95 transition-transform duration-200">
       <h3 class="text-lg font-bold text-white mb-2 text-center">Beri Rating</h3>
@@ -680,7 +670,7 @@
     </div>
   </div>
 
-  <!-- ============ MODAL PREVIEW PESANAN ============ -->
+  <!-- MODAL PREVIEW -->
   <div id="preview-modal" style="display: none;" class="absolute inset-0 z-[100] bg-black/80 flex items-center justify-center p-5 opacity-0 transition-opacity duration-200">
     <div id="preview-content" class="bg-gray-800 border border-gray-700 w-full max-w-[360px] rounded-3xl shadow-2xl transform scale-95 transition-transform duration-200 max-h-[85vh] flex flex-col">
       <div class="p-5 border-b border-gray-700">
@@ -728,6 +718,9 @@ function hideCover() {
   const c = document.getElementById('app-cover');
   if (!c || c.classList.contains('hide')) return;
   c.classList.add('hide');
+  
+  // PENTING: Panggil pengecekan banner install setelah cover depan tertutup
+  setTimeout(() => { maybeShowInstallBanner(); }, 800);
 }
 
 /* ============ UTILS ============ */
@@ -755,11 +748,10 @@ function switchTab(name) {
   if (name === 'pesanan') renderOrders();
   if (name === 'profile') { refreshProfileUI(); renderAddresses(); }
   
-  // Cek Install Banner saat pindah tab
   if (name === 'beranda') {
     maybeShowInstallBanner();
   } else {
-    hideInstallBanner(); // Sembunyikan jika pindah dari Beranda
+    hideInstallBanner(); 
   }
 }
 
@@ -909,10 +901,8 @@ function closeAddressPicker() {
 function renderDatalists() {
   const addrList = document.getElementById('alamat-datalist');
   const namaList = document.getElementById('nama-datalist');
-
   const addresses = getAddresses();
   addrList.innerHTML = addresses.map(a => `<option value="${escapeHtml(a.address)}">${escapeHtml(a.label)}</option>`).join('');
-
   const names = new Set();
   const p = getProfile();
   if (p.nama) names.add(p.nama);
@@ -950,12 +940,7 @@ function renderOrders() {
   const list = currentFilter === 'all' ? all : all.filter(o => o.type === currentFilter);
   if (!list.length) { container.innerHTML = `<p class="text-center text-gray-500 text-sm py-10">Tidak ada pesanan ${escapeHtml(currentFilter)}</p>`; return; }
 
-  const colorMap = {
-    OZRide: 'text-green-400',
-    OZFood: 'text-orange-400',
-    OZSend: 'text-blue-400',
-    OZMart: 'text-purple-400'
-  };
+  const colorMap = { OZRide: 'text-green-400', OZFood: 'text-orange-400', OZSend: 'text-blue-400', OZMart: 'text-purple-400' };
   container.innerHTML = list.map(o => {
     const hasRating = o.rating && o.rating > 0;
     const stars = hasRating ? '★'.repeat(o.rating) + '☆'.repeat(5 - o.rating) : '';
@@ -1291,7 +1276,10 @@ window.addEventListener('beforeinstallprompt', (e) => {
   console.log('beforeinstallprompt fired');
   e.preventDefault();
   deferredPrompt = e;
-  if (checkCurrentTab() === 'beranda') {
+  
+  // Jangan tampilkan jika masih di cover
+  const isCoverVisible = document.getElementById('app-cover') && !document.getElementById('app-cover').classList.contains('hide');
+  if (!isCoverVisible && checkCurrentTab() === 'beranda') {
     showInstallBannerUI();
   }
 });
@@ -1331,6 +1319,7 @@ function hideInstallBanner() {
 }
 
 function maybeShowInstallBanner() {
+  console.log('Checking install banner...', { isStandalone: isStandalone(), isDismissed: isDismissed(), hasPrompt: !!deferredPrompt, isIos: isIos() });
   if (isStandalone() || isDismissed()) return;
   if (checkCurrentTab() !== 'beranda') return;
 
@@ -1482,7 +1471,8 @@ window.addEventListener('popstate', function () {
   window.addEventListener('offline', () => toast('Anda sedang offline', 'error'));
   window.addEventListener('online',  () => toast('Kembali online ✓', 'success'));
 
-  setTimeout(maybeShowInstallBanner, 2000);
+  // Fallback timer jika prompt datang terlambat
+  setTimeout(maybeShowInstallBanner, 3000);
 })();
 </script>
 </body>
