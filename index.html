@@ -12,6 +12,9 @@
 <meta name="apple-mobile-web-app-title" content="OZgo">
 <link rel="apple-touch-icon" href="icon-192.png">
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
@@ -51,6 +54,29 @@
   .toast.success{border-color:#16a34a}
   .toast.error{border-color:#dc2626}
 
+  /* ===== BRAND LOGO (font futuristik speed) ===== */
+  .brand-logo{
+    font-family:'Orbitron',ui-sans-serif,system-ui,sans-serif;
+    font-weight:900;
+    font-style:italic;
+    font-size:2.5rem;
+    line-height:1;
+    letter-spacing:-.04em;
+    display:inline-block;
+    transform:skewX(-10deg);
+    background:linear-gradient(90deg,#86efac 0%,#22c55e 45%,#16a34a 100%);
+    -webkit-background-clip:text;
+    background-clip:text;
+    -webkit-text-fill-color:transparent;
+    color:#22c55e;
+    filter:drop-shadow(0 0 14px rgba(34,197,94,.55)) drop-shadow(0 0 4px rgba(34,197,94,.35));
+    -webkit-user-select:none;
+    user-select:none;
+  }
+  @media (max-width:380px){
+    .brand-logo{font-size:2.15rem}
+  }
+
   .chat-bubble{background:#1f2937;border-radius:16px 16px 16px 4px;padding:12px 14px;color:#e5e7eb;font-size:13px;line-height:1.5;max-width:85%}
   .quick-chip{background:#1f2937;border:1px solid #374151;color:#93c5fd;padding:8px 14px;border-radius:999px;font-size:12px;font-weight:600;cursor:pointer;transition:.15s}
   .quick-chip:active{transform:scale(.95);background:#374151}
@@ -63,11 +89,14 @@
   .light-mode .app-container,.light-mode .page-layer{background:#f9fafb !important}
   .light-mode .bottom-nav { background: rgba(255, 255, 255, 0.95) !important; border-color: #e5e7eb !important; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1) !important; }
   .light-mode header{background:#fff !important;border-bottom-color:#e5e7eb !important;color:#111827 !important}
-  .light-mode header h1.text-green-500{color:#22c55e !important}
-  .light-mode header h1.text-orange-400{color:#ea580c !important}
-  .light-mode header h1.text-blue-400{color:#2563eb !important}
-  .light-mode header h1.text-purple-400{color:#9333ea !important}
   .light-mode header p{color:#6b7280 !important}
+  .light-mode .brand-logo{
+    background:linear-gradient(90deg,#22c55e 0%,#16a34a 50%,#15803d 100%);
+    -webkit-background-clip:text;
+    background-clip:text;
+    -webkit-text-fill-color:transparent;
+    filter:drop-shadow(0 0 10px rgba(22,163,74,.35));
+  }
   .light-mode .bg-gray-800,.light-mode .bg-gray-900{background-color:#fff !important;border-color:#e5e7eb !important;color:#1f2937 !important}
   .light-mode .bg-gray-700{background-color:#f3f4f6 !important}
   .light-mode input,.light-mode textarea,.light-mode select{background:#fff !important;color:#111827 !important;border-color:#d1d5db !important}
@@ -105,14 +134,11 @@
 
   <header class="bg-gray-900 text-white px-5 py-4 flex-none sticky top-0 z-40 rounded-b-3xl border-b border-gray-800 shadow-md">
     <div class="flex justify-between items-center mb-4 mt-2">
-      <div class="flex items-center gap-3">
-        <img src="icon-192.png" alt="Logo" class="w-10 h-10 rounded-xl object-cover">
-        <div>
-          <h1 class="text-2xl font-black italic tracking-tighter text-green-500">OZgo</h1>
-          <p class="text-[10px] text-gray-400 italic mt-0.5">Layanan Prioritas Warga Mabu</p>
-        </div>
+      <div class="flex flex-col">
+        <h1 class="brand-logo">OZgo</h1>
+        <p class="text-[10px] text-gray-400 italic mt-1 pl-0.5">Layanan Prioritas Warga Mabu</p>
       </div>
-      <button onclick="toggleTheme()" class="bg-gray-800 w-8 h-8 rounded-full flex items-center justify-center text-gray-300 hover:text-white transition active:scale-95 shadow-sm" title="Ganti Tema">
+      <button onclick="toggleTheme()" class="bg-gray-800 w-8 h-8 rounded-full flex items-center justify-center text-gray-300 hover:text-white transition active:scale-95 shadow-sm flex-shrink-0" title="Ganti Tema">
         <i id="theme-icon" class="fa-solid fa-sun"></i>
       </button>
     </div>
@@ -225,7 +251,7 @@
       <div onclick="toggleTheme()" class="flex items-center justify-between p-4 border-b border-gray-700 cursor-pointer active:bg-gray-700 transition"><div class="flex items-center gap-3"><div class="w-9 h-9 rounded-lg bg-gray-700 flex items-center justify-center text-gray-300"><i class="fa-solid fa-palette text-sm"></i></div><span class="text-sm font-semibold text-gray-200">Ganti Tema</span></div><i class="fa-solid fa-chevron-right text-gray-500 text-xs"></i></div>
       <div onclick="installApp()" class="flex items-center justify-between p-4 border-b border-gray-700 cursor-pointer active:bg-gray-700 transition"><div class="flex items-center gap-3"><div class="w-9 h-9 rounded-lg bg-gray-700 flex items-center justify-center text-gray-300"><i class="fa-solid fa-download text-sm"></i></div><span class="text-sm font-semibold text-gray-200">Install Aplikasi</span></div><i class="fa-solid fa-chevron-right text-gray-500 text-xs"></i></div>
       <div onclick="shareApp()" class="flex items-center justify-between p-4 border-b border-gray-700 cursor-pointer active:bg-gray-700 transition"><div class="flex items-center gap-3"><div class="w-9 h-9 rounded-lg bg-gray-700 flex items-center justify-center text-gray-300"><i class="fa-solid fa-share-nodes text-sm"></i></div><span class="text-sm font-semibold text-gray-200">Bagikan Aplikasi</span></div><i class="fa-solid fa-chevron-right text-gray-500 text-xs"></i></div>
-      <div onclick="showModal('Tentang OZgo','Aplikasi layanan prioritas warga Mabu. Versi 3.1.1\n\nArea: Rangkasbitung & sekitarnya.')" class="flex items-center justify-between p-4 cursor-pointer active:bg-gray-700 transition"><div class="flex items-center gap-3"><div class="w-9 h-9 rounded-lg bg-gray-700 flex items-center justify-center text-gray-300"><i class="fa-solid fa-circle-info text-sm"></i></div><span class="text-sm font-semibold text-gray-200">Tentang Aplikasi</span></div><span class="text-[10px] text-gray-500 font-mono">v3.1.1</span></div>
+      <div onclick="showModal('Tentang OZgo','Aplikasi layanan prioritas warga Mabu. Versi 3.1.2\n\nArea: Rangkasbitung & sekitarnya.')" class="flex items-center justify-between p-4 cursor-pointer active:bg-gray-700 transition"><div class="flex items-center gap-3"><div class="w-9 h-9 rounded-lg bg-gray-700 flex items-center justify-center text-gray-300"><i class="fa-solid fa-circle-info text-sm"></i></div><span class="text-sm font-semibold text-gray-200">Tentang Aplikasi</span></div><span class="text-[10px] text-gray-500 font-mono">v3.1.2</span></div>
     </div>
   </main>
 
@@ -790,12 +816,6 @@ function openWA(msg) {
   }
 }
 
-/**
- * Mengambil label tampilan + link Google Maps dari sebuah input.
- * - Jika user pakai tombol GPS (dataset.gps) → link koordinat.
- * - Jika user tempel URL maps → pakai URL tersebut.
- * - Jika user isi manual → bangun link dari teks + area.
- */
 function mapsOrText(inputId) {
   const el = document.getElementById(inputId);
   const raw = el.value.trim();
@@ -1115,7 +1135,6 @@ window.addEventListener('popstate', function () {
   renderDatalists();
   applyProfileDefaults();
 
-  // Bersihkan penanda GPS saat user mengetik manual di field lokasi
   ['ride-jemput','ride-antar','food-antar','send-jemput','send-antar','mart-toko','mart-antar'].forEach(id => {
     const el = document.getElementById(id);
     if (!el) return;
