@@ -1,10 +1,10 @@
 // ==========================================
 // SERVICE WORKER OZgo App
 // ==========================================
-// PENTING: Naikkan CACHE_VERSION (v10 → v11 → dst) setiap kali
+// PENTING: Naikkan CACHE_VERSION setiap kali
 // Anda mengubah ozgo.html / manifest.json / aset statis.
 
-const CACHE_VERSION = 'ozgo-v10';
+const CACHE_VERSION = 'ozgo-v11';
 
 const ASSETS_TO_CACHE = [
   './',
@@ -13,7 +13,8 @@ const ASSETS_TO_CACHE = [
   './icon-192.png',
   './icon-512.png',
   'https://cdn.tailwindcss.com',
-  'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css'
+  'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css',
+  'https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&display=swap'
 ];
 
 // INSTALL: simpan aset ke cache (tahan 1 aset gagal)
