@@ -70,16 +70,12 @@
 <body>
 
 <div class="app-container">
-
   <div id="toast" class="toast"></div>
 
   <div id="install-banner" class="absolute top-4 left-4 right-4 z-[100] bg-gradient-to-r from-green-600 to-green-800 text-white rounded-2xl shadow-2xl p-3 transform -translate-y-[150%] transition-transform duration-500 flex items-center justify-between border border-green-500/50 hidden">
     <div class="flex items-center gap-3">
       <div class="w-10 h-10 rounded-xl bg-gray-900 flex items-center justify-center text-green-400"><i class="fa-solid fa-bolt"></i></div>
-      <div>
-        <h4 class="font-bold text-sm leading-tight">Install OZgo</h4>
-        <p class="text-[10px] text-green-100 mt-0.5">Akses lebih cepat & ringan</p>
-      </div>
+      <div><h4 class="font-bold text-sm leading-tight">Install OZgo</h4><p class="text-[10px] text-green-100 mt-0.5">Akses lebih cepat & ringan</p></div>
     </div>
     <button onclick="installApp()" class="bg-white text-green-700 text-xs font-bold px-4 py-2 rounded-xl active:scale-95 transition shadow-sm">Install</button>
     <button onclick="tutupInstallBanner()" class="absolute -top-2 -right-2 bg-gray-800 text-gray-300 w-6 h-6 rounded-full flex items-center justify-center text-xs border border-gray-600 active:scale-95 shadow-md"><i class="fa-solid fa-times"></i></button>
@@ -87,9 +83,12 @@
 
   <header class="bg-gray-900 text-white px-5 py-4 flex-none sticky top-0 z-40 rounded-b-3xl border-b border-gray-800 shadow-md">
     <div class="flex justify-between items-center mb-4 mt-2">
-      <div>
-        <h1 class="text-2xl font-black italic tracking-tighter text-green-500">OZgo</h1>
-        <p class="text-[10px] text-gray-400 italic mt-0.5">Layanan Prioritas Warga Mabu</p>
+      <div class="flex items-center gap-3">
+        <img src="icon-192.png" alt="Logo" class="w-10 h-10 rounded-xl object-cover">
+        <div>
+          <h1 class="text-2xl font-black italic tracking-tighter text-green-500">OZgo</h1>
+          <p class="text-[10px] text-gray-400 italic mt-0.5">Layanan Prioritas Warga Mabu</p>
+        </div>
       </div>
       <button onclick="toggleTheme()" class="bg-gray-800 w-8 h-8 rounded-full flex items-center justify-center text-gray-300 hover:text-white transition active:scale-95 shadow-sm" title="Ganti Tema">
         <i id="theme-icon" class="fa-solid fa-sun"></i>
@@ -101,7 +100,6 @@
     </div>
   </header>
 
-  <!-- ============== TAB BERANDA ============== -->
   <main class="content-area px-5 pt-6" id="main-beranda">
     <h2 class="text-sm font-bold text-gray-200 mb-4">Layanan Utama</h2>
     <div class="grid grid-cols-2 gap-4">
@@ -126,24 +124,17 @@
       <i class="fa-solid fa-crown absolute -right-3 -bottom-4 text-7xl text-white opacity-10"></i>
       <div class="flex items-center gap-4 relative z-10">
         <div class="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center text-white text-xl flex-shrink-0 shadow-inner backdrop-blur-sm"><i class="fa-solid fa-crown"></i></div>
-        <div>
-          <h3 class="text-white font-bold text-sm mb-1">Aktifkan OZbudemen</h3>
-          <p class="text-green-100 text-xs leading-tight mb-1">Bayar 1 kali nikmati layanan prioritas 1 bulan</p>
-        </div>
+        <div><h3 class="text-white font-bold text-sm mb-1">Aktifkan OZbudemen</h3><p class="text-green-100 text-xs leading-tight mb-1">Bayar 1 kali nikmati layanan prioritas 1 bulan</p></div>
       </div>
     </div>
   </main>
 
-  <!-- ============== TAB CHAT ============== -->
   <main class="content-area px-5 pt-6 hidden" id="main-chat">
     <div class="flex items-center gap-3 mb-6">
       <div class="w-12 h-12 bg-green-900/50 rounded-full flex items-center justify-center text-green-400 text-xl"><i class="fa-solid fa-headset"></i></div>
-      <div>
-        <h2 class="text-sm font-bold text-gray-200">Customer Service OZgo</h2>
-        <p class="text-[11px] text-green-400"><i class="fa-solid fa-circle text-[8px] mr-1"></i>Online • Balas cepat</p>
-      </div>
+      <div><h2 class="text-sm font-bold text-gray-200">Customer Service OZgo</h2><p class="text-[11px] text-green-400"><i class="fa-solid fa-circle text-[8px] mr-1"></i>Online • Balas cepat</p></div>
     </div>
-    <div class="chat-bubble mb-5">Halo! 👋 Selamat datang di <b>OZgo</b>.<br>Ada yang bisa kami bantu? Pilih topik cepat di bawah.</div>
+    <div class="chat-bubble mb-5">Halo! 👋 Selamat datang di <b>OZgo</b>.<br>Ada yang bisa kami bantu?</div>
     <p class="text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-3">Topik Cepat</p>
     <div class="flex flex-wrap gap-2 mb-6">
       <div class="quick-chip" onclick="chatTemplate('Saya mau tanya harga layanan OZRide.')">💬 Tanya Harga</div>
@@ -152,15 +143,11 @@
       <div class="quick-chip" onclick="chatTemplate('Saya ingin jadi mitra driver OZgo.')">🛵 Jadi Mitra</div>
       <div class="quick-chip" onclick="chatTemplate('Saya mau tanya area jangkauan layanan OZgo.')">📍 Area Layanan</div>
     </div>
-    <div class="bg-gray-800 border border-gray-700 rounded-2xl p-4 mb-4">
-      <p class="text-xs text-gray-400 leading-relaxed"><i class="fa-brands fa-whatsapp text-green-400 mr-1"></i>Chat akan diteruskan ke WhatsApp Admin.</p>
-    </div>
     <button onclick="chatTemplate('Halo Admin OZgo, saya mau bertanya.')" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3.5 rounded-xl transition active:scale-95 flex items-center justify-center gap-2 shadow-lg shadow-green-900/50">
       <i class="fa-brands fa-whatsapp text-lg"></i> Mulai Chat dengan Admin
     </button>
   </main>
 
-  <!-- ============== TAB PESANAN ============== -->
   <main class="content-area px-5 pt-6 hidden" id="main-pesanan">
     <div class="flex items-center justify-between mb-3">
       <h2 class="text-sm font-bold text-gray-200">Riwayat Pesanan</h2>
@@ -176,36 +163,26 @@
     <div id="orders-empty" class="text-center py-16">
       <div class="w-20 h-20 mx-auto mb-4 rounded-full bg-gray-800 border border-gray-700 flex items-center justify-center text-gray-500 text-3xl"><i class="fa-solid fa-receipt"></i></div>
       <p class="text-gray-300 font-bold text-sm mb-1">Belum ada pesanan</p>
-      <p class="text-gray-500 text-xs mb-6 px-8">Pesanan Anda akan muncul di sini untuk memudahkan cek status.</p>
+      <p class="text-gray-500 text-xs mb-6 px-8">Pesanan Anda akan muncul di sini.</p>
       <button onclick="switchTab('beranda')" class="bg-green-600 text-white font-bold text-sm px-6 py-2.5 rounded-xl active:scale-95 transition">Pesan Sekarang</button>
     </div>
     <div id="orders-list" class="space-y-3"></div>
   </main>
 
-  <!-- ============== TAB PROFILE ============== -->
   <main class="content-area px-5 pt-6 hidden" id="main-profile">
     <div class="flex flex-col items-center mb-6">
-      <div class="w-20 h-20 rounded-full bg-gradient-to-br from-green-500 to-green-700 flex items-center justify-center text-white text-3xl font-black mb-3 shadow-lg">
-        <span id="avatar-initial">?</span>
-      </div>
+      <div class="w-20 h-20 rounded-full bg-gradient-to-br from-green-500 to-green-700 flex items-center justify-center text-white text-3xl font-black mb-3 shadow-lg"><span id="avatar-initial">?</span></div>
       <h2 class="text-lg font-bold text-gray-200" id="profile-display-name">Pengguna OZgo</h2>
       <p class="text-xs text-gray-400" id="profile-display-phone">Belum ada nomor</p>
     </div>
 
     <div class="bg-gray-800 border border-gray-700 rounded-2xl p-5 mb-4">
       <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-4">Data Diri</h3>
-      <div class="mb-3">
-        <label class="block text-xs font-bold text-gray-400 mb-1.5">Nama Lengkap</label>
-        <input type="text" id="profile-nama" class="w-full bg-gray-900 border border-gray-700 rounded-xl px-4 py-2.5 text-white text-sm outline-none focus:border-green-500 transition" placeholder="Nama Anda">
-      </div>
-      <div class="mb-4">
-        <label class="block text-xs font-bold text-gray-400 mb-1.5">No. HP / WhatsApp</label>
-        <input type="tel" id="profile-hp" class="w-full bg-gray-900 border border-gray-700 rounded-xl px-4 py-2.5 text-white text-sm outline-none focus:border-green-500 transition" placeholder="08xxxxxxxxxx">
-      </div>
+      <div class="mb-3"><label class="block text-xs font-bold text-gray-400 mb-1.5">Nama Lengkap</label><input type="text" id="profile-nama" list="nama-datalist" class="w-full bg-gray-900 border border-gray-700 rounded-xl px-4 py-2.5 text-white text-sm outline-none focus:border-green-500 transition" placeholder="Nama Anda"></div>
+      <div class="mb-4"><label class="block text-xs font-bold text-gray-400 mb-1.5">No. HP / WhatsApp</label><input type="tel" id="profile-hp" class="w-full bg-gray-900 border border-gray-700 rounded-xl px-4 py-2.5 text-white text-sm outline-none focus:border-green-500 transition" placeholder="08xxxxxxxxxx"></div>
       <button onclick="saveProfile()" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2.5 rounded-xl active:scale-95 transition text-sm">Simpan Data</button>
     </div>
 
-    <!-- BUKU ALAMAT (BARU) -->
     <div class="bg-gray-800 border border-gray-700 rounded-2xl p-5 mb-4">
       <div class="flex justify-between items-center mb-3">
         <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider"><i class="fa-solid fa-address-book mr-1"></i> Alamat Tersimpan</h3>
@@ -213,13 +190,8 @@
       </div>
       <div id="address-list"></div>
       <div id="address-form" class="hidden mt-3 pt-3 border-t border-gray-700">
-        <input type="hidden" id="addr-edit-id" value="">
-        <div class="mb-2">
-          <input type="text" id="addr-label" placeholder="Label (Rumah / Kantor / Kos)" class="w-full bg-gray-900 border border-gray-700 rounded-xl px-3 py-2 text-white text-sm outline-none focus:border-green-500 transition">
-        </div>
-        <div class="mb-2">
-          <textarea id="addr-value" rows="2" placeholder="Alamat lengkap" class="w-full bg-gray-900 border border-gray-700 rounded-xl px-3 py-2 text-white text-sm outline-none focus:border-green-500 transition resize-none"></textarea>
-        </div>
+        <div class="mb-2"><input type="text" id="addr-label" placeholder="Label (Rumah / Kantor / Kos)" class="w-full bg-gray-900 border border-gray-700 rounded-xl px-3 py-2 text-white text-sm outline-none focus:border-green-500 transition"></div>
+        <div class="mb-2"><textarea id="addr-value" rows="2" placeholder="Alamat lengkap" class="w-full bg-gray-900 border border-gray-700 rounded-xl px-3 py-2 text-white text-sm outline-none focus:border-green-500 transition resize-none"></textarea></div>
         <div class="flex gap-2">
           <button onclick="saveAddress()" class="flex-1 bg-green-600 text-white font-bold py-2 rounded-xl text-xs active:scale-95 transition">Simpan</button>
           <button onclick="cancelAddressForm()" class="bg-gray-700 text-white font-bold py-2 px-4 rounded-xl text-xs active:scale-95 transition">Batal</button>
@@ -228,51 +200,18 @@
     </div>
 
     <div class="bg-gray-800 border border-gray-700 rounded-2xl overflow-hidden mb-4">
-      <div onclick="toggleTheme()" class="flex items-center justify-between p-4 border-b border-gray-700 cursor-pointer active:bg-gray-700 transition">
-        <div class="flex items-center gap-3">
-          <div class="w-9 h-9 rounded-lg bg-gray-700 flex items-center justify-center text-gray-300"><i class="fa-solid fa-palette text-sm"></i></div>
-          <span class="text-sm font-semibold text-gray-200">Ganti Tema</span>
-        </div>
-        <i class="fa-solid fa-chevron-right text-gray-500 text-xs"></i>
-      </div>
-      <div onclick="installApp()" class="flex items-center justify-between p-4 border-b border-gray-700 cursor-pointer active:bg-gray-700 transition">
-        <div class="flex items-center gap-3">
-          <div class="w-9 h-9 rounded-lg bg-gray-700 flex items-center justify-center text-gray-300"><i class="fa-solid fa-download text-sm"></i></div>
-          <span class="text-sm font-semibold text-gray-200">Install Aplikasi</span>
-        </div>
-        <i class="fa-solid fa-chevron-right text-gray-500 text-xs"></i>
-      </div>
-      <!-- BAGIKAN APLIKASI (BARU) -->
-      <div onclick="shareApp()" class="flex items-center justify-between p-4 border-b border-gray-700 cursor-pointer active:bg-gray-700 transition">
-        <div class="flex items-center gap-3">
-          <div class="w-9 h-9 rounded-lg bg-gray-700 flex items-center justify-center text-gray-300"><i class="fa-solid fa-share-nodes text-sm"></i></div>
-          <span class="text-sm font-semibold text-gray-200">Bagikan Aplikasi</span>
-        </div>
-        <i class="fa-solid fa-chevron-right text-gray-500 text-xs"></i>
-      </div>
-      <div onclick="showModal('Tentang OZgo','Aplikasi layanan prioritas warga Mabu. Versi 1.2.0\n\nArea: Rangkasbitung & sekitarnya.')" class="flex items-center justify-between p-4 cursor-pointer active:bg-gray-700 transition">
-        <div class="flex items-center gap-3">
-          <div class="w-9 h-9 rounded-lg bg-gray-700 flex items-center justify-center text-gray-300"><i class="fa-solid fa-circle-info text-sm"></i></div>
-          <span class="text-sm font-semibold text-gray-200">Tentang Aplikasi</span>
-        </div>
-        <span class="text-[10px] text-gray-500 font-mono">v1.2.0</span>
-      </div>
+      <div onclick="toggleTheme()" class="flex items-center justify-between p-4 border-b border-gray-700 cursor-pointer active:bg-gray-700 transition"><div class="flex items-center gap-3"><div class="w-9 h-9 rounded-lg bg-gray-700 flex items-center justify-center text-gray-300"><i class="fa-solid fa-palette text-sm"></i></div><span class="text-sm font-semibold text-gray-200">Ganti Tema</span></div><i class="fa-solid fa-chevron-right text-gray-500 text-xs"></i></div>
+      <div onclick="installApp()" class="flex items-center justify-between p-4 border-b border-gray-700 cursor-pointer active:bg-gray-700 transition"><div class="flex items-center gap-3"><div class="w-9 h-9 rounded-lg bg-gray-700 flex items-center justify-center text-gray-300"><i class="fa-solid fa-download text-sm"></i></div><span class="text-sm font-semibold text-gray-200">Install Aplikasi</span></div><i class="fa-solid fa-chevron-right text-gray-500 text-xs"></i></div>
+      <div onclick="shareApp()" class="flex items-center justify-between p-4 border-b border-gray-700 cursor-pointer active:bg-gray-700 transition"><div class="flex items-center gap-3"><div class="w-9 h-9 rounded-lg bg-gray-700 flex items-center justify-center text-gray-300"><i class="fa-solid fa-share-nodes text-sm"></i></div><span class="text-sm font-semibold text-gray-200">Bagikan Aplikasi</span></div><i class="fa-solid fa-chevron-right text-gray-500 text-xs"></i></div>
+      <div onclick="showModal('Tentang OZgo','Aplikasi layanan prioritas warga Mabu. Versi 3.1.0\n\nArea: Rangkasbitung & sekitarnya.')" class="flex items-center justify-between p-4 cursor-pointer active:bg-gray-700 transition"><div class="flex items-center gap-3"><div class="w-9 h-9 rounded-lg bg-gray-700 flex items-center justify-center text-gray-300"><i class="fa-solid fa-circle-info text-sm"></i></div><span class="text-sm font-semibold text-gray-200">Tentang Aplikasi</span></div><span class="text-[10px] text-gray-500 font-mono">v3.1.0</span></div>
     </div>
   </main>
 
   <nav class="bottom-nav">
-    <div id="nav-beranda" onclick="switchTab('beranda')" class="flex flex-col items-center cursor-pointer text-green-500 transition">
-      <i class="fa-solid fa-house text-xl mb-1"></i><span class="text-[10px] font-bold">Beranda</span>
-    </div>
-    <div id="nav-chat" onclick="switchTab('chat')" class="flex flex-col items-center cursor-pointer text-gray-500 hover:text-gray-300 transition">
-      <i class="fa-solid fa-comment-dots text-xl mb-1"></i><span class="text-[10px] font-bold">Chat</span>
-    </div>
-    <div id="nav-pesanan" onclick="switchTab('pesanan')" class="flex flex-col items-center cursor-pointer text-gray-500 hover:text-gray-300 transition">
-      <i class="fa-solid fa-receipt text-xl mb-1"></i><span class="text-[10px] font-bold">Pesanan</span>
-    </div>
-    <div id="nav-profile" onclick="switchTab('profile')" class="flex flex-col items-center cursor-pointer text-gray-500 hover:text-gray-300 transition">
-      <i class="fa-solid fa-user text-xl mb-1"></i><span class="text-[10px] font-bold">Profile</span>
-    </div>
+    <div id="nav-beranda" onclick="switchTab('beranda')" class="flex flex-col items-center cursor-pointer text-green-500 transition"><i class="fa-solid fa-house text-xl mb-1"></i><span class="text-[10px] font-bold">Beranda</span></div>
+    <div id="nav-chat" onclick="switchTab('chat')" class="flex flex-col items-center cursor-pointer text-gray-500 hover:text-gray-300 transition"><i class="fa-solid fa-comment-dots text-xl mb-1"></i><span class="text-[10px] font-bold">Chat</span></div>
+    <div id="nav-pesanan" onclick="switchTab('pesanan')" class="flex flex-col items-center cursor-pointer text-gray-500 hover:text-gray-300 transition"><i class="fa-solid fa-receipt text-xl mb-1"></i><span class="text-[10px] font-bold">Pesanan</span></div>
+    <div id="nav-profile" onclick="switchTab('profile')" class="flex flex-col items-center cursor-pointer text-gray-500 hover:text-gray-300 transition"><i class="fa-solid fa-user text-xl mb-1"></i><span class="text-[10px] font-bold">Profile</span></div>
   </nav>
 
   <!-- ============ LAYER OZRIDE ============ -->
@@ -284,14 +223,14 @@
     <main class="flex-1 overflow-y-auto px-5 py-6">
       <div class="mb-4">
         <label class="block text-xs font-bold text-gray-400 mb-2">Nama Pemesan</label>
-        <input type="text" id="ride-nama" class="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-green-500 transition" placeholder="Contoh: Budi Santoso">
+        <input type="text" id="ride-nama" list="nama-datalist" class="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-green-500 transition" placeholder="Contoh: Budi Santoso">
         <p class="error-msg">Nama wajib diisi</p>
       </div>
       <div class="mb-4">
         <label class="block text-xs font-bold text-gray-400 mb-2">Titik Jemput</label>
         <div class="flex gap-2">
-          <input type="text" id="ride-jemput" class="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-green-500 transition" placeholder="Contoh: Stasiun Rangkasbitung">
-          <button onclick="openAddressPicker('ride-jemput')" class="addr-picker-btn bg-gray-800 border border-gray-700 text-yellow-400 rounded-xl px-4 flex items-center justify-center hover:bg-gray-700 active:scale-95 transition" title="Pilih dari alamat tersimpan"><i class="fa-solid fa-address-book text-lg"></i></button>
+          <input type="text" id="ride-jemput" list="alamat-datalist" class="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-green-500 transition" placeholder="Contoh: Stasiun Rangkasbitung">
+          <button onclick="openAddressPicker('ride-jemput')" class="addr-picker-btn bg-gray-800 border border-gray-700 text-yellow-400 rounded-xl px-4 flex items-center justify-center hover:bg-gray-700 active:scale-95 transition"><i class="fa-solid fa-address-book text-lg"></i></button>
           <button onclick="getLocation('ride-jemput')" class="bg-gray-800 border border-gray-700 text-green-500 rounded-xl px-4 flex items-center justify-center hover:bg-gray-700 active:scale-95 transition"><i class="fa-solid fa-location-crosshairs text-lg"></i></button>
         </div>
         <p class="error-msg">Titik jemput wajib diisi</p>
@@ -299,14 +238,14 @@
       <div class="mb-4">
         <label class="block text-xs font-bold text-gray-400 mb-2">Titik Pengantaran</label>
         <div class="flex gap-2">
-          <input type="text" id="ride-antar" class="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-green-500 transition" placeholder="Contoh: Alun-Alun Rangkasbitung">
-          <button onclick="openAddressPicker('ride-antar')" class="addr-picker-btn bg-gray-800 border border-gray-700 text-yellow-400 rounded-xl px-4 flex items-center justify-center hover:bg-gray-700 active:scale-95 transition" title="Pilih dari alamat tersimpan"><i class="fa-solid fa-address-book text-lg"></i></button>
+          <input type="text" id="ride-antar" list="alamat-datalist" class="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-green-500 transition" placeholder="Contoh: Alun-Alun Rangkasbitung">
+          <button onclick="openAddressPicker('ride-antar')" class="addr-picker-btn bg-gray-800 border border-gray-700 text-yellow-400 rounded-xl px-4 flex items-center justify-center hover:bg-gray-700 active:scale-95 transition"><i class="fa-solid fa-address-book text-lg"></i></button>
         </div>
         <p class="error-msg">Tujuan wajib diisi</p>
       </div>
       <div class="mb-4">
         <label class="block text-xs font-bold text-gray-400 mb-2">Keterangan Tambahan (Opsional)</label>
-        <textarea id="ride-keterangan" rows="2" class="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-green-500 transition resize-none" placeholder="Ciri-ciri, patokan, dll."></textarea>
+        <textarea id="ride-keterangan" rows="3" class="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-green-500 transition resize-none" placeholder="Ciri-ciri, patokan, dll."></textarea>
       </div>
       <div class="mb-8">
         <label class="block text-xs font-bold text-gray-400 mb-2">Metode Pembayaran</label>
@@ -328,13 +267,13 @@
       <div><h1 class="text-lg font-bold text-orange-400">Pesan OZFood</h1><p class="text-[10px] text-gray-400">Layanan Pesan Antar Makanan</p></div>
     </header>
     <main class="flex-1 overflow-y-auto px-5 py-6">
-      <div class="mb-4"><label class="block text-xs font-bold text-gray-400 mb-2">Nama Pemesan</label><input type="text" id="food-nama" class="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-orange-500 transition" placeholder="Contoh: Budi Santoso"><p class="error-msg">Nama wajib diisi</p></div>
+      <div class="mb-4"><label class="block text-xs font-bold text-gray-400 mb-2">Nama Pemesan</label><input type="text" id="food-nama" list="nama-datalist" class="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-orange-500 transition" placeholder="Contoh: Budi Santoso"><p class="error-msg">Nama wajib diisi</p></div>
       <div class="mb-4"><label class="block text-xs font-bold text-gray-400 mb-2">Nama Resto / Warung</label><input type="text" id="food-resto" class="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-orange-500 transition" placeholder="Contoh: RM. Padang Sederhana"><p class="error-msg">Nama resto wajib diisi</p></div>
       <div class="mb-4"><label class="block text-xs font-bold text-gray-400 mb-2">Detail Pesanan / Menu</label><textarea id="food-menu" rows="3" class="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-orange-500 transition resize-none" placeholder="Contoh:&#10;2x Nasi Rendang&#10;1x Es Teh Manis"></textarea><p class="error-msg">Menu wajib diisi</p></div>
       <div class="mb-4">
         <label class="block text-xs font-bold text-gray-400 mb-2">Alamat Pengantaran</label>
         <div class="flex gap-2">
-          <input type="text" id="food-antar" class="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-orange-500 transition" placeholder="Alamat lengkap penerima">
+          <input type="text" id="food-antar" list="alamat-datalist" class="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-orange-500 transition" placeholder="Alamat lengkap penerima">
           <button onclick="openAddressPicker('food-antar')" class="addr-picker-btn bg-gray-800 border border-gray-700 text-yellow-400 rounded-xl px-4 flex items-center justify-center hover:bg-gray-700 active:scale-95 transition"><i class="fa-solid fa-address-book text-lg"></i></button>
           <button onclick="getLocation('food-antar')" class="bg-gray-800 border border-gray-700 text-orange-500 rounded-xl px-4 flex items-center justify-center hover:bg-gray-700 active:scale-95 transition"><i class="fa-solid fa-location-crosshairs text-lg"></i></button>
         </div>
@@ -352,12 +291,13 @@
       <div><h1 class="text-lg font-bold text-blue-400">Pesan OZSend</h1><p class="text-[10px] text-gray-400">Kirim Paket Cepat & Aman</p></div>
     </header>
     <main class="flex-1 overflow-y-auto px-5 py-6">
-      <div class="mb-4"><label class="block text-xs font-bold text-gray-400 mb-2">Nama Pengirim (Pemesan)</label><input type="text" id="send-nama" class="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-blue-500 transition" placeholder="Contoh: Budi Santoso"><p class="error-msg">Nama pengirim wajib diisi</p></div>
+      <div class="mb-4"><label class="block text-xs font-bold text-gray-400 mb-2">Nama Pengirim (Pemesan)</label><input type="text" id="send-nama" list="nama-datalist" class="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-blue-500 transition" placeholder="Contoh: Budi Santoso"><p class="error-msg">Nama pengirim wajib diisi</p></div>
       <div class="mb-4">
         <label class="block text-xs font-bold text-gray-400 mb-2">Alamat Pengambilan</label>
         <div class="flex gap-2">
-          <input type="text" id="send-jemput" class="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-blue-500 transition" placeholder="Contoh: Jl. Multatuli No. 10">
+          <input type="text" id="send-jemput" list="alamat-datalist" class="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-blue-500 transition" placeholder="Contoh: Jl. Multatuli No. 10">
           <button onclick="openAddressPicker('send-jemput')" class="addr-picker-btn bg-gray-800 border border-gray-700 text-yellow-400 rounded-xl px-4 flex items-center justify-center hover:bg-gray-700 active:scale-95 transition"><i class="fa-solid fa-address-book text-lg"></i></button>
+          <button onclick="getLocation('send-jemput')" class="bg-gray-800 border border-gray-700 text-blue-500 rounded-xl px-4 flex items-center justify-center hover:bg-gray-700 active:scale-95 transition"><i class="fa-solid fa-location-crosshairs text-lg"></i></button>
         </div>
         <p class="error-msg">Alamat ambil wajib diisi</p>
       </div>
@@ -365,12 +305,12 @@
       <div class="mb-4"><label class="block text-xs font-bold text-gray-400 mb-2">Detail Barang (Opsional)</label><textarea id="send-detail" rows="2" class="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-blue-500 transition resize-none" placeholder="Ciri-ciri atau instruksi khusus"></textarea></div>
       <div class="border-t border-gray-700 my-5"></div>
       <h3 class="text-sm font-bold text-gray-200 mb-4"><i class="fa-solid fa-user-check text-blue-400 mr-2"></i>Data Penerima</h3>
-      <div class="mb-4"><label class="block text-xs font-bold text-gray-400 mb-2">Nama Penerima</label><input type="text" id="send-penerima" class="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-blue-500 transition" placeholder="Nama orang yang menerima"><p class="error-msg">Nama penerima wajib diisi</p></div>
+      <div class="mb-4"><label class="block text-xs font-bold text-gray-400 mb-2">Nama Penerima</label><input type="text" id="send-penerima" list="nama-datalist" class="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-blue-500 transition" placeholder="Nama orang yang menerima"><p class="error-msg">Nama penerima wajib diisi</p></div>
       <div class="mb-4"><label class="block text-xs font-bold text-gray-400 mb-2">No. HP Penerima</label><input type="tel" id="send-hp" class="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-blue-500 transition" placeholder="08123456789"><p class="error-msg">No HP penerima wajib diisi</p></div>
       <div class="mb-4">
         <label class="block text-xs font-bold text-gray-400 mb-2">Alamat Pengantaran</label>
         <div class="flex gap-2">
-          <input type="text" id="send-antar" class="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-blue-500 transition" placeholder="Alamat lengkap penerima">
+          <input type="text" id="send-antar" list="alamat-datalist" class="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-blue-500 transition" placeholder="Alamat lengkap penerima">
           <button onclick="openAddressPicker('send-antar')" class="addr-picker-btn bg-gray-800 border border-gray-700 text-yellow-400 rounded-xl px-4 flex items-center justify-center hover:bg-gray-700 active:scale-95 transition"><i class="fa-solid fa-address-book text-lg"></i></button>
           <button onclick="getLocation('send-antar')" class="bg-gray-800 border border-gray-700 text-blue-500 rounded-xl px-4 flex items-center justify-center hover:bg-gray-700 active:scale-95 transition"><i class="fa-solid fa-location-crosshairs text-lg"></i></button>
         </div>
@@ -388,7 +328,7 @@
       <div><h1 class="text-lg font-bold text-purple-400">Pesan OZMart</h1><p class="text-[10px] text-gray-400">Belanja Kebutuhan Harian</p></div>
     </header>
     <main class="flex-1 overflow-y-auto px-5 py-6">
-      <div class="mb-4"><label class="block text-xs font-bold text-gray-400 mb-2">Nama Pemesan</label><input type="text" id="mart-nama" class="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-purple-500 transition" placeholder="Contoh: Budi Santoso"><p class="error-msg">Nama wajib diisi</p></div>
+      <div class="mb-4"><label class="block text-xs font-bold text-gray-400 mb-2">Nama Pemesan</label><input type="text" id="mart-nama" list="nama-datalist" class="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-purple-500 transition" placeholder="Contoh: Budi Santoso"><p class="error-msg">Nama wajib diisi</p></div>
       <div class="mb-4">
         <label class="block text-xs font-bold text-gray-400 mb-2">Alamat Toko / Tempat Belanja</label>
         <div class="flex gap-2">
@@ -403,7 +343,7 @@
       <div class="mb-4">
         <label class="block text-xs font-bold text-gray-400 mb-2">Alamat Pengantaran</label>
         <div class="flex gap-2">
-          <input type="text" id="mart-antar" class="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-purple-500 transition" placeholder="Alamat lengkap Anda">
+          <input type="text" id="mart-antar" list="alamat-datalist" class="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-purple-500 transition" placeholder="Alamat lengkap Anda">
           <button onclick="openAddressPicker('mart-antar')" class="addr-picker-btn bg-gray-800 border border-gray-700 text-yellow-400 rounded-xl px-4 flex items-center justify-center hover:bg-gray-700 active:scale-95 transition"><i class="fa-solid fa-address-book text-lg"></i></button>
           <button onclick="getLocation('mart-antar')" class="bg-gray-800 border border-gray-700 text-purple-500 rounded-xl px-4 flex items-center justify-center hover:bg-gray-700 active:scale-95 transition"><i class="fa-solid fa-location-crosshairs text-lg"></i></button>
         </div>
@@ -415,7 +355,7 @@
   </div>
 
   <!-- ============ MODAL INFO ============ -->
-  <div id="custom-modal" class="hidden absolute inset-0 z-[100] bg-black/80 flex items-center justify-center p-5 opacity-0 transition-opacity duration-200">
+  <div id="custom-modal" style="display: none;" class="absolute inset-0 z-[100] bg-black/80 flex items-center justify-center p-5 opacity-0 transition-opacity duration-200">
     <div id="modal-content" class="bg-gray-800 border border-gray-700 w-full max-w-[300px] rounded-3xl p-6 shadow-2xl transform scale-95 transition-transform duration-200 text-center">
       <div class="w-16 h-16 bg-green-900/30 text-green-500 rounded-full flex items-center justify-center text-3xl mx-auto mb-4"><i id="modal-icon" class="fa-solid fa-info-circle"></i></div>
       <h3 id="modal-title" class="text-xl font-bold text-white mb-2">Info</h3>
@@ -424,8 +364,8 @@
     </div>
   </div>
 
-  <!-- ============ MODAL PILIH ALAMAT (BARU) ============ -->
-  <div id="address-picker-modal" class="hidden absolute inset-0 z-[100] bg-black/80 flex items-center justify-center p-5 opacity-0 transition-opacity duration-200">
+  <!-- ============ MODAL PILIH ALAMAT ============ -->
+  <div id="address-picker-modal" style="display: none;" class="absolute inset-0 z-[100] bg-black/80 flex items-center justify-center p-5 opacity-0 transition-opacity duration-200">
     <div id="address-picker-content" class="bg-gray-800 border border-gray-700 w-full max-w-[340px] rounded-3xl p-5 shadow-2xl transform scale-95 transition-transform duration-200">
       <div class="flex items-center justify-between mb-4">
         <h3 class="text-base font-bold text-white"><i class="fa-solid fa-address-book text-yellow-400 mr-2"></i>Pilih Alamat</h3>
@@ -438,8 +378,8 @@
     </div>
   </div>
 
-  <!-- ============ MODAL RATING (BARU) ============ -->
-  <div id="rating-modal" class="hidden absolute inset-0 z-[100] bg-black/80 flex items-center justify-center p-5 opacity-0 transition-opacity duration-200">
+  <!-- ============ MODAL RATING ============ -->
+  <div id="rating-modal" style="display: none;" class="absolute inset-0 z-[100] bg-black/80 flex items-center justify-center p-5 opacity-0 transition-opacity duration-200">
     <div id="rating-content" class="bg-gray-800 border border-gray-700 w-full max-w-[320px] rounded-3xl p-6 shadow-2xl transform scale-95 transition-transform duration-200">
       <h3 class="text-lg font-bold text-white mb-2 text-center">Beri Rating</h3>
       <p class="text-xs text-gray-400 mb-5 text-center">Bagaimana pengalaman Anda?</p>
@@ -458,68 +398,60 @@
     </div>
   </div>
 
-  <!-- ============ INSTALL GUIDE ============ -->
-  <div id="install-guide-layer" class="hidden absolute inset-0 z-[110] bg-gray-900 flex flex-col p-6 opacity-0 transition-opacity duration-300">
-    <div class="flex-1 flex flex-col items-center justify-center text-center mt-10">
-      <div class="w-24 h-24 rounded-3xl shadow-lg mb-6 border border-gray-700 bg-gradient-to-br from-green-500 to-green-700 flex items-center justify-center text-white text-4xl"><i class="fa-solid fa-bolt"></i></div>
-      <h2 class="text-2xl font-bold text-white mb-2">Install OZgo</h2>
-      <p class="text-gray-400 text-sm mb-8">Tambahkan ke Layar Utama agar cepat diakses seperti aplikasi biasa.</p>
-      <div class="bg-gray-800 border border-gray-700 rounded-2xl p-5 w-full text-left relative overflow-hidden">
-        <div class="absolute top-0 left-0 w-1 h-full bg-green-500"></div>
-        <h3 class="font-bold text-white mb-4"><i class="fa-solid fa-mobile-screen mr-2"></i> Ikuti 2 Langkah Ini:</h3>
-        <div id="guide-android" class="hidden">
-          <div class="flex items-center gap-4 mb-4"><div class="bg-gray-700 w-10 h-10 rounded-full flex items-center justify-center text-white shrink-0">1</div><p class="text-sm text-gray-300">Ketuk ikon <b class="text-white bg-gray-700 px-2 py-0.5 rounded">Titik Tiga (⋮)</b> di pojok layar.</p></div>
-          <div class="flex items-center gap-4"><div class="bg-gray-700 w-10 h-10 rounded-full flex items-center justify-center text-white shrink-0">2</div><p class="text-sm text-gray-300">Pilih <b class="text-green-400">"Tambahkan ke Layar Utama"</b>.</p></div>
-        </div>
-        <div id="guide-ios" class="hidden">
-          <div class="flex items-center gap-4 mb-4"><div class="bg-gray-700 w-10 h-10 rounded-full flex items-center justify-center text-white shrink-0">1</div><p class="text-sm text-gray-300">Ketuk ikon <b class="text-white"><i class="fa-solid fa-arrow-up-from-bracket"></i> Share</b> di bawah.</p></div>
-          <div class="flex items-center gap-4"><div class="bg-gray-700 w-10 h-10 rounded-full flex items-center justify-center text-white shrink-0">2</div><p class="text-sm text-gray-300">Geser & pilih <b class="text-green-400">"Tambah ke Layar Utama"</b> (+).</p></div>
-        </div>
+  <!-- ============ MODAL PREVIEW PESANAN ============ -->
+  <div id="preview-modal" style="display: none;" class="absolute inset-0 z-[100] bg-black/80 flex items-center justify-center p-5 opacity-0 transition-opacity duration-200">
+    <div id="preview-content" class="bg-gray-800 border border-gray-700 w-full max-w-[360px] rounded-3xl shadow-2xl transform scale-95 transition-transform duration-200 max-h-[85vh] flex flex-col">
+      <div class="p-5 border-b border-gray-700">
+        <h3 class="text-base font-bold text-white"><i class="fa-solid fa-paper-plane text-green-400 mr-2"></i>Konfirmasi Pesanan</h3>
+        <p class="text-xs text-gray-400 mt-1">Periksa kembali sebelum dikirim ke admin</p>
+      </div>
+      <div class="flex-1 overflow-y-auto p-5">
+        <pre id="preview-text" class="text-xs text-gray-300 whitespace-pre-wrap font-sans leading-relaxed"></pre>
+      </div>
+      <div class="p-5 border-t border-gray-700 flex gap-2">
+        <button onclick="closePreviewModal()" class="flex-1 bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 rounded-xl text-sm transition active:scale-95">Edit</button>
+        <button onclick="confirmSendToWA()" class="flex-1 bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-xl text-sm transition active:scale-95"><i class="fa-brands fa-whatsapp mr-1"></i> Kirim ke WA</button>
       </div>
     </div>
-    <button onclick="tutupPanduanInstall()" class="mt-auto w-full bg-gray-800 border border-gray-700 text-white font-bold py-4 rounded-xl hover:bg-gray-700 transition active:scale-95 mb-4">Saya Mengerti</button>
   </div>
 
 </div>
 
-<script>
-/* ============ CONFIG ============ */
-const CONFIG = { wa: '628568080847', area: 'Rangkasbitung' };
-const KEYS = {
-  profile: 'ozgo_profile_v1',
-  orders: 'ozgo_orders_v1',
-  addresses: 'ozgo_addresses_v1',
-  theme: 'ozgo_theme'
-};
-const PREFIX_MAP = { OZRide: 'ride', OZFood: 'food', OZSend: 'send', OZMart: 'mart' };
-const LAYER_MAP  = { OZRide: 'ozride', OZFood: 'ozfood', OZSend: 'ozsend', OZMart: 'ozmart' };
+<!-- DATALISTS -->
+<datalist id="alamat-datalist"></datalist>
+<datalist id="nama-datalist"></datalist>
 
-/* ============ STATE ============ */
+<script>
+/* ============ CONFIG & STATE ============ */
+const CONFIG = { wa: '628568080847', area: 'Rangkasbitung' };
+const KEYS = { profile:'ozgo_profile_v1', orders:'ozgo_orders_v1', addresses:'ozgo_addresses_v1', theme:'ozgo_theme' };
+
 let currentFilter = 'all';
 let currentAddressTarget = null;
 let editingAddressId = null;
 let currentRatingOrderId = null;
 let currentRatingValue = 0;
+let pendingPreview = null;
 
 /* ============ SERVICE WORKER ============ */
 if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('sw.js').catch(() => {});
-  });
+  window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(()=>{}));
 }
 
-/* ============ TOAST ============ */
-let toastTimer;
+/* ============ UTILS ============ */
 function toast(msg, type='') {
   const t = document.getElementById('toast');
   t.textContent = msg;
   t.className = 'toast show ' + type;
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => t.classList.remove('show'), 2200);
+  clearTimeout(window._toastTimer);
+  window._toastTimer = setTimeout(() => t.classList.remove('show'), 2400);
+}
+function escapeHtml(s) {
+  return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 }
 
-/* ============ TAB SWITCH ============ */
-const TABS = ['beranda', 'chat', 'pesanan', 'profile'];
+/* ============ TAB ============ */
+const TABS = ['beranda','chat','pesanan','profile'];
 function switchTab(name) {
   TABS.forEach(t => {
     document.getElementById('main-' + t).classList.toggle('hidden', t !== name);
@@ -534,22 +466,24 @@ function switchTab(name) {
 /* ============ LAYERS ============ */
 function openLayer(id) {
   applyProfileDefaults();
-  document.getElementById('layer-' + id).classList.add('active');
+  document.getElementById('layer-' + id).style.display = 'flex';
+  setTimeout(() => document.getElementById('layer-' + id).classList.add('active'), 10);
 }
-function closeLayer(id) { document.getElementById('layer-' + id).classList.remove('active'); }
+function closeLayer(id) {
+  const el = document.getElementById('layer-' + id);
+  el.classList.remove('active');
+  setTimeout(() => el.style.display = 'none', 300);
+}
 
 /* ============ PROFILE ============ */
-function getProfile() {
-  try { return JSON.parse(localStorage.getItem(KEYS.profile) || '{}'); } catch { return {}; }
-}
+function getProfile() { try { return JSON.parse(localStorage.getItem(KEYS.profile)||'{}'); } catch { return {}; } }
 function saveProfile() {
   const nama = document.getElementById('profile-nama').value.trim();
   const hp = document.getElementById('profile-hp').value.trim();
-  const p = getProfile();
-  p.nama = nama; p.hp = hp;
+  const p = getProfile(); p.nama = nama; p.hp = hp;
   localStorage.setItem(KEYS.profile, JSON.stringify(p));
-  refreshProfileUI();
-  toast('Data diri tersimpan ✓', 'success');
+  refreshProfileUI(); renderDatalists();
+  toast('Data tersimpan ✓','success');
 }
 function refreshProfileUI() {
   const p = getProfile();
@@ -563,7 +497,6 @@ function applyProfileDefaults() {
   const p = getProfile();
   const addresses = getAddresses();
   const defaultAddr = addresses[0]?.address || '';
-
   ['ride-nama','food-nama','send-nama','mart-nama'].forEach(id => {
     const el = document.getElementById(id);
     if (el && !el.value && p.nama) el.value = p.nama;
@@ -574,34 +507,22 @@ function applyProfileDefaults() {
       if (el && !el.value) el.value = defaultAddr;
     });
   }
-
   const hasAddr = addresses.length > 0;
-  document.querySelectorAll('.addr-picker-btn').forEach(b => {
-    b.classList.toggle('hidden-by-empty', !hasAddr);
-  });
+  document.querySelectorAll('.addr-picker-btn').forEach(b => b.classList.toggle('hidden-by-empty', !hasAddr));
 }
 
-/* ============ ADDRESS BOOK ============ */
-function getAddresses() {
-  try { return JSON.parse(localStorage.getItem(KEYS.addresses) || '[]'); } catch { return []; }
-}
-function saveAddresses(list) {
-  localStorage.setItem(KEYS.addresses, JSON.stringify(list));
-}
+/* ============ ADDRESS ============ */
+function getAddresses() { try { return JSON.parse(localStorage.getItem(KEYS.addresses)||'[]'); } catch { return []; } }
+function saveAddresses(l) { localStorage.setItem(KEYS.addresses, JSON.stringify(l)); }
 function addAddressItem(label, address) {
   const list = getAddresses();
-  const id = 'a' + Date.now() + Math.random().toString(36).slice(2, 6);
-  list.push({ id, label, address });
+  list.push({ id:'a'+Date.now()+Math.random().toString(36).slice(2,6), label, address });
   saveAddresses(list);
-  return id;
 }
 function renderAddresses() {
   const list = getAddresses();
   const c = document.getElementById('address-list');
-  if (!list.length) {
-    c.innerHTML = '<p class="text-xs text-gray-500 text-center py-4">Belum ada alamat tersimpan.<br>Klik "+ Tambah" untuk mulai.</p>';
-    return;
-  }
+  if (!list.length) { c.innerHTML = '<p class="text-xs text-gray-500 text-center py-4">Belum ada alamat. Klik "+ Tambah".</p>'; return; }
   c.innerHTML = list.map(a => `
     <div class="flex items-start justify-between bg-gray-900 border border-gray-700 rounded-xl p-3 mb-2">
       <div class="flex-1 min-w-0">
@@ -616,14 +537,10 @@ function renderAddresses() {
 }
 function openAddressForm(id) {
   editingAddressId = id || null;
-  const form = document.getElementById('address-form');
-  form.classList.remove('hidden');
+  document.getElementById('address-form').classList.remove('hidden');
   if (id) {
     const a = getAddresses().find(x => x.id === id);
-    if (a) {
-      document.getElementById('addr-label').value = a.label;
-      document.getElementById('addr-value').value = a.address;
-    }
+    if (a) { document.getElementById('addr-label').value = a.label; document.getElementById('addr-value').value = a.address; }
   } else {
     document.getElementById('addr-label').value = '';
     document.getElementById('addr-value').value = '';
@@ -640,70 +557,73 @@ function editAddress(id) { openAddressForm(id); }
 function saveAddress() {
   const label = document.getElementById('addr-label').value.trim();
   const value = document.getElementById('addr-value').value.trim();
-  if (!label || !value) { toast('Label & alamat wajib diisi', 'error'); return; }
+  if (!label || !value) { toast('Label & alamat wajib diisi','error'); return; }
   const list = getAddresses();
   if (editingAddressId) {
     const idx = list.findIndex(x => x.id === editingAddressId);
     if (idx >= 0) { list[idx].label = label; list[idx].address = value; }
   } else {
-    list.push({ id: 'a' + Date.now() + Math.random().toString(36).slice(2,6), label, address: value });
+    list.push({ id:'a'+Date.now()+Math.random().toString(36).slice(2,6), label, address: value });
   }
-  saveAddresses(list);
-  cancelAddressForm();
-  renderAddresses();
-  applyProfileDefaults();
-  toast('Alamat tersimpan ✓', 'success');
+  saveAddresses(list); cancelAddressForm(); renderAddresses(); applyProfileDefaults(); renderDatalists();
+  toast('Alamat tersimpan ✓','success');
 }
 function deleteAddress(id) {
   if (!confirm('Hapus alamat ini?')) return;
-  const list = getAddresses().filter(x => x.id !== id);
-  saveAddresses(list);
-  renderAddresses();
-  applyProfileDefaults();
-  toast('Alamat dihapus', 'success');
+  saveAddresses(getAddresses().filter(x => x.id !== id));
+  renderAddresses(); applyProfileDefaults(); renderDatalists();
+  toast('Alamat dihapus','success');
 }
-
-/* ============ ADDRESS PICKER (MODAL) ============ */
 function openAddressPicker(inputId) {
   const addresses = getAddresses();
-  if (!addresses.length) {
-    toast('Belum ada alamat tersimpan. Tambah di Profil.', 'error');
-    return;
-  }
+  if (!addresses.length) { toast('Belum ada alamat. Tambah di Profil.','error'); return; }
   currentAddressTarget = inputId;
-  const listEl = document.getElementById('address-picker-list');
-  listEl.innerHTML = addresses.map(a => `
+  document.getElementById('address-picker-list').innerHTML = addresses.map(a => `
     <div onclick="pickAddress('${a.id}')" class="bg-gray-900 border border-gray-700 rounded-xl p-3 cursor-pointer active:bg-gray-700 transition">
       <p class="text-xs font-bold text-green-400">${escapeHtml(a.label)}</p>
       <p class="text-xs text-gray-300 mt-1 break-words">${escapeHtml(a.address)}</p>
     </div>`).join('');
-  const m = document.getElementById('address-picker-modal');
-  const c = document.getElementById('address-picker-content');
-  m.classList.remove('hidden');
+  const m = document.getElementById('address-picker-modal'), c = document.getElementById('address-picker-content');
+  m.style.display = 'flex';
   setTimeout(() => { m.classList.remove('opacity-0'); c.classList.remove('scale-95'); }, 10);
 }
 function pickAddress(id) {
   const a = getAddresses().find(x => x.id === id);
-  if (a && currentAddressTarget) document.getElementById(currentAddressTarget).value = a.address;
+  if (a && currentAddressTarget) {
+    document.getElementById(currentAddressTarget).value = a.address;
+  }
   closeAddressPicker();
-  toast('Alamat terisi ✓', 'success');
+  toast('Alamat terisi ✓','success');
 }
 function closeAddressPicker() {
-  const m = document.getElementById('address-picker-modal');
-  const c = document.getElementById('address-picker-content');
+  const m = document.getElementById('address-picker-modal'), c = document.getElementById('address-picker-content');
   m.classList.add('opacity-0'); c.classList.add('scale-95');
-  setTimeout(() => m.classList.add('hidden'), 200);
+  setTimeout(() => { m.style.display = 'none'; }, 200);
   currentAddressTarget = null;
 }
 
-/* ============ ORDERS ============ */
-function getOrders() {
-  try { return JSON.parse(localStorage.getItem(KEYS.orders) || '[]'); } catch { return []; }
+/* ============ DATALISTS ============ */
+function renderDatalists() {
+  const addrList = document.getElementById('alamat-datalist');
+  const namaList = document.getElementById('nama-datalist');
+
+  const addresses = getAddresses();
+  addrList.innerHTML = addresses.map(a => `<option value="${escapeHtml(a.address)}">${escapeHtml(a.label)}</option>`).join('');
+
+  const names = new Set();
+  const p = getProfile();
+  if (p.nama) names.add(p.nama);
+  getOrders().forEach(o => { if (o.data?.nama) names.add(o.data.nama); if (o.data?.penerima) names.add(o.data.penerima); });
+  namaList.innerHTML = Array.from(names).map(n => `<option value="${escapeHtml(n)}">`).join('');
 }
+
+/* ============ ORDERS ============ */
+function getOrders() { try { return JSON.parse(localStorage.getItem(KEYS.orders)||'[]'); } catch { return []; } }
+function saveOrders(list) { localStorage.setItem(KEYS.orders, JSON.stringify(list)); }
 function addOrder(rec) {
   const list = getOrders();
   list.unshift({ timestamp: Date.now(), rating: null, review: '', ...rec });
-  localStorage.setItem(KEYS.orders, JSON.stringify(list.slice(0, 30)));
+  saveOrders(list.slice(0, 30));
 }
 function clearOrders() {
   if (!confirm('Hapus semua riwayat pesanan?')) return;
@@ -711,7 +631,7 @@ function clearOrders() {
   currentFilter = 'all';
   document.querySelectorAll('.filter-chip').forEach(c => c.classList.toggle('active', c.dataset.filter === 'all'));
   renderOrders();
-  toast('Riwayat dihapus', 'success');
+  toast('Riwayat dihapus','success');
 }
 function setOrderFilter(f) {
   currentFilter = f;
@@ -722,16 +642,11 @@ function renderOrders() {
   const all = getOrders();
   const empty = document.getElementById('orders-empty');
   const container = document.getElementById('orders-list');
-
   if (!all.length) { empty.classList.remove('hidden'); container.innerHTML = ''; return; }
   empty.classList.add('hidden');
-
   const list = currentFilter === 'all' ? all : all.filter(o => o.type === currentFilter);
-  if (!list.length) {
-    container.innerHTML = `<p class="text-center text-gray-500 text-sm py-10">Tidak ada pesanan ${escapeHtml(currentFilter)}</p>`;
-    return;
-  }
-
+  if (!list.length) { container.innerHTML = `<p class="text-center text-gray-500 text-sm py-10">Tidak ada pesanan ${escapeHtml(currentFilter)}</p>`; return; }
+  
   const colorMap = { OZRide: 'green', OZFood: 'orange', OZSend: 'blue', OZMart: 'purple' };
   container.innerHTML = list.map(o => {
     const hasRating = o.rating && o.rating > 0;
@@ -758,62 +673,49 @@ function renderOrders() {
 }
 function cekStatusOrder(id, type) {
   const msg = `Halo Admin OZgo, saya ingin cek status pesanan:\n\n*ID:* ${id}\n*Layanan:* ${type}\n\nMohon informasinya. Terima kasih.`;
-  window.open(`https://wa.me/${CONFIG.wa}?text=${encodeURIComponent(msg)}`, '_blank');
+  openWA(msg);
 }
 function repeatOrder(orderId) {
   const o = getOrders().find(x => x.id === orderId);
-  if (!o || !o.data) { toast('Data pesanan tidak lengkap', 'error'); return; }
-  const prefix = PREFIX_MAP[o.type];
-  const layer = LAYER_MAP[o.type];
+  if (!o || !o.data) { toast('Data pesanan tidak lengkap','error'); return; }
+  const prefix = PREFIX_MAP[o.type] || o.type.replace('OZ','').toLowerCase();
   Object.entries(o.data).forEach(([key, val]) => {
     const el = document.getElementById(`${prefix}-${key}`);
     if (el) el.value = val || '';
   });
-  openLayer(layer);
-  toast('Form terisi otomatis ✓', 'success');
+  openLayer(LAYER_MAP[o.type] || o.type.toLowerCase());
+  toast('Form terisi otomatis ✓','success');
 }
 
 /* ============ RATING ============ */
 function openRatingModal(orderId) {
-  currentRatingOrderId = orderId;
-  currentRatingValue = 0;
+  currentRatingOrderId = orderId; currentRatingValue = 0;
   updateRatingStars(0);
   document.getElementById('rating-text').value = '';
-  const m = document.getElementById('rating-modal');
-  const c = document.getElementById('rating-content');
-  m.classList.remove('hidden');
+  const m = document.getElementById('rating-modal'), c = document.getElementById('rating-content');
+  m.style.display = 'flex';
   setTimeout(() => { m.classList.remove('opacity-0'); c.classList.remove('scale-95'); }, 10);
 }
-function setRating(n) {
-  currentRatingValue = n;
-  updateRatingStars(n);
-}
+function setRating(n) { currentRatingValue = n; updateRatingStars(n); }
 function updateRatingStars(n) {
-  document.querySelectorAll('.rating-star').forEach((star, i) => {
-    star.classList.toggle('text-yellow-400', i < n);
-    star.classList.toggle('text-gray-600', i >= n);
+  document.querySelectorAll('.rating-star').forEach((s,i) => {
+    s.classList.toggle('text-yellow-400', i < n);
+    s.classList.toggle('text-gray-600', i >= n);
   });
 }
 function submitRating() {
-  if (currentRatingValue === 0) { toast('Pilih bintang dulu', 'error'); return; }
+  if (currentRatingValue === 0) { toast('Pilih bintang dulu','error'); return; }
   const orders = getOrders();
   const idx = orders.findIndex(o => o.id === currentRatingOrderId);
-  if (idx >= 0) {
-    orders[idx].rating = currentRatingValue;
-    orders[idx].review = document.getElementById('rating-text').value.trim();
-    localStorage.setItem(KEYS.orders, JSON.stringify(orders));
-  }
-  closeRatingModal();
-  renderOrders();
-  toast('Terima kasih atas rating Anda! ⭐', 'success');
+  if (idx >= 0) { orders[idx].rating = currentRatingValue; orders[idx].review = document.getElementById('rating-text').value.trim(); saveOrders(orders); }
+  closeRatingModal(); renderOrders();
+  toast('Terima kasih atas rating Anda! ⭐','success');
 }
 function closeRatingModal() {
-  const m = document.getElementById('rating-modal');
-  const c = document.getElementById('rating-content');
+  const m = document.getElementById('rating-modal'), c = document.getElementById('rating-content');
   m.classList.add('opacity-0'); c.classList.add('scale-95');
-  setTimeout(() => m.classList.add('hidden'), 200);
-  currentRatingOrderId = null;
-  currentRatingValue = 0;
+  setTimeout(() => { m.style.display = 'none'; }, 200);
+  currentRatingOrderId = null; currentRatingValue = 0;
 }
 
 /* ============ VALIDATION ============ */
@@ -829,29 +731,66 @@ function clearFieldErrors(prefix, fields) {
 
 /* ============ LOCATION ============ */
 function getLocation(inputId) {
-  if (!navigator.geolocation) { toast('Perangkat tidak mendukung GPS', 'error'); return; }
+  if (!navigator.geolocation) { toast('Perangkat tidak mendukung GPS','error'); return; }
   const el = document.getElementById(inputId);
   el.value = 'Melacak lokasi...';
   navigator.geolocation.getCurrentPosition(
-    pos => { el.value = `https://maps.google.com/?q=${pos.coords.latitude},${pos.coords.longitude}`; toast('Lokasi terdeteksi ✓', 'success'); },
-    () => { el.value = ''; toast('Gagal melacak. Aktifkan GPS.', 'error'); },
+    pos => { el.value = `https://maps.google.com/?q=${pos.coords.latitude},${pos.coords.longitude}`; toast('Lokasi terdeteksi ✓','success'); },
+    () => { el.value = ''; toast('Gagal melacak. Aktifkan GPS atau isi manual.','error'); },
     { enableHighAccuracy: true, timeout: 10000 }
   );
 }
 
-/* ============ SUBMIT ============ */
-function openWA(msg) { window.open(`https://wa.me/${CONFIG.wa}?text=${encodeURIComponent(msg)}`, '_blank'); }
+/* ============ SUBMIT FLOW ============ */
+function openWA(msg) {
+  const url = `https://wa.me/${CONFIG.wa}?text=${encodeURIComponent(msg)}`;
+  try {
+    const a = document.createElement('a');
+    a.href = url;
+    a.target = '_blank';
+    a.rel = 'noopener noreferrer';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  } catch (e) {
+    location.href = url;
+  }
+}
 function mapsOrText(val) {
   if (val.includes('maps.google.com')) return { value: val, link: '' };
   return { value: val, link: `https://maps.google.com/?q=${encodeURIComponent(val + ' ' + CONFIG.area)}` };
 }
-function escapeHtml(s) {
-  return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' })[c]);
+
+function showPreview(msg, orderData, layerId, formPrefix) {
+  pendingPreview = { msg, orderData, layerId, formPrefix };
+  document.getElementById('preview-text').textContent = msg;
+  const m = document.getElementById('preview-modal'), c = document.getElementById('preview-content');
+  m.style.display = 'flex';
+  setTimeout(() => { m.classList.remove('opacity-0'); c.classList.remove('scale-95'); }, 10);
+}
+function closePreviewModal() {
+  const m = document.getElementById('preview-modal'), c = document.getElementById('preview-content');
+  m.classList.add('opacity-0'); c.classList.add('scale-95');
+  setTimeout(() => { m.style.display = 'none'; }, 200);
+  pendingPreview = null;
+}
+function confirmSendToWA() {
+  if (!pendingPreview) return;
+  const { msg, orderData, layerId, formPrefix } = pendingPreview;
+  addOrder(orderData);
+  openWA(msg);
+  closePreviewModal();
+  closeLayer(layerId);
+  clearForm(formPrefix);
+  setTimeout(() => toast('Pesanan dikirim ke WhatsApp ✓','success'), 300);
 }
 
+const PREFIX_MAP = { OZRide: 'ride', OZFood: 'food', OZSend: 'send', OZMart: 'mart' };
+const LAYER_MAP  = { OZRide: 'ozride', OZFood: 'ozfood', OZSend: 'ozsend', OZMart: 'ozmart' };
+
 function pesanOZRide() {
-  clearFieldErrors('ride', ['nama','jemput','antar']);
-  if (![isFilled('ride-nama'), isFilled('ride-jemput'), isFilled('ride-antar')].every(Boolean)) { toast('Lengkapi data wajib', 'error'); return; }
+  clearFieldErrors('ride',['nama','jemput','antar']);
+  if (![isFilled('ride-nama'),isFilled('ride-jemput'),isFilled('ride-antar')].every(Boolean)) { toast('Lengkapi data wajib','error'); return; }
   const nama = document.getElementById('ride-nama').value.trim();
   const jemput = document.getElementById('ride-jemput').value.trim();
   const antar = document.getElementById('ride-antar').value.trim();
@@ -864,19 +803,18 @@ function pesanOZRide() {
   if (keterangan) msg += `*Ket:* ${keterangan}\n`;
   msg += `*Bayar:* ${bayar}\n\nMohon diproses, terima kasih!`;
 
-  addOrder({
+  showPreview(msg, {
     id: 'R' + Date.now().toString().slice(-6),
     type: 'OZRide',
     summary: `${jemput} → ${antar}`,
     status: 'Menunggu konfirmasi',
     data: { nama, jemput, antar, keterangan, bayar }
-  });
-  openWA(msg); closeLayer('ozride'); toast('Pesanan dikirim ke WhatsApp ✓', 'success');
+  }, 'ozride', 'ride');
 }
 
 function pesanOZFood() {
-  clearFieldErrors('food', ['nama','resto','menu','antar']);
-  if (![isFilled('food-nama'), isFilled('food-resto'), isFilled('food-menu'), isFilled('food-antar')].every(Boolean)) { toast('Lengkapi data wajib', 'error'); return; }
+  clearFieldErrors('food',['nama','resto','menu','antar']);
+  if (![isFilled('food-nama'),isFilled('food-resto'),isFilled('food-menu'),isFilled('food-antar')].every(Boolean)) { toast('Lengkapi data wajib','error'); return; }
   const nama = document.getElementById('food-nama').value.trim();
   const resto = document.getElementById('food-resto').value.trim();
   const menu = document.getElementById('food-menu').value.trim();
@@ -886,27 +824,26 @@ function pesanOZFood() {
   let msg = `*ORDER OZFood Baru!* 🍔\n\n*Nama:* ${nama}\n\n*Resto:* ${resto}\n📍 https://maps.google.com/?q=${encodeURIComponent(resto + ' ' + CONFIG.area)}\n\n*Pesanan:*\n${menu}\n\n`;
   const a = mapsOrText(antar); msg += `*Antar:* ${a.value}\n${a.link ? '📍 ' + a.link : ''}\n\n*Bayar:* ${bayar}\n\nMohon diproses, terima kasih!`;
 
-  addOrder({
+  showPreview(msg, {
     id: 'F' + Date.now().toString().slice(-6),
     type: 'OZFood',
     summary: `${resto} → ${antar}`,
     status: 'Menunggu konfirmasi',
     data: { nama, resto, menu, antar, bayar }
-  });
-  openWA(msg); closeLayer('ozfood'); toast('Pesanan dikirim ke WhatsApp ✓', 'success');
+  }, 'ozfood', 'food');
 }
 
 function pesanOZSend() {
-  clearFieldErrors('send', ['nama','jemput','jenis','penerima','hp','antar']);
-  const checks = ['nama','jemput','jenis','penerima','hp','antar'].map(f => isFilled('send-' + f));
-  if (!checks.every(Boolean)) { toast('Lengkapi data pengirim & penerima', 'error'); return; }
+  clearFieldErrors('send',['nama','jemput','antar','jenis','penerima','hp']);
+  const checks = ['nama','jemput','antar','jenis','penerima','hp'].map(f => isFilled('send-' + f));
+  if (!checks.every(Boolean)) { toast('Lengkapi data','error'); return; }
   const nama = document.getElementById('send-nama').value.trim();
   const jemput = document.getElementById('send-jemput').value.trim();
+  const antar = document.getElementById('send-antar').value.trim();
   const jenis = document.getElementById('send-jenis').value.trim();
   const detail = document.getElementById('send-detail').value.trim();
   const penerima = document.getElementById('send-penerima').value.trim();
   const hp = document.getElementById('send-hp').value.trim();
-  const antar = document.getElementById('send-antar').value.trim();
   const bayar = document.getElementById('send-bayar').value;
 
   let msg = `*ORDER OZSend Baru!* 📦\n\n*-- PENGIRIM --*\n*Nama:* ${nama}\n*Ambil:* ${jemput}\n📍 https://maps.google.com/?q=${encodeURIComponent(jemput + ' ' + CONFIG.area)}\n\n*-- BARANG --*\n*Jenis:* ${jenis}\n`;
@@ -914,20 +851,19 @@ function pesanOZSend() {
   msg += `\n*-- PENERIMA --*\n*Nama:* ${penerima}\n*HP:* ${hp}\n`;
   const a = mapsOrText(antar); msg += `*Antar:* ${a.value}\n${a.link ? '📍 ' + a.link : ''}\n\n*Bayar:* ${bayar}\n\nMohon segera dijemput, terima kasih!`;
 
-  addOrder({
+  showPreview(msg, {
     id: 'S' + Date.now().toString().slice(-6),
     type: 'OZSend',
     summary: `${jemput} → ${antar} (${jenis})`,
     status: 'Menunggu konfirmasi',
-    data: { nama, jemput, jenis, detail, penerima, hp, antar, bayar }
-  });
-  openWA(msg); closeLayer('ozsend'); toast('Pesanan dikirim ke WhatsApp ✓', 'success');
+    data: { nama, jemput, antar, jenis, detail, penerima, hp, bayar }
+  }, 'ozsend', 'send');
 }
 
 function pesanOZMart() {
-  clearFieldErrors('mart', ['nama','toko','jenis','detail','antar']);
+  clearFieldErrors('mart',['nama','toko','jenis','detail','antar']);
   const checks = ['nama','toko','jenis','detail','antar'].map(f => isFilled('mart-' + f));
-  if (!checks.every(Boolean)) { toast('Lengkapi data belanjaan', 'error'); return; }
+  if (!checks.every(Boolean)) { toast('Lengkapi data','error'); return; }
   const nama = document.getElementById('mart-nama').value.trim();
   const toko = document.getElementById('mart-toko').value.trim();
   const jenis = document.getElementById('mart-jenis').value.trim();
@@ -939,14 +875,20 @@ function pesanOZMart() {
   const t = mapsOrText(toko); msg += `*Toko:* ${t.value}\n${t.link ? '📍 ' + t.link : ''}\n\n*Kategori:* ${jenis}\n*Belanjaan:*\n${detail}\n\n`;
   const a = mapsOrText(antar); msg += `*Antar:* ${a.value}\n${a.link ? '📍 ' + a.link : ''}\n\n*Bayar:* ${bayar}\n\nMohon dibelanjakan & diantar, terima kasih!`;
 
-  addOrder({
+  showPreview(msg, {
     id: 'M' + Date.now().toString().slice(-6),
     type: 'OZMart',
     summary: `${toko} → ${antar}`,
     status: 'Menunggu konfirmasi',
-    data: { nama, toko, jenis, detail, antar, bayar }
+    data: { nama, toko, antar, jenis, detail, bayar }
+  }, 'ozmart', 'mart');
+}
+
+function clearForm(prefix) {
+  ['resto','menu','jenis','detail','keterangan','penerima','hp'].forEach(k => {
+    const el = document.getElementById(prefix + '-' + k);
+    if (el) el.value = '';
   });
-  openWA(msg); closeLayer('ozmart'); toast('Pesanan dikirim ke WhatsApp ✓', 'success');
 }
 
 /* ============ CHAT & SHARE ============ */
@@ -954,14 +896,11 @@ function chatTemplate(text) { openWA(`Halo Admin OZgo, ${text}`); }
 async function shareApp() {
   const text = 'Pesan ojek, makanan, paket & belanja di Rangkasbitung lewat OZgo!';
   const url = location.href;
-  if (navigator.share) {
-    try { await navigator.share({ title: 'OZgo', text, url }); return; }
-    catch (err) { if (err.name === 'AbortError') return; }
-  }
+  if (navigator.share) { try { await navigator.share({ title:'OZgo', text, url }); return; } catch (err) { if (err.name === 'AbortError') return; } }
   if (navigator.clipboard && navigator.clipboard.writeText) {
-    try { await navigator.clipboard.writeText(text + ' ' + url); toast('Link disalin ✓', 'success'); return; } catch {}
+    try { await navigator.clipboard.writeText(text + ' ' + url); toast('Link disalin ✓','success'); return; } catch {}
   }
-  window.open(`https://wa.me/?text=${encodeURIComponent(text + ' ' + url)}`, '_blank');
+  openWA(text + ' ' + url);
 }
 
 /* ============ MODAL ============ */
@@ -969,13 +908,13 @@ function showModal(title, text) {
   document.getElementById('modal-title').innerText = title;
   document.getElementById('modal-text').innerText = text;
   const m = document.getElementById('custom-modal'), c = document.getElementById('modal-content');
-  m.classList.remove('hidden');
+  m.style.display = 'flex';
   setTimeout(() => { m.classList.remove('opacity-0'); c.classList.remove('scale-95'); }, 10);
 }
 function closeModal() {
   const m = document.getElementById('custom-modal'), c = document.getElementById('modal-content');
   m.classList.add('opacity-0'); c.classList.add('scale-95');
-  setTimeout(() => m.classList.add('hidden'), 200);
+  setTimeout(() => { m.style.display = 'none'; }, 200);
 }
 
 /* ============ THEME ============ */
@@ -991,162 +930,135 @@ function toggleTheme() {
   localStorage.setItem(KEYS.theme, next ? 'light' : 'dark');
 }
 
-/* ============ PWA INSTALL ============ */
+/* ============ PWA INSTALL (FIX OTOMATIS) ============ */
 let deferredPrompt;
 const installBanner = document.getElementById('install-banner');
-const guideLayer = document.getElementById('install-guide-layer');
 
 window.addEventListener('beforeinstallprompt', (e) => {
-  e.preventDefault();
+  e.preventDefault(); 
   deferredPrompt = e;
   setTimeout(() => {
     installBanner.classList.remove('hidden');
     setTimeout(() => installBanner.classList.remove('-translate-y-[150%]'), 50);
   }, 2000);
 });
+
 function installApp() {
   tutupInstallBanner();
+  
+  // 1. Cek jika aplikasi sudah berjalan dalam mode terinstall (Standalone)
+  const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+  if (isStandalone) {
+    showModal('Info', 'Aplikasi OZgo sudah terinstall dan berjalan di perangkat Anda.');
+    return;
+  }
+
+  // 2. Jika browser mendukung (Android/Chrome), langsung buka pop-up install bawaan HP
   if (deferredPrompt) {
     deferredPrompt.prompt();
-    deferredPrompt.userChoice.then(r => { if (r.outcome === 'accepted') toast('Aplikasi diinstall ✓', 'success'); deferredPrompt = null; });
-  } else bukaPanduanInstall();
+    deferredPrompt.userChoice.then((choiceResult) => {
+      if (choiceResult.outcome === 'accepted') {
+        toast('Aplikasi berhasil diinstall ✓', 'success');
+      }
+      deferredPrompt = null;
+    });
+  } else {
+    // 3. Jika pop-up tidak tersedia (misal: iOS/iPhone atau diblokir)
+    showModal('Instalasi Otomatis Tidak Tersedia', 'Browser Anda membatasi instalasi otomatis. Silakan buka aplikasi ini menggunakan Google Chrome di Android.');
+  }
 }
-function tutupInstallBanner() {
-  installBanner.classList.add('-translate-y-[150%]');
-  setTimeout(() => installBanner.classList.add('hidden'), 500);
-}
-function bukaPanduanInstall() {
-  guideLayer.classList.remove('hidden');
-  const ua = navigator.userAgent || '';
-  const isIOS = /iPad|iPhone|iPod/.test(ua);
-  document.getElementById('guide-ios').classList.toggle('hidden', !isIOS);
-  document.getElementById('guide-android').classList.toggle('hidden', isIOS);
-  setTimeout(() => guideLayer.classList.remove('opacity-0'), 10);
-}
-function tutupPanduanInstall() {
-  guideLayer.classList.add('opacity-0');
-  setTimeout(() => guideLayer.classList.add('hidden'), 300);
-}
+function tutupInstallBanner() { installBanner.classList.add('-translate-y-[150%]'); setTimeout(() => installBanner.classList.add('hidden'), 500); }
 
-/* ============ SHORTCUT HANDLER ============ */
-(function handleShortcut() {
+/* ============ URL PARAM HANDLER ============ */
+function handleUrlParams() {
   const params = new URLSearchParams(location.search);
   const open = params.get('open');
   if (open && ['ozride','ozfood','ozsend','ozmart'].includes(open)) {
     setTimeout(() => openLayer(open), 300);
+    history.replaceState(null, '', location.pathname);
   }
-})();
+}
+
+/* ============ FITUR TOMBOL BACK ============ */
+let exitPending = false;
+let backTimer;
+history.pushState({ page: 'ozgo' }, '', location.href);
+
+function checkActiveModals() {
+  const modals = ['custom-modal', 'address-picker-modal', 'rating-modal', 'preview-modal'];
+  for (const id of modals) {
+    const el = document.getElementById(id);
+    if (el && el.style.display !== 'none') return id;
+  }
+  return null;
+}
+function closeAnyActiveModal() {
+  const active = checkActiveModals();
+  if (!active) return false;
+  if (active === 'custom-modal') closeModal();
+  else if (active === 'address-picker-modal') closeAddressPicker();
+  else if (active === 'rating-modal') closeRatingModal();
+  else if (active === 'preview-modal') closePreviewModal();
+  return true;
+}
+function checkActiveLayer() {
+  const layers = ['ozride', 'ozfood', 'ozsend', 'ozmart'];
+  for (const id of layers) {
+    const el = document.getElementById('layer-' + id);
+    if (el && el.classList.contains('active')) return id;
+  }
+  return null;
+}
+function checkCurrentTab() {
+  const tabs = ['beranda', 'chat', 'pesanan', 'profile'];
+  for (const t of tabs) {
+    const el = document.getElementById('main-' + t);
+    if (el && !el.classList.contains('hidden')) return t;
+  }
+  return 'beranda';
+}
+
+window.addEventListener('popstate', function (e) {
+  if (closeAnyActiveModal()) { history.pushState({ page: 'ozgo' }, '', location.href); return; }
+  const activeLayer = checkActiveLayer();
+  if (activeLayer) {
+    closeLayer(activeLayer);
+    history.pushState({ page: 'ozgo' }, '', location.href);
+    return;
+  }
+  const currentTab = checkCurrentTab();
+  if (currentTab !== 'beranda') {
+    switchTab('beranda');
+    history.pushState({ page: 'ozgo' }, '', location.href);
+    return;
+  }
+  if (exitPending) {
+    window.history.back();
+  } else {
+    exitPending = true;
+    toast('Tekan sekali lagi untuk keluar', 'error');
+    clearTimeout(backTimer);
+    backTimer = setTimeout(() => { exitPending = false; }, 2000);
+    history.pushState({ page: 'ozgo' }, '', location.href);
+  }
+});
 
 /* ============ INIT ============ */
 (function init() {
   const saved = localStorage.getItem(KEYS.theme);
   if (saved === 'light') applyTheme(true);
-
-  // Migrasi alamat lama → buku alamat
   const p = getProfile();
   if (p.alamat && !p.alamatMigrated && getAddresses().length === 0) {
     addAddressItem('Rumah', p.alamat);
     p.alamatMigrated = true;
     localStorage.setItem(KEYS.profile, JSON.stringify(p));
   }
-
   refreshProfileUI();
   renderAddresses();
+  renderDatalists();
   applyProfileDefaults();
+  handleUrlParams();
 })();
-    // ==========================================
-    // FITUR TOMBOL BACK (HARDWARE BACK BUTTON)
-    // ==========================================
-    let exitPending = false;
-    let backTimer;
-
-    // Tambahkan state awal agar kita bisa mencegat tombol back pertama
-    history.pushState({ page: 'ozgo' }, '', location.href);
-
-    function checkActiveModals() {
-        const modals = ['custom-modal', 'address-picker-modal', 'rating-modal', 'paste-update-modal'];
-        for (const id of modals) {
-            const el = document.getElementById(id);
-            if (el && !el.classList.contains('hidden')) {
-                return id;
-            }
-        }
-        return null;
-    }
-
-    function closeAnyActiveModal() {
-        const active = checkActiveModals();
-        if (!active) return false;
-        
-        if (active === 'custom-modal') closeModal();
-        else if (active === 'address-picker-modal') closeAddressPicker();
-        else if (active === 'rating-modal') closeRatingModal();
-        else if (active === 'paste-update-modal') closePasteUpdateModal();
-        return true;
-    }
-
-    function checkActiveLayer() {
-        const layers = ['ozride', 'ozfood', 'ozsend', 'ozmart', 'tracking'];
-        for (const id of layers) {
-            const el = document.getElementById('layer-' + id);
-            if (el && el.classList.contains('active')) {
-                return id;
-            }
-        }
-        return null;
-    }
-
-    function checkCurrentTab() {
-        const tabs = ['beranda', 'chat', 'pesanan', 'profile'];
-        for (const t of tabs) {
-            const el = document.getElementById('main-' + t);
-            if (el && !el.classList.contains('hidden')) {
-                return t;
-            }
-        }
-        return 'beranda';
-    }
-
-    window.addEventListener('popstate', function (e) {
-        // 1. Cek jika ada modal yang sedang terbuka
-        if (closeAnyActiveModal()) {
-            history.pushState({ page: 'ozgo' }, '', location.href); // Tahan user di app
-            return;
-        }
-
-        // 2. Cek jika ada layanan (OZRide, dll) yang sedang terbuka
-        const activeLayer = checkActiveLayer();
-        if (activeLayer) {
-            closeLayer(activeLayer);
-            history.pushState({ page: 'ozgo' }, '', location.href); // Tahan user di app
-            return;
-        }
-
-        // 3. Cek jika posisi saat ini bukan di Beranda
-        const currentTab = checkCurrentTab();
-        if (currentTab !== 'beranda') {
-            switchTab('beranda');
-            history.pushState({ page: 'ozgo' }, '', location.href); // Tahan user di app
-            return;
-        }
-
-        // 4. Jika sudah di Beranda Utama -> Logika Klik 2 Kali untuk Keluar
-        if (exitPending) {
-            // Biarkan default history action berjalan, yang akan menutup aplikasi
-            window.history.back(); 
-        } else {
-            exitPending = true;
-            toast('Tekan sekali lagi untuk keluar', 'error');
-            
-            clearTimeout(backTimer);
-            backTimer = setTimeout(() => {
-                exitPending = false; // Reset jika lewat 2 detik
-            }, 2000);
-
-            // Push state agar user tidak langsung keluar saat back pertama
-            history.pushState({ page: 'ozgo' }, '', location.href);
-        }
-    });
 </script>
 </body>
 </html>
