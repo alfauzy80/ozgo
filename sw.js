@@ -1,5 +1,5 @@
 // Service Worker OZgo App
-const CACHE_VERSION = 'ozgo-v11'; // Naikkan versi setiap update
+const CACHE_VERSION = 'ozgo-v12'; // Naikkan versi setiap update
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
