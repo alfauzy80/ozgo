@@ -1,16 +1,14 @@
 // ==========================================
-// SERVICE WORKER OZgo App — v14
-// Naikkan CACHE_VERSION setiap kali index.html /
-// manifest.json / aset statis diubah.
+// SERVICE WORKER OZgo App — v15
 // ==========================================
-const CACHE_VERSION = 'ozgo-v14';
+const CACHE_VERSION = 'ozgo-v15';
 
 const PRECACHE_ASSETS = [
-  './',
-  './index.html',
-  './manifest.json',
-  './icon-192.png',
-  './icon-512.png',
+  '/',
+  '/index.html',
+  '/manifest.json',
+  '/icon-192.png',
+  '/icon-512.png',
   'https://cdn.tailwindcss.com',
   'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css',
   'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/webfonts/fa-solid-900.woff2',
@@ -21,7 +19,6 @@ const PRECACHE_ASSETS = [
   'https://raw.githubusercontent.com/alfauzy80/ozgo/main/assets/logo.png'
 ];
 
-// Precache tahan gagal + fallback no-cors untuk aset tanpa header CORS
 async function precache(cache, url) {
   try { await cache.add(url); return; } catch (_) {}
   try {
@@ -73,8 +70,8 @@ self.addEventListener('fetch', (event) => {
       } catch {
         const cache = await caches.open(CACHE_VERSION);
         return (await cache.match(req))
-          || (await cache.match('./index.html'))
-          || (await cache.match('./'))
+          || (await cache.match('/index.html'))
+          || (await cache.match('/'))
           || new Response('<h1>Offline</h1>', { headers: { 'Content-Type': 'text/html' } });
       }
     })());
