@@ -4,7 +4,7 @@
 // PENTING: Naikkan CACHE_VERSION setiap kali
 // Anda mengubah ozgo.html / manifest.json / aset statis.
 
-const CACHE_VERSION = 'ozgo-v11';
+const CACHE_VERSION = 'ozgo-v12';
 
 const ASSETS_TO_CACHE = [
   './',
@@ -14,7 +14,10 @@ const ASSETS_TO_CACHE = [
   './icon-512.png',
   'https://cdn.tailwindcss.com',
   'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css',
-  'https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&display=swap'
+  'https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&display=swap',
+  // Logo cover — di-cache agar setelah kunjungan pertama langsung instan
+  'https://cdn.jsdelivr.net/gh/alfauzy80/ozgo@main/assets/logo.png',
+  'https://raw.githubusercontent.com/alfauzy80/ozgo/main/assets/logo.png'
 ];
 
 // INSTALL: simpan aset ke cache (tahan 1 aset gagal)
@@ -74,7 +77,7 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // B. Aset statis → Cache First
+  // B. Aset statis (termasuk logo) → Cache First
   event.respondWith(
     caches.match(req).then((cachedResponse) => {
       if (cachedResponse) return cachedResponse;
