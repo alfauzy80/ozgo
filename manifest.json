@@ -3,56 +3,50 @@
   "short_name": "OZgo",
   "description": "Layanan Prioritas Warga Mabu",
   "id": "./",
-  "start_url": "./ozgo.html",
+  "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
+  "display_override": ["standalone", "minimal-ui"],
   "orientation": "portrait",
   "background_color": "#111827",
   "theme_color": "#111827",
   "lang": "id",
+  "dir": "ltr",
   "categories": ["shopping", "food", "travel", "utilities"],
+  "prefer_related_applications": false,
   "icons": [
-    {
-      "src": "https://raw.githubusercontent.com/alfauzy80/ozgo/main/assets/logo.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "https://raw.githubusercontent.com/alfauzy80/ozgo/main/assets/logo.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any maskable"
-    }
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
   ],
   "shortcuts": [
     {
       "name": "OZRide",
       "short_name": "Ride",
       "description": "Pesan ojek sekarang",
-      "url": "./ozgo.html?open=ozride",
-      "icons": [{ "src": "https://raw.githubusercontent.com/alfauzy80/ozgo/main/assets/logo.png", "sizes": "192x192", "type": "image/png" }]
+      "url": "./index.html?open=ozride",
+      "icons": [{ "src": "icon-192.png", "sizes": "192x192", "type": "image/png" }]
     },
     {
       "name": "OZFood",
       "short_name": "Food",
       "description": "Pesan makanan sekarang",
-      "url": "./ozgo.html?open=ozfood",
-      "icons": [{ "src": "https://raw.githubusercontent.com/alfauzy80/ozgo/main/assets/logo.png", "sizes": "192x192", "type": "image/png" }]
+      "url": "./index.html?open=ozfood",
+      "icons": [{ "src": "icon-192.png", "sizes": "192x192", "type": "image/png" }]
     },
     {
       "name": "OZSend",
       "short_name": "Send",
       "description": "Kirim paket sekarang",
-      "url": "./ozgo.html?open=ozsend",
-      "icons": [{ "src": "https://raw.githubusercontent.com/alfauzy80/ozgo/main/assets/logo.png", "sizes": "192x192", "type": "image/png" }]
+      "url": "./index.html?open=ozsend",
+      "icons": [{ "src": "icon-192.png", "sizes": "192x192", "type": "image/png" }]
     },
     {
       "name": "OZMart",
       "short_name": "Mart",
       "description": "Titip belanja sekarang",
-      "url": "./ozgo.html?open=ozmart",
-      "icons": [{ "src": "https://raw.githubusercontent.com/alfauzy80/ozgo/main/assets/logo.png", "sizes": "192x192", "type": "image/png" }]
+      "url": "./index.html?open=ozmart",
+      "icons": [{ "src": "icon-192.png", "sizes": "192x192", "type": "image/png" }]
     }
   ]
 }
