@@ -10,21 +10,18 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="OZgo">
-
-<!-- IKON & PRELOAD LOGO LOKAL (INSTAN) -->
-<link rel="apple-touch-icon" href="logo.png">
-<link rel="icon" type="image/png" sizes="192x192" href="logo.png">
-<link rel="preload" href="logo.png" as="image">
-
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
   html,body{width:100%;height:100%;margin:0;padding:0;background:#000;font-family:ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;overflow:hidden}
   ::-webkit-scrollbar{width:0;background:transparent}
-  
+
   .app-container{width:100%;max-width:480px;margin:0 auto;background:#111827;height:100vh;height:100dvh;display:flex;flex-direction:column;position:relative;box-shadow:0 0 20px rgba(255,255,255,.02);overflow:hidden}
+
   .content-area{flex:1;overflow-y:auto;overflow-x:hidden;padding-bottom:110px}
-  
+
   .bottom-nav {
     position: absolute;
     bottom: 15px;
@@ -48,12 +45,12 @@
   .field-error{border-color:#ef4444 !important}
   .error-msg{display:none;color:#f87171;font-size:11px;margin-top:4px;font-weight:600}
   .field-error ~ .error-msg{display:block}
-  
+
   .toast{position:absolute;top:20px;left:50%;transform:translateX(-50%) translateY(-150%);background:#1f2937;color:#fff;padding:10px 18px;border-radius:14px;font-size:12px;font-weight:600;box-shadow:0 10px 30px rgba(0,0,0,.4);z-index:200;transition:transform .35s cubic-bezier(.4,0,.2,1);border:1px solid #374151;white-space:nowrap;max-width:90%;overflow:hidden;text-overflow:ellipsis}
   .toast.show{transform:translateX(-50%) translateY(0)}
   .toast.success{border-color:#16a34a}
   .toast.error{border-color:#dc2626}
-  
+
   .chat-bubble{background:#1f2937;border-radius:16px 16px 16px 4px;padding:12px 14px;color:#e5e7eb;font-size:13px;line-height:1.5;max-width:85%}
   .quick-chip{background:#1f2937;border:1px solid #374151;color:#93c5fd;padding:8px 14px;border-radius:999px;font-size:12px;font-weight:600;cursor:pointer;transition:.15s}
   .quick-chip:active{transform:scale(.95);background:#374151}
@@ -65,7 +62,6 @@
   body.light-mode{background:#e5e7eb}
   .light-mode .app-container,.light-mode .page-layer{background:#f9fafb !important}
   .light-mode .bottom-nav { background: rgba(255, 255, 255, 0.95) !important; border-color: #e5e7eb !important; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1) !important; }
-
   .light-mode header{background:#fff !important;border-bottom-color:#e5e7eb !important;color:#111827 !important}
   .light-mode header h1.text-green-500{color:#22c55e !important}
   .light-mode header h1.text-orange-400{color:#ea580c !important}
@@ -107,27 +103,18 @@
     <button onclick="tutupInstallBanner()" class="absolute -top-2 -right-2 bg-gray-800 text-gray-300 w-6 h-6 rounded-full flex items-center justify-center text-xs border border-gray-600 active:scale-95 shadow-md"><i class="fa-solid fa-times"></i></button>
   </div>
 
-  <!-- HEADER: Menggunakan Grid 3 Kolom agar Teks Tetap Presisi di Tengah -->
-  <header class="bg-gray-900 text-white px-4 py-4 flex-none sticky top-0 z-40 rounded-b-3xl border-b border-gray-800 shadow-md">
-    <div class="grid grid-cols-3 items-center mb-4 mt-2">
-      
-      <!-- Kolom 1: Logo (Diperbesar 40%, Tanpa Bingkai, Preload Lokal) -->
-      <div class="flex justify-start">
-        <img src="logo.png" alt="Logo" class="w-[90px] h-[90px] object-contain" fetchpriority="high" loading="eager">
+  <header class="bg-gray-900 text-white px-5 py-4 flex-none sticky top-0 z-40 rounded-b-3xl border-b border-gray-800 shadow-md">
+    <div class="flex justify-between items-center mb-4 mt-2">
+      <div class="flex items-center gap-3">
+        <img src="icon-192.png" alt="Logo" class="w-10 h-10 rounded-xl object-cover">
+        <div>
+          <h1 class="text-2xl font-black italic tracking-tighter text-green-500">OZgo</h1>
+          <p class="text-[10px] text-gray-400 italic mt-0.5">Layanan Prioritas Warga Mabu</p>
+        </div>
       </div>
-      
-      <!-- Kolom 2: Teks di Tengah -->
-      <div class="flex flex-col items-center justify-center text-center">
-        <h1 class="text-3xl font-black italic tracking-tighter text-green-500">OZgo</h1>
-        <p class="text-[10px] text-gray-400 italic mt-0.5">Layanan Prioritas Warga Mabu</p>
-      </div>
-      
-      <!-- Kolom 3: Tombol Tema di Kanan -->
-      <div class="flex justify-end">
-        <button onclick="toggleTheme()" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center text-gray-300 hover:text-white transition active:scale-95 shadow-sm" title="Ganti Tema">
-          <i id="theme-icon" class="fa-solid fa-sun"></i>
-        </button>
-      </div>
+      <button onclick="toggleTheme()" class="bg-gray-800 w-8 h-8 rounded-full flex items-center justify-center text-gray-300 hover:text-white transition active:scale-95 shadow-sm" title="Ganti Tema">
+        <i id="theme-icon" class="fa-solid fa-sun"></i>
+      </button>
     </div>
     <div class="bg-gray-800 text-gray-400 rounded-full flex items-center px-4 py-2.5 border border-gray-700">
       <i class="fa-solid fa-search mr-3"></i>
@@ -238,7 +225,7 @@
       <div onclick="toggleTheme()" class="flex items-center justify-between p-4 border-b border-gray-700 cursor-pointer active:bg-gray-700 transition"><div class="flex items-center gap-3"><div class="w-9 h-9 rounded-lg bg-gray-700 flex items-center justify-center text-gray-300"><i class="fa-solid fa-palette text-sm"></i></div><span class="text-sm font-semibold text-gray-200">Ganti Tema</span></div><i class="fa-solid fa-chevron-right text-gray-500 text-xs"></i></div>
       <div onclick="installApp()" class="flex items-center justify-between p-4 border-b border-gray-700 cursor-pointer active:bg-gray-700 transition"><div class="flex items-center gap-3"><div class="w-9 h-9 rounded-lg bg-gray-700 flex items-center justify-center text-gray-300"><i class="fa-solid fa-download text-sm"></i></div><span class="text-sm font-semibold text-gray-200">Install Aplikasi</span></div><i class="fa-solid fa-chevron-right text-gray-500 text-xs"></i></div>
       <div onclick="shareApp()" class="flex items-center justify-between p-4 border-b border-gray-700 cursor-pointer active:bg-gray-700 transition"><div class="flex items-center gap-3"><div class="w-9 h-9 rounded-lg bg-gray-700 flex items-center justify-center text-gray-300"><i class="fa-solid fa-share-nodes text-sm"></i></div><span class="text-sm font-semibold text-gray-200">Bagikan Aplikasi</span></div><i class="fa-solid fa-chevron-right text-gray-500 text-xs"></i></div>
-      <div onclick="showModal('Tentang OZgo','Aplikasi layanan prioritas warga Mabu. Versi 3.1.0\n\nArea: Rangkasbitung & sekitarnya.')" class="flex items-center justify-between p-4 cursor-pointer active:bg-gray-700 transition"><div class="flex items-center gap-3"><div class="w-9 h-9 rounded-lg bg-gray-700 flex items-center justify-center text-gray-300"><i class="fa-solid fa-circle-info text-sm"></i></div><span class="text-sm font-semibold text-gray-200">Tentang Aplikasi</span></div><span class="text-[10px] text-gray-500 font-mono">v3.1.0</span></div>
+      <div onclick="showModal('Tentang OZgo','Aplikasi layanan prioritas warga Mabu. Versi 3.1.1\n\nArea: Rangkasbitung & sekitarnya.')" class="flex items-center justify-between p-4 cursor-pointer active:bg-gray-700 transition"><div class="flex items-center gap-3"><div class="w-9 h-9 rounded-lg bg-gray-700 flex items-center justify-center text-gray-300"><i class="fa-solid fa-circle-info text-sm"></i></div><span class="text-sm font-semibold text-gray-200">Tentang Aplikasi</span></div><span class="text-[10px] text-gray-500 font-mono">v3.1.1</span></div>
     </div>
   </main>
 
@@ -452,7 +439,6 @@
 
 </div>
 
-<!-- DATALISTS -->
 <datalist id="alamat-datalist"></datalist>
 <datalist id="nama-datalist"></datalist>
 
@@ -501,8 +487,9 @@ function switchTab(name) {
 /* ============ LAYERS ============ */
 function openLayer(id) {
   applyProfileDefaults();
-  document.getElementById('layer-' + id).style.display = 'flex';
-  setTimeout(() => document.getElementById('layer-' + id).classList.add('active'), 10);
+  const el = document.getElementById('layer-' + id);
+  el.style.display = 'flex';
+  setTimeout(() => el.classList.add('active'), 10);
 }
 function closeLayer(id) {
   const el = document.getElementById('layer-' + id);
@@ -625,7 +612,9 @@ function openAddressPicker(inputId) {
 function pickAddress(id) {
   const a = getAddresses().find(x => x.id === id);
   if (a && currentAddressTarget) {
-    document.getElementById(currentAddressTarget).value = a.address;
+    const el = document.getElementById(currentAddressTarget);
+    el.value = a.address;
+    delete el.dataset.gps;
   }
   closeAddressPicker();
   toast('Alamat terisi ✓','success');
@@ -681,7 +670,7 @@ function renderOrders() {
   empty.classList.add('hidden');
   const list = currentFilter === 'all' ? all : all.filter(o => o.type === currentFilter);
   if (!list.length) { container.innerHTML = `<p class="text-center text-gray-500 text-sm py-10">Tidak ada pesanan ${escapeHtml(currentFilter)}</p>`; return; }
-  
+
   const colorMap = { OZRide: 'green', OZFood: 'orange', OZSend: 'blue', OZMart: 'purple' };
   container.innerHTML = list.map(o => {
     const hasRating = o.rating && o.rating > 0;
@@ -768,10 +757,19 @@ function clearFieldErrors(prefix, fields) {
 function getLocation(inputId) {
   if (!navigator.geolocation) { toast('Perangkat tidak mendukung GPS','error'); return; }
   const el = document.getElementById(inputId);
-  el.value = 'Melacak lokasi...';
+  const prev = el.value;
+  el.value = '📍 Melacak lokasi...';
   navigator.geolocation.getCurrentPosition(
-    pos => { el.value = `https://maps.google.com/?q=${pos.coords.latitude},${pos.coords.longitude}`; toast('Lokasi terdeteksi ✓','success'); },
-    () => { el.value = ''; toast('Gagal melacak. Aktifkan GPS atau isi manual.','error'); },
+    pos => {
+      const { latitude: lat, longitude: lng } = pos.coords;
+      el.dataset.gps = `${lat},${lng}`;
+      el.value = `📍 Lokasi GPS (${lat.toFixed(5)}, ${lng.toFixed(5)})`;
+      toast('Lokasi terdeteksi ✓','success');
+    },
+    () => {
+      el.value = prev;
+      toast('Gagal melacak. Aktifkan GPS atau isi manual.','error');
+    },
     { enableHighAccuracy: true, timeout: 10000 }
   );
 }
@@ -791,9 +789,24 @@ function openWA(msg) {
     location.href = url;
   }
 }
-function mapsOrText(val) {
-  if (val.includes('maps.google.com')) return { value: val, link: '' };
-  return { value: val, link: `https://maps.google.com/?q=${encodeURIComponent(val + ' ' + CONFIG.area)}` };
+
+/**
+ * Mengambil label tampilan + link Google Maps dari sebuah input.
+ * - Jika user pakai tombol GPS (dataset.gps) → link koordinat.
+ * - Jika user tempel URL maps → pakai URL tersebut.
+ * - Jika user isi manual → bangun link dari teks + area.
+ */
+function mapsOrText(inputId) {
+  const el = document.getElementById(inputId);
+  const raw = el.value.trim();
+  const gps = el.dataset.gps;
+  if (gps && raw.startsWith('📍')) {
+    return { label: 'Lokasi GPS terdeteksi', link: `https://maps.google.com/?q=${gps}` };
+  }
+  if (/^https?:\/\//i.test(raw)) {
+    return { label: 'Lokasi (link)', link: raw };
+  }
+  return { label: raw, link: `https://maps.google.com/?q=${encodeURIComponent(raw + ' ' + CONFIG.area)}` };
 }
 
 function showPreview(msg, orderData, layerId, formPrefix) {
@@ -827,23 +840,27 @@ function pesanOZRide() {
   clearFieldErrors('ride',['nama','jemput','antar']);
   if (![isFilled('ride-nama'),isFilled('ride-jemput'),isFilled('ride-antar')].every(Boolean)) { toast('Lengkapi data wajib','error'); return; }
   const nama = document.getElementById('ride-nama').value.trim();
-  const jemput = document.getElementById('ride-jemput').value.trim();
-  const antar = document.getElementById('ride-antar').value.trim();
   const keterangan = document.getElementById('ride-keterangan').value.trim();
   const bayar = document.getElementById('ride-bayar').value;
+  const j = mapsOrText('ride-jemput');
+  const a = mapsOrText('ride-antar');
 
   let msg = `*ORDER OZRide Baru!* 🛵\n\n*Nama:* ${nama}\n\n`;
-  const j = mapsOrText(jemput); msg += `*Jemput:* ${j.value}\n${j.link ? '📍 ' + j.link : ''}\n\n`;
-  const a = mapsOrText(antar); msg += `*Tujuan:* ${a.value}\n${a.link ? '📍 ' + a.link : ''}\n\n`;
+  msg += `*Jemput:* ${j.label}\n📍 ${j.link}\n\n`;
+  msg += `*Tujuan:* ${a.label}\n📍 ${a.link}\n\n`;
   if (keterangan) msg += `*Ket:* ${keterangan}\n`;
   msg += `*Bayar:* ${bayar}\n\nMohon diproses, terima kasih!`;
 
   showPreview(msg, {
     id: 'R' + Date.now().toString().slice(-6),
     type: 'OZRide',
-    summary: `${jemput} → ${antar}`,
+    summary: `${j.label} → ${a.label}`,
     status: 'Menunggu konfirmasi',
-    data: { nama, jemput, antar, keterangan, bayar }
+    data: {
+      nama, jemput: document.getElementById('ride-jemput').value.trim(),
+      antar: document.getElementById('ride-antar').value.trim(),
+      keterangan, bayar
+    }
   }, 'ozride', 'ride');
 }
 
@@ -853,18 +870,20 @@ function pesanOZFood() {
   const nama = document.getElementById('food-nama').value.trim();
   const resto = document.getElementById('food-resto').value.trim();
   const menu = document.getElementById('food-menu').value.trim();
-  const antar = document.getElementById('food-antar').value.trim();
   const bayar = document.getElementById('food-bayar').value;
+  const a = mapsOrText('food-antar');
 
-  let msg = `*ORDER OZFood Baru!* 🍔\n\n*Nama:* ${nama}\n\n*Resto:* ${resto}\n📍 https://maps.google.com/?q=${encodeURIComponent(resto + ' ' + CONFIG.area)}\n\n*Pesanan:*\n${menu}\n\n`;
-  const a = mapsOrText(antar); msg += `*Antar:* ${a.value}\n${a.link ? '📍 ' + a.link : ''}\n\n*Bayar:* ${bayar}\n\nMohon diproses, terima kasih!`;
+  let msg = `*ORDER OZFood Baru!* 🍔\n\n*Nama:* ${nama}\n\n`;
+  msg += `*Resto:* ${resto}\n📍 https://maps.google.com/?q=${encodeURIComponent(resto + ' ' + CONFIG.area)}\n\n`;
+  msg += `*Pesanan:*\n${menu}\n\n`;
+  msg += `*Antar:* ${a.label}\n📍 ${a.link}\n\n*Bayar:* ${bayar}\n\nMohon diproses, terima kasih!`;
 
   showPreview(msg, {
     id: 'F' + Date.now().toString().slice(-6),
     type: 'OZFood',
-    summary: `${resto} → ${antar}`,
+    summary: `${resto} → ${a.label}`,
     status: 'Menunggu konfirmasi',
-    data: { nama, resto, menu, antar, bayar }
+    data: { nama, resto, menu, antar: document.getElementById('food-antar').value.trim(), bayar }
   }, 'ozfood', 'food');
 }
 
@@ -873,25 +892,29 @@ function pesanOZSend() {
   const checks = ['nama','jemput','antar','jenis','penerima','hp'].map(f => isFilled('send-' + f));
   if (!checks.every(Boolean)) { toast('Lengkapi data','error'); return; }
   const nama = document.getElementById('send-nama').value.trim();
-  const jemput = document.getElementById('send-jemput').value.trim();
-  const antar = document.getElementById('send-antar').value.trim();
   const jenis = document.getElementById('send-jenis').value.trim();
   const detail = document.getElementById('send-detail').value.trim();
   const penerima = document.getElementById('send-penerima').value.trim();
   const hp = document.getElementById('send-hp').value.trim();
   const bayar = document.getElementById('send-bayar').value;
+  const j = mapsOrText('send-jemput');
+  const a = mapsOrText('send-antar');
 
-  let msg = `*ORDER OZSend Baru!* 📦\n\n*-- PENGIRIM --*\n*Nama:* ${nama}\n*Ambil:* ${jemput}\n📍 https://maps.google.com/?q=${encodeURIComponent(jemput + ' ' + CONFIG.area)}\n\n*-- BARANG --*\n*Jenis:* ${jenis}\n`;
+  let msg = `*ORDER OZSend Baru!* 📦\n\n*-- PENGIRIM --*\n*Nama:* ${nama}\n*Ambil:* ${j.label}\n📍 ${j.link}\n\n`;
+  msg += `*-- BARANG --*\n*Jenis:* ${jenis}\n`;
   if (detail) msg += `*Detail:* ${detail}\n`;
-  msg += `\n*-- PENERIMA --*\n*Nama:* ${penerima}\n*HP:* ${hp}\n`;
-  const a = mapsOrText(antar); msg += `*Antar:* ${a.value}\n${a.link ? '📍 ' + a.link : ''}\n\n*Bayar:* ${bayar}\n\nMohon segera dijemput, terima kasih!`;
+  msg += `\n*-- PENERIMA --*\n*Nama:* ${penerima}\n*HP:* ${hp}\n*Antar:* ${a.label}\n📍 ${a.link}\n\n*Bayar:* ${bayar}\n\nMohon segera dijemput, terima kasih!`;
 
   showPreview(msg, {
     id: 'S' + Date.now().toString().slice(-6),
     type: 'OZSend',
-    summary: `${jemput} → ${antar} (${jenis})`,
+    summary: `${j.label} → ${a.label} (${jenis})`,
     status: 'Menunggu konfirmasi',
-    data: { nama, jemput, antar, jenis, detail, penerima, hp, bayar }
+    data: {
+      nama, jemput: document.getElementById('send-jemput').value.trim(),
+      antar: document.getElementById('send-antar').value.trim(),
+      jenis, detail, penerima, hp, bayar
+    }
   }, 'ozsend', 'send');
 }
 
@@ -900,30 +923,37 @@ function pesanOZMart() {
   const checks = ['nama','toko','jenis','detail','antar'].map(f => isFilled('mart-' + f));
   if (!checks.every(Boolean)) { toast('Lengkapi data','error'); return; }
   const nama = document.getElementById('mart-nama').value.trim();
-  const toko = document.getElementById('mart-toko').value.trim();
   const jenis = document.getElementById('mart-jenis').value.trim();
   const detail = document.getElementById('mart-detail').value.trim();
-  const antar = document.getElementById('mart-antar').value.trim();
   const bayar = document.getElementById('mart-bayar').value;
+  const t = mapsOrText('mart-toko');
+  const a = mapsOrText('mart-antar');
 
   let msg = `*ORDER OZMart Baru!* 🛒\n\n*Nama:* ${nama}\n\n`;
-  const t = mapsOrText(toko); msg += `*Toko:* ${t.value}\n${t.link ? '📍 ' + t.link : ''}\n\n*Kategori:* ${jenis}\n*Belanjaan:*\n${detail}\n\n`;
-  const a = mapsOrText(antar); msg += `*Antar:* ${a.value}\n${a.link ? '📍 ' + a.link : ''}\n\n*Bayar:* ${bayar}\n\nMohon dibelanjakan & diantar, terima kasih!`;
+  msg += `*Toko:* ${t.label}\n📍 ${t.link}\n\n*Kategori:* ${jenis}\n*Belanjaan:*\n${detail}\n\n`;
+  msg += `*Antar:* ${a.label}\n📍 ${a.link}\n\n*Bayar:* ${bayar}\n\nMohon dibelanjakan & diantar, terima kasih!`;
 
   showPreview(msg, {
     id: 'M' + Date.now().toString().slice(-6),
     type: 'OZMart',
-    summary: `${toko} → ${antar}`,
+    summary: `${t.label} → ${a.label}`,
     status: 'Menunggu konfirmasi',
-    data: { nama, toko, antar, jenis, detail, bayar }
+    data: {
+      nama, toko: document.getElementById('mart-toko').value.trim(),
+      antar: document.getElementById('mart-antar').value.trim(),
+      jenis, detail, bayar
+    }
   }, 'ozmart', 'mart');
 }
 
 function clearForm(prefix) {
-  ['resto','menu','jenis','detail','keterangan','penerima','hp'].forEach(k => {
+  ['nama','jemput','antar','resto','menu','jenis','detail','keterangan','penerima','hp','toko'].forEach(k => {
     const el = document.getElementById(prefix + '-' + k);
-    if (el) el.value = '';
+    if (el) { el.value = ''; delete el.dataset.gps; }
   });
+  const sel = document.getElementById(prefix + '-bayar');
+  if (sel) sel.selectedIndex = 0;
+  applyProfileDefaults();
 }
 
 /* ============ CHAT & SHARE ============ */
@@ -958,6 +988,8 @@ function applyTheme(isLight) {
   const icon = document.getElementById('theme-icon');
   icon.classList.toggle('fa-sun', !isLight);
   icon.classList.toggle('fa-moon', isLight);
+  const meta = document.querySelector('meta[name="theme-color"]');
+  if (meta) meta.setAttribute('content', isLight ? '#f9fafb' : '#111827');
 }
 function toggleTheme() {
   const next = !document.body.classList.contains('light-mode');
@@ -1004,7 +1036,7 @@ function handleUrlParams() {
   }
 }
 
-/* ============ FITUR TOMBOL BACK ============ */
+/* ============ TOMBOL BACK ============ */
 let exitPending = false;
 let backTimer;
 history.pushState({ page: 'ozgo' }, '', location.href);
@@ -1035,15 +1067,13 @@ function checkActiveLayer() {
   return null;
 }
 function checkCurrentTab() {
-  const tabs = ['beranda', 'chat', 'pesanan', 'profile'];
-  for (const t of tabs) {
+  for (const t of TABS) {
     const el = document.getElementById('main-' + t);
     if (el && !el.classList.contains('hidden')) return t;
   }
   return 'beranda';
 }
-
-window.addEventListener('popstate', function (e) {
+window.addEventListener('popstate', function () {
   if (closeAnyActiveModal()) { history.pushState({ page: 'ozgo' }, '', location.href); return; }
   const activeLayer = checkActiveLayer();
   if (activeLayer) {
@@ -1072,16 +1102,26 @@ window.addEventListener('popstate', function (e) {
 (function init() {
   const saved = localStorage.getItem(KEYS.theme);
   if (saved === 'light') applyTheme(true);
+
   const p = getProfile();
   if (p.alamat && !p.alamatMigrated && getAddresses().length === 0) {
     addAddressItem('Rumah', p.alamat);
     p.alamatMigrated = true;
     localStorage.setItem(KEYS.profile, JSON.stringify(p));
   }
+
   refreshProfileUI();
   renderAddresses();
   renderDatalists();
   applyProfileDefaults();
+
+  // Bersihkan penanda GPS saat user mengetik manual di field lokasi
+  ['ride-jemput','ride-antar','food-antar','send-jemput','send-antar','mart-toko','mart-antar'].forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.addEventListener('input', () => { if (!el.value.startsWith('📍')) delete el.dataset.gps; });
+  });
+
   handleUrlParams();
 })();
 </script>
