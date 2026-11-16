@@ -15,6 +15,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+<link rel="preload" as="image" href="https://cdn.jsdelivr.net/gh/alfauzy80/ozgo@main/assets/logo.png" fetchpriority="high">
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
@@ -54,7 +55,6 @@
   .toast.success{border-color:#16a34a}
   .toast.error{border-color:#dc2626}
 
-  /* ===== BRAND LOGO (font futuristik speed) ===== */
   .brand-logo{
     font-family:'Orbitron',ui-sans-serif,system-ui,sans-serif;
     font-weight:900;
@@ -75,6 +75,117 @@
   }
   @media (max-width:380px){
     .brand-logo{font-size:2.15rem}
+  }
+
+  /* ===== COVER DEPAN (SPLASH IN-APP, TAP TO ENTER) ===== */
+  .app-cover{
+    position:absolute;
+    inset:0;
+    z-index:9999;
+    background:radial-gradient(circle at 50% 40%, #0f2a1a 0%, #111827 60%, #000 100%);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    opacity:1;
+    visibility:visible;
+    transition:opacity .55s ease, visibility .55s ease;
+    will-change:opacity;
+    cursor:pointer;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .app-cover.hide{opacity:0;visibility:hidden;pointer-events:none}
+
+  .cover-inner{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:.6rem;
+    text-align:center;
+    padding:0 24px;
+    pointer-events:none;
+  }
+
+  .cover-logo-wrap{
+    position:relative;
+    width:120px;
+    height:120px;
+    animation:coverFloat 2.2s ease-in-out infinite;
+    filter:drop-shadow(0 0 30px rgba(34,197,94,.55)) drop-shadow(0 0 10px rgba(34,197,94,.3));
+  }
+  @media (max-height:640px){ .cover-logo-wrap{width:96px;height:96px} }
+  @keyframes coverFloat{
+    0%,100%{transform:translateY(0) scale(1)}
+    50%{transform:translateY(-8px) scale(1.04)}
+  }
+
+  /* Monogram SVG "OZ" — selalu tampil (fallback instan) */
+  #cover-logo-fallback{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+  }
+
+  /* Logo asli — overlay di atas monogram, fade-in saat loaded */
+  .cover-logo{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    object-fit:contain;
+    opacity:0;
+    transition:opacity .45s ease;
+  }
+  .cover-logo.is-loaded{
+    opacity:1;
+  }
+
+  .cover-brand{
+    font-family:'Orbitron',sans-serif;
+    font-weight:900;
+    font-style:italic;
+    font-size:3rem;
+    line-height:1;
+    letter-spacing:-.04em;
+    margin:0;
+    transform:skewX(-10deg);
+    background:linear-gradient(90deg,#86efac 0%,#22c55e 45%,#16a34a 100%);
+    -webkit-background-clip:text;
+    background-clip:text;
+    -webkit-text-fill-color:transparent;
+    filter:drop-shadow(0 0 20px rgba(34,197,94,.65));
+    -webkit-user-select:none;
+    user-select:none;
+  }
+  .cover-tagline{
+    color:#9ca3af;
+    font-size:12px;
+    font-style:italic;
+    letter-spacing:.02em;
+    margin:0;
+  }
+
+  .cover-tap-hint{
+    margin-top:32px;
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:11px 22px;
+    border-radius:999px;
+    background:rgba(34,197,94,.15);
+    border:1px solid rgba(34,197,94,.45);
+    color:#86efac;
+    font-size:13px;
+    font-weight:800;
+    letter-spacing:.02em;
+    animation:tapPulse 1.8s ease-in-out infinite;
+    backdrop-filter:blur(6px);
+    -webkit-backdrop-filter:blur(6px);
+  }
+  .cover-tap-hint i{ color:#22c55e; font-size:14px; }
+  @keyframes tapPulse{
+    0%,100%{ box-shadow:0 0 0 0 rgba(34,197,94,.45); transform:scale(1); }
+    50%{ box-shadow:0 0 0 12px rgba(34,197,94,0); transform:scale(1.03); }
   }
 
   .chat-bubble{background:#1f2937;border-radius:16px 16px 16px 4px;padding:12px 14px;color:#e5e7eb;font-size:13px;line-height:1.5;max-width:85%}
@@ -121,6 +232,44 @@
 <body>
 
 <div class="app-container">
+
+  <!-- ============ COVER DEPAN (TAP TO ENTER) ============ -->
+  <div id="app-cover" class="app-cover" onclick="hideCover()">
+    <div class="cover-inner">
+      <div class="cover-logo-wrap">
+        <!-- Monogram SVG: selalu tampil, tidak menunggu network -->
+        <svg id="cover-logo-fallback" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <defs>
+            <linearGradient id="ozGrad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#86efac"/>
+              <stop offset="50%" stop-color="#22c55e"/>
+              <stop offset="100%" stop-color="#16a34a"/>
+            </linearGradient>
+          </defs>
+          <circle cx="60" cy="60" r="54" fill="none" stroke="url(#ozGrad)" stroke-width="3" opacity="0.35"/>
+          <text x="60" y="76" text-anchor="middle"
+                font-family="Orbitron, Arial, sans-serif" font-weight="900" font-style="italic"
+                font-size="46" fill="url(#ozGrad)" letter-spacing="-2">OZ</text>
+        </svg>
+        <!-- Logo asli: fade-in saat selesai load -->
+        <img id="cover-logo-img"
+             class="cover-logo"
+             alt="OZgo Logo"
+             referrerpolicy="no-referrer"
+             fetchpriority="high"
+             decoding="async"
+             onload="onLogoLoad()"
+             onerror="onLogoError()">
+      </div>
+      <h1 class="cover-brand">OZgo</h1>
+      <p class="cover-tagline">Layanan Prioritas Warga Mabu</p>
+      <div class="cover-tap-hint">
+        <i class="fa-solid fa-hand-pointer"></i>
+        <span>Ketuk untuk order</span>
+      </div>
+    </div>
+  </div>
+
   <div id="toast" class="toast"></div>
 
   <div id="install-banner" class="absolute top-4 left-4 right-4 z-[100] bg-gradient-to-r from-green-600 to-green-800 text-white rounded-2xl shadow-2xl p-3 transform -translate-y-[150%] transition-transform duration-500 flex items-center justify-between border border-green-500/50 hidden">
@@ -251,7 +400,7 @@
       <div onclick="toggleTheme()" class="flex items-center justify-between p-4 border-b border-gray-700 cursor-pointer active:bg-gray-700 transition"><div class="flex items-center gap-3"><div class="w-9 h-9 rounded-lg bg-gray-700 flex items-center justify-center text-gray-300"><i class="fa-solid fa-palette text-sm"></i></div><span class="text-sm font-semibold text-gray-200">Ganti Tema</span></div><i class="fa-solid fa-chevron-right text-gray-500 text-xs"></i></div>
       <div onclick="installApp()" class="flex items-center justify-between p-4 border-b border-gray-700 cursor-pointer active:bg-gray-700 transition"><div class="flex items-center gap-3"><div class="w-9 h-9 rounded-lg bg-gray-700 flex items-center justify-center text-gray-300"><i class="fa-solid fa-download text-sm"></i></div><span class="text-sm font-semibold text-gray-200">Install Aplikasi</span></div><i class="fa-solid fa-chevron-right text-gray-500 text-xs"></i></div>
       <div onclick="shareApp()" class="flex items-center justify-between p-4 border-b border-gray-700 cursor-pointer active:bg-gray-700 transition"><div class="flex items-center gap-3"><div class="w-9 h-9 rounded-lg bg-gray-700 flex items-center justify-center text-gray-300"><i class="fa-solid fa-share-nodes text-sm"></i></div><span class="text-sm font-semibold text-gray-200">Bagikan Aplikasi</span></div><i class="fa-solid fa-chevron-right text-gray-500 text-xs"></i></div>
-      <div onclick="showModal('Tentang OZgo','Aplikasi layanan prioritas warga Mabu. Versi 3.1.2\n\nArea: Rangkasbitung & sekitarnya.')" class="flex items-center justify-between p-4 cursor-pointer active:bg-gray-700 transition"><div class="flex items-center gap-3"><div class="w-9 h-9 rounded-lg bg-gray-700 flex items-center justify-center text-gray-300"><i class="fa-solid fa-circle-info text-sm"></i></div><span class="text-sm font-semibold text-gray-200">Tentang Aplikasi</span></div><span class="text-[10px] text-gray-500 font-mono">v3.1.2</span></div>
+      <div onclick="showModal('Tentang OZgo','Aplikasi layanan prioritas warga Mabu. Versi 3.1.6\n\nArea: Rangkasbitung & sekitarnya.')" class="flex items-center justify-between p-4 cursor-pointer active:bg-gray-700 transition"><div class="flex items-center gap-3"><div class="w-9 h-9 rounded-lg bg-gray-700 flex items-center justify-center text-gray-300"><i class="fa-solid fa-circle-info text-sm"></i></div><span class="text-sm font-semibold text-gray-200">Tentang Aplikasi</span></div><span class="text-[10px] text-gray-500 font-mono">v3.1.6</span></div>
     </div>
   </main>
 
@@ -483,6 +632,47 @@ let pendingPreview = null;
 /* ============ SERVICE WORKER ============ */
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(()=>{}));
+}
+
+/* ============ COVER LOGO LOADER ============ */
+const LOGO_SOURCES = [
+  'https://cdn.jsdelivr.net/gh/alfauzy80/ozgo@main/assets/logo.png',
+  'https://raw.githubusercontent.com/alfauzy80/ozgo/main/assets/logo.png',
+  'https://cdn.jsdelivr.net/gh/alfauzy80/ozgo@main/logo.png',
+  'https://raw.githubusercontent.com/alfauzy80/ozgo/main/logo.png'
+];
+let logoIdx = 0;
+let logoDone = false;
+
+function loadCoverLogo() {
+  const img = document.getElementById('cover-logo-img');
+  if (!img) return;
+  logoIdx = 0;
+  img.src = LOGO_SOURCES[0];
+}
+function onLogoLoad() {
+  logoDone = true;
+  const img = document.getElementById('cover-logo-img');
+  if (img) img.classList.add('is-loaded');
+}
+function onLogoError() {
+  if (logoDone) return;
+  const img = document.getElementById('cover-logo-img');
+  if (!img) return;
+  logoIdx++;
+  if (logoIdx < LOGO_SOURCES.length) {
+    console.log('[Cover] Coba sumber logo berikutnya:', LOGO_SOURCES[logoIdx]);
+    img.src = LOGO_SOURCES[logoIdx];
+  } else {
+    console.warn('[Cover] Semua URL logo gagal. Fallback monogram tetap tampil.');
+  }
+}
+loadCoverLogo();
+
+function hideCover() {
+  const c = document.getElementById('app-cover');
+  if (!c || c.classList.contains('hide')) return;
+  c.classList.add('hide');
 }
 
 /* ============ UTILS ============ */
@@ -1061,6 +1251,10 @@ let exitPending = false;
 let backTimer;
 history.pushState({ page: 'ozgo' }, '', location.href);
 
+function checkCoverVisible() {
+  const c = document.getElementById('app-cover');
+  return c && !c.classList.contains('hide');
+}
 function checkActiveModals() {
   const modals = ['custom-modal', 'address-picker-modal', 'rating-modal', 'preview-modal'];
   for (const id of modals) {
@@ -1094,6 +1288,7 @@ function checkCurrentTab() {
   return 'beranda';
 }
 window.addEventListener('popstate', function () {
+  if (checkCoverVisible()) { hideCover(); history.pushState({ page: 'ozgo' }, '', location.href); return; }
   if (closeAnyActiveModal()) { history.pushState({ page: 'ozgo' }, '', location.href); return; }
   const activeLayer = checkActiveLayer();
   if (activeLayer) {
