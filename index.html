@@ -4,14 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>OZgo App</title>
-<link rel="manifest" href="manifest.json">
+<link rel="manifest" href="/manifest.json">
 <meta name="theme-color" content="#111827">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="OZgo">
-<link rel="apple-touch-icon" href="icon-192.png">
-<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="apple-touch-icon" href="/icon-192.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
@@ -716,7 +716,11 @@ let pendingPreview = null;
 
 /* ============ SERVICE WORKER ============ */
 if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(()=>{}));
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js', { scope: '/' })
+      .then(reg => console.log('SW registered:', reg.scope))
+      .catch(err => console.error('SW registration failed:', err));
+  });
 }
 
 /* ============ COVER ============ */
@@ -1284,10 +1288,19 @@ const installBanner = document.getElementById('install-banner');
 const INSTALL_COOLDOWN = 3 * 24 * 60 * 60 * 1000; // 3 Hari
 
 window.addEventListener('beforeinstallprompt', (e) => {
+  console.log('beforeinstallprompt fired');
   e.preventDefault();
   deferredPrompt = e;
-  // Coba munculkan banner jika user sedang di Beranda
-  maybeShowInstallBanner();
+  if (checkCurrentTab() === 'beranda') {
+    showInstallBannerUI();
+  }
+});
+
+window.addEventListener('appinstalled', (evt) => {
+  console.log('OZgo berhasil diinstall');
+  toast('Aplikasi berhasil diinstall ✓', 'success');
+  hideInstallBanner();
+  deferredPrompt = null;
 });
 
 function isStandalone() {
@@ -1304,26 +1317,9 @@ function isDismissed() {
   return (Date.now() - parseInt(dismissedAt, 10)) < INSTALL_COOLDOWN;
 }
 
-function maybeShowInstallBanner() {
-  if (isStandalone() || isDismissed()) return;
-  
-  // Hanya tampil jika tab aktif adalah beranda
-  if (checkCurrentTab() !== 'beranda') return;
-
-  if (deferredPrompt) {
-    // Android / Chrome
-    document.getElementById('install-desc').textContent = 'Akses lebih cepat & ringan';
-    showInstallBannerUI();
-  } else if (isIos()) {
-    // iOS / Safari
-    document.getElementById('install-desc').textContent = 'Ketuk Bagikan → Tambah ke Layar';
-    showInstallBannerUI();
-  }
-}
-
 function showInstallBannerUI() {
+  if (isStandalone() || isDismissed()) return;
   installBanner.classList.remove('hidden');
-  // Force reflow agar transisi berjalan
   void installBanner.offsetWidth;
   installBanner.classList.remove('-translate-y-[150%]');
 }
@@ -1334,9 +1330,17 @@ function hideInstallBanner() {
   setTimeout(() => installBanner.classList.add('hidden'), 500);
 }
 
-function tutupInstallBanner() { 
-  hideInstallBanner();
-  localStorage.setItem(KEYS.installDismiss, Date.now().toString());
+function maybeShowInstallBanner() {
+  if (isStandalone() || isDismissed()) return;
+  if (checkCurrentTab() !== 'beranda') return;
+
+  if (deferredPrompt) {
+    document.getElementById('install-desc').textContent = 'Akses lebih cepat & ringan';
+    showInstallBannerUI();
+  } else if (isIos()) {
+    document.getElementById('install-desc').textContent = 'Ketuk Bagikan → Tambah ke Layar';
+    showInstallBannerUI();
+  }
 }
 
 function installApp() {
@@ -1344,20 +1348,27 @@ function installApp() {
     showModal('Install di iOS', 'Ketuk tombol Bagikan (ikon kotak dengan panah ke atas) di bagian bawah layar Safari, lalu pilih "Tambah ke Layar Utama" (Add to Home Screen).');
     return;
   }
-  
+
   if (deferredPrompt) {
     deferredPrompt.prompt();
     deferredPrompt.userChoice.then((choiceResult) => {
       if (choiceResult.outcome === 'accepted') {
-        toast('Aplikasi berhasil diinstall ✓', 'success');
+        console.log('User accepted the install prompt');
+      } else {
+        console.log('User dismissed the install prompt');
+        localStorage.setItem(KEYS.installDismiss, Date.now().toString());
       }
       deferredPrompt = null;
-      tutupInstallBanner();
+      hideInstallBanner();
     });
   } else {
     showModal('Instalasi Otomatis Tidak Tersedia', 'Browser Anda membatasi instalasi otomatis. Silakan buka aplikasi ini menggunakan Google Chrome di Android, atau gunakan menu browser untuk menginstall.');
-    tutupInstallBanner();
   }
+}
+
+function tutupInstallBanner() { 
+  hideInstallBanner();
+  localStorage.setItem(KEYS.installDismiss, Date.now().toString());
 }
 
 /* ============ URL PARAM HANDLER ============ */
@@ -1471,9 +1482,7 @@ window.addEventListener('popstate', function () {
   window.addEventListener('offline', () => toast('Anda sedang offline', 'error'));
   window.addEventListener('online',  () => toast('Kembali online ✓', 'success'));
 
-  // Cek banner install saat aplikasi pertama kali dibuka
-  // (jika deferredPrompt sudah siap dari cache)
-  setTimeout(maybeShowInstallBanner, 1000);
+  setTimeout(maybeShowInstallBanner, 2000);
 })();
 </script>
 </body>
