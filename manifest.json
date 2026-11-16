@@ -1,1 +1,58 @@
-{"name": "OZgo App","short_name": "OZgo","description": "Layanan Prioritas Warga Mabu","start_url": "/index.html","display": "standalone","background_color": "#111827","theme_color": "#111827","icons": [{"src": "https://www.dropbox.com/scl/fi/jx15bbr1xikjals0mmttq/file_00000000557082119a5da29401166479.png?rlkey=rt8cmh71k9ii49xbhf25ad8fj&st=m1t7vd2y&raw=1","sizes": "192x192","type": "image/png"},{"src": "https://www.dropbox.com/scl/fi/jx15bbr1xikjals0mmttq/file_00000000557082119a5da29401166479.png?rlkey=rt8cmh71k9ii49xbhf25ad8fj&st=m1t7vd2y&raw=1","sizes": "512x512","type": "image/png"}]}
+{
+  "name": "OZgo App",
+  "short_name": "OZgo",
+  "description": "Layanan Prioritas Warga Mabu",
+  "id": "./",
+  "start_url": "./ozgo.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#111827",
+  "theme_color": "#111827",
+  "lang": "id",
+  "categories": ["shopping", "food", "travel", "utilities"],
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "OZRide",
+      "short_name": "Ride",
+      "description": "Pesan ojek sekarang",
+      "url": "./ozgo.html?open=ozride",
+      "icons": [{ "src": "icon-192.png", "sizes": "192x192", "type": "image/png" }]
+    },
+    {
+      "name": "OZFood",
+      "short_name": "Food",
+      "description": "Pesan makanan sekarang",
+      "url": "./ozgo.html?open=ozfood",
+      "icons": [{ "src": "icon-192.png", "sizes": "192x192", "type": "image/png" }]
+    },
+    {
+      "name": "OZSend",
+      "short_name": "Send",
+      "description": "Kirim paket sekarang",
+      "url": "./ozgo.html?open=ozsend",
+      "icons": [{ "src": "icon-192.png", "sizes": "192x192", "type": "image/png" }]
+    },
+    {
+      "name": "OZMart",
+      "short_name": "Mart",
+      "description": "Titip belanja sekarang",
+      "url": "./ozgo.html?open=ozmart",
+      "icons": [{ "src": "icon-192.png", "sizes": "192x192", "type": "image/png" }]
+    }
+  ]
+}
