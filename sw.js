@@ -4,7 +4,7 @@
 
 // 1. Tentukan nama versi Cache. 
 // PENTING: Ubah angka ini (misal ke v2, v3) setiap kali Anda mengupdate file ozgo.html
-const CACHE_VERSION = 'ozgo-v8';
+const CACHE_VERSION = 'ozgo-v9';
 
 // 2. Daftar file yang wajib disimpan di HP pengguna (App Shell)
 const ASSETS_TO_CACHE = [
