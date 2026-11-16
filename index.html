@@ -15,7 +15,6 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
-<link rel="preload" as="image" href="https://cdn.jsdelivr.net/gh/alfauzy80/ozgo@main/assets/logo.png" fetchpriority="high">
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
@@ -99,70 +98,119 @@
     display:flex;
     flex-direction:column;
     align-items:center;
+    justify-content:center;
     gap:.6rem;
     text-align:center;
     padding:0 24px;
     pointer-events:none;
-  }
-
-  .cover-logo-wrap{
-    position:relative;
-    width:120px;
-    height:120px;
-    animation:coverFloat 2.2s ease-in-out infinite;
-    filter:drop-shadow(0 0 30px rgba(34,197,94,.55)) drop-shadow(0 0 10px rgba(34,197,94,.3));
-  }
-  @media (max-height:640px){ .cover-logo-wrap{width:96px;height:96px} }
-  @keyframes coverFloat{
-    0%,100%{transform:translateY(0) scale(1)}
-    50%{transform:translateY(-8px) scale(1.04)}
-  }
-
-  #cover-logo-fallback{
-    position:absolute;
-    inset:0;
     width:100%;
-    height:100%;
   }
 
-  .cover-logo{
-    position:absolute;
-    inset:0;
-    width:100%;
-    height:100%;
-    object-fit:contain;
-    opacity:0;
-    transition:opacity .45s ease;
-  }
-  .cover-logo.is-loaded{
-    opacity:1;
-  }
-
+  /* ====== ANIMASI "OZgo" (HURUF MENYATU SEPERTI LOGO BERANDA) ====== */
   .cover-brand{
     font-family:'Orbitron',sans-serif;
     font-weight:900;
     font-style:italic;
-    font-size:3rem;
+    font-size:3.4rem;
     line-height:1;
-    letter-spacing:-.04em;
     margin:0;
     transform:skewX(-10deg);
-    background:linear-gradient(90deg,#86efac 0%,#22c55e 45%,#16a34a 100%);
+    position:relative;
+    display:inline-block;
+    filter:drop-shadow(0 0 22px rgba(34,197,94,.55)) drop-shadow(0 0 8px rgba(34,197,94,.35));
+    -webkit-user-select:none;
+    user-select:none;
+    animation:cbGlow 3.2s ease-in-out 2s infinite;
+  }
+  @media (max-height:640px){
+    .cover-brand{font-size:2.9rem}
+  }
+
+  .cover-brand .cb-letter{
+    display:inline-block;
+    margin-right:-.04em;
+    opacity:0;
+    will-change:transform,opacity;
+    /* Gradient diletakkan di sini untuk menghindari bug WebKit (huruf ancur) */
+    background-image:linear-gradient(90deg,#86efac 0%,#22c55e 45%,#16a34a 100%);
+    background-size:300% 100%;
     -webkit-background-clip:text;
     background-clip:text;
     -webkit-text-fill-color:transparent;
-    filter:drop-shadow(0 0 20px rgba(34,197,94,.65));
-    -webkit-user-select:none;
-    user-select:none;
+    color:transparent;
   }
+
+  /* Trik penyatu warna gradient antar huruf */
+  .cover-brand .cb-letter:nth-child(1){ background-position:0% 50%; animation:cbInLeft 1.2s cubic-bezier(.16,1,.3,1) .20s forwards; }
+  .cover-brand .cb-letter:nth-child(2){ background-position:33.3% 50%; animation:cbInLeft 1.2s cubic-bezier(.16,1,.3,1) .38s forwards; }
+  .cover-brand .cb-letter:nth-child(3){ background-position:66.6% 50%; animation:cbInRight 1.2s cubic-bezier(.16,1,.3,1) .56s forwards; }
+  .cover-brand .cb-letter:nth-child(4){ background-position:100% 50%; margin-right:0; animation:cbInRight 1.2s cubic-bezier(.16,1,.3,1) .74s forwards; }
+
+  @keyframes cbInLeft{
+    0%{ opacity:0; transform:translateX(-90px) rotate(-10deg) scale(.7); }
+    40%{ opacity:1; }
+    100%{ opacity:1; transform:translateX(0) rotate(0) scale(1); }
+  }
+  @keyframes cbInRight{
+    0%{ opacity:0; transform:translateX(90px) rotate(10deg) scale(.7); }
+    40%{ opacity:1; }
+    100%{ opacity:1; transform:translateX(0) rotate(0) scale(1); }
+  }
+
+  /* Lapisan kilap menyapu kiri → kanan setelah huruf menyatu */
+  .cover-brand .cb-shine{
+    position:absolute;
+    inset:0;
+    pointer-events:none;
+    display:block;
+    font:inherit;
+    letter-spacing:-.04em;
+    text-align:left;
+    white-space:nowrap;
+    opacity:1;
+    -webkit-text-fill-color:transparent;
+    color:transparent;
+    background-image:linear-gradient(90deg,
+      transparent 0%,
+      transparent 42%,
+      rgba(255,255,255,.9) 50%,
+      transparent 58%,
+      transparent 100%);
+    background-size:200% 100%;
+    background-position:150% 0;
+    background-repeat:no-repeat;
+    -webkit-background-clip:text;
+    background-clip:text;
+    animation:cbShine 2.4s cubic-bezier(.45,.05,.55,.95) 2.15s forwards;
+  }
+  @keyframes cbShine{
+    0%{ background-position:150% 0; }
+    100%{ background-position:-50% 0; }
+  }
+
+  @keyframes cbGlow{
+    0%,100%{ filter:drop-shadow(0 0 22px rgba(34,197,94,.55)) drop-shadow(0 0 8px rgba(34,197,94,.35)); }
+    50%{ filter:drop-shadow(0 0 32px rgba(34,197,94,.9)) drop-shadow(0 0 14px rgba(34,197,94,.6)); }
+  }
+
+  /* Tagline muncul dari tengah melebar ke kiri & kanan */
   .cover-tagline{
     color:#9ca3af;
     font-size:12px;
     font-style:italic;
     letter-spacing:.02em;
     margin:0;
+    opacity:0;
+    clip-path:inset(0 50% 0 50%);
+    animation:taglineReveal .9s cubic-bezier(.16,1,.3,1) 1.95s forwards;
+  }
+  @keyframes taglineReveal{
+    0%{ opacity:0; clip-path:inset(0 50% 0 50%); }
+    30%{ opacity:1; }
+    100%{ opacity:1; clip-path:inset(0 0 0 0); }
   }
 
+  /* Tap-hint muncul setelah animasi utama */
   .cover-tap-hint{
     margin-top:32px;
     display:inline-flex;
@@ -176,14 +224,33 @@
     font-size:13px;
     font-weight:800;
     letter-spacing:.02em;
-    animation:tapPulse 1.8s ease-in-out infinite;
     backdrop-filter:blur(6px);
     -webkit-backdrop-filter:blur(6px);
+    opacity:0;
+    animation:
+      tapFadeIn .5s ease 2.6s forwards,
+      tapPulse 1.8s ease-in-out 3.1s infinite;
   }
   .cover-tap-hint i{ color:#22c55e; font-size:14px; }
+  @keyframes tapFadeIn{
+    from{ opacity:0; }
+    to{ opacity:1; }
+  }
   @keyframes tapPulse{
     0%,100%{ box-shadow:0 0 0 0 rgba(34,197,94,.45); transform:scale(1); }
     50%{ box-shadow:0 0 0 12px rgba(34,197,94,0); transform:scale(1.03); }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .cover-brand,
+    .cover-brand .cb-letter,
+    .cover-brand .cb-shine,
+    .cover-tagline,
+    .cover-tap-hint{ animation:none !important; }
+    .cover-brand .cb-letter{ opacity:1 !important; transform:none !important; }
+    .cover-brand .cb-shine{ display:none !important; }
+    .cover-tagline{ opacity:1 !important; clip-path:none !important; }
+    .cover-tap-hint{ opacity:1 !important; }
   }
 
   .chat-bubble{background:#1f2937;border-radius:16px 16px 16px 4px;padding:12px 14px;color:#e5e7eb;font-size:13px;line-height:1.5;max-width:85%}
@@ -226,19 +293,15 @@
   .light-mode .toast{background:#111827 !important;color:#fff !important}
   .light-mode .page-layer .bg-gray-900,.light-mode .page-layer header{background:#fff !important}
 
-  /* ====== PATCH v3.1.7 ====== */
-  /* Safe area iPhone */
+  /* ====== PATCH v3.2.1 ====== */
   .bottom-nav{ bottom: calc(15px + env(safe-area-inset-bottom, 0px)) !important; }
   .content-area{ padding-bottom: calc(110px + env(safe-area-inset-bottom, 0px)) !important; }
 
-  /* Rasa tap native */
   button, [onclick], .quick-chip, .filter-chip{ -webkit-tap-highlight-color: transparent; }
   .bottom-nav > div, button{ -webkit-user-select:none; user-select:none; }
 
-  /* Pesan error dikontrol JS (menjangkau field di dalam wrapper flex) */
   .error-msg.show{ display:block !important; }
 
-  /* Light mode: modal tetap gelap agar kontras aman */
   .light-mode #custom-modal .bg-gray-800,
   .light-mode #rating-modal .bg-gray-800,
   .light-mode #preview-modal .bg-gray-800,
@@ -286,30 +349,9 @@
   <!-- ============ COVER DEPAN (TAP TO ENTER) ============ -->
   <div id="app-cover" class="app-cover" onclick="hideCover()">
     <div class="cover-inner">
-      <div class="cover-logo-wrap">
-        <svg id="cover-logo-fallback" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <defs>
-            <linearGradient id="ozGrad" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0%" stop-color="#86efac"/>
-              <stop offset="50%" stop-color="#22c55e"/>
-              <stop offset="100%" stop-color="#16a34a"/>
-            </linearGradient>
-          </defs>
-          <circle cx="60" cy="60" r="54" fill="none" stroke="url(#ozGrad)" stroke-width="3" opacity="0.35"/>
-          <text x="60" y="76" text-anchor="middle"
-                font-family="Orbitron, Arial, sans-serif" font-weight="900" font-style="italic"
-                font-size="46" fill="url(#ozGrad)" letter-spacing="-2">OZ</text>
-        </svg>
-        <img id="cover-logo-img"
-             class="cover-logo"
-             alt="OZgo Logo"
-             referrerpolicy="no-referrer"
-             fetchpriority="high"
-             decoding="async"
-             onload="onLogoLoad()"
-             onerror="onLogoError()">
-      </div>
-      <h1 class="cover-brand">OZgo</h1>
+      <h1 class="cover-brand" aria-label="OZgo">
+        <span class="cb-letter" data-dir="left" aria-hidden="true">O</span><span class="cb-letter" data-dir="left" aria-hidden="true">Z</span><span class="cb-letter" data-dir="right" aria-hidden="true">g</span><span class="cb-letter" data-dir="right" aria-hidden="true">o</span><span class="cb-shine" aria-hidden="true">OZgo</span>
+      </h1>
       <p class="cover-tagline">Layanan Prioritas Warga Mabu</p>
       <div class="cover-tap-hint">
         <i class="fa-solid fa-hand-pointer"></i>
@@ -448,7 +490,7 @@
       <div onclick="toggleTheme()" class="flex items-center justify-between p-4 border-b border-gray-700 cursor-pointer active:bg-gray-700 transition"><div class="flex items-center gap-3"><div class="w-9 h-9 rounded-lg bg-gray-700 flex items-center justify-center text-gray-300"><i class="fa-solid fa-palette text-sm"></i></div><span class="text-sm font-semibold text-gray-200">Ganti Tema</span></div><i class="fa-solid fa-chevron-right text-gray-500 text-xs"></i></div>
       <div onclick="installApp()" class="flex items-center justify-between p-4 border-b border-gray-700 cursor-pointer active:bg-gray-700 transition"><div class="flex items-center gap-3"><div class="w-9 h-9 rounded-lg bg-gray-700 flex items-center justify-center text-gray-300"><i class="fa-solid fa-download text-sm"></i></div><span class="text-sm font-semibold text-gray-200">Install Aplikasi</span></div><i class="fa-solid fa-chevron-right text-gray-500 text-xs"></i></div>
       <div onclick="shareApp()" class="flex items-center justify-between p-4 border-b border-gray-700 cursor-pointer active:bg-gray-700 transition"><div class="flex items-center gap-3"><div class="w-9 h-9 rounded-lg bg-gray-700 flex items-center justify-center text-gray-300"><i class="fa-solid fa-share-nodes text-sm"></i></div><span class="text-sm font-semibold text-gray-200">Bagikan Aplikasi</span></div><i class="fa-solid fa-chevron-right text-gray-500 text-xs"></i></div>
-      <div onclick="showModal('Tentang OZgo','Aplikasi layanan prioritas warga Mabu. Versi 3.1.7\n\nArea: Rangkasbitung & sekitarnya.')" class="flex items-center justify-between p-4 cursor-pointer active:bg-gray-700 transition"><div class="flex items-center gap-3"><div class="w-9 h-9 rounded-lg bg-gray-700 flex items-center justify-center text-gray-300"><i class="fa-solid fa-circle-info text-sm"></i></div><span class="text-sm font-semibold text-gray-200">Tentang Aplikasi</span></div><span class="text-[10px] text-gray-500 font-mono">v3.1.7</span></div>
+      <div onclick="showModal('Tentang OZgo','Aplikasi layanan prioritas warga Mabu. Versi 3.2.1\n\nArea: Rangkasbitung & sekitarnya.')" class="flex items-center justify-between p-4 cursor-pointer active:bg-gray-700 transition"><div class="flex items-center gap-3"><div class="w-9 h-9 rounded-lg bg-gray-700 flex items-center justify-center text-gray-300"><i class="fa-solid fa-circle-info text-sm"></i></div><span class="text-sm font-semibold text-gray-200">Tentang Aplikasi</span></div><span class="text-[10px] text-gray-500 font-mono">v3.2.1</span></div>
     </div>
   </main>
 
@@ -682,41 +724,7 @@ if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(()=>{}));
 }
 
-/* ============ COVER LOGO LOADER ============ */
-const LOGO_SOURCES = [
-  'https://cdn.jsdelivr.net/gh/alfauzy80/ozgo@main/assets/logo.png',
-  'https://raw.githubusercontent.com/alfauzy80/ozgo/main/assets/logo.png',
-  'https://cdn.jsdelivr.net/gh/alfauzy80/ozgo@main/logo.png',
-  'https://raw.githubusercontent.com/alfauzy80/ozgo/main/logo.png'
-];
-let logoIdx = 0;
-let logoDone = false;
-
-function loadCoverLogo() {
-  const img = document.getElementById('cover-logo-img');
-  if (!img) return;
-  logoIdx = 0;
-  img.src = LOGO_SOURCES[0];
-}
-function onLogoLoad() {
-  logoDone = true;
-  const img = document.getElementById('cover-logo-img');
-  if (img) img.classList.add('is-loaded');
-}
-function onLogoError() {
-  if (logoDone) return;
-  const img = document.getElementById('cover-logo-img');
-  if (!img) return;
-  logoIdx++;
-  if (logoIdx < LOGO_SOURCES.length) {
-    console.log('[Cover] Coba sumber logo berikutnya:', LOGO_SOURCES[logoIdx]);
-    img.src = LOGO_SOURCES[logoIdx];
-  } else {
-    console.warn('[Cover] Semua URL logo gagal. Fallback monogram tetap tampil.');
-  }
-}
-loadCoverLogo();
-
+/* ============ COVER ============ */
 function hideCover() {
   const c = document.getElementById('app-cover');
   if (!c || c.classList.contains('hide')) return;
@@ -1398,14 +1406,12 @@ window.addEventListener('popstate', function () {
 
   handleUrlParams();
 
-  // Hapus tanda error saat pengguna mulai mengetik
   document.addEventListener('input', (e) => {
     if (e.target && e.target.classList && e.target.classList.contains('field-error')) {
       setFieldError(e.target.id, false);
     }
   });
 
-  // Indikator koneksi
   window.addEventListener('offline', () => toast('Anda sedang offline', 'error'));
   window.addEventListener('online',  () => toast('Kembali online ✓', 'success'));
 })();
